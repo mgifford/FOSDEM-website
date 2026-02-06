@@ -1,0 +1,23 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+  {{ partial "breadcrumbs.html" . }}
+
+  {{ $paginator := .Paginate .Pages }}
+  <article>
+    {{ range $paginator.Pages }}
+    <div>
+      <p><a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        – {{ .Date.Format "Jan 2, 2006" }}</p>
+      {{ .Content }}
+      <hr />
+    </div>
+    {{ end }}
+  </article>
+
+  {{ partial "pagination.html" . }}
+</div>
+
+{{ end }}

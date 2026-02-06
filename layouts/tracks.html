@@ -1,0 +1,27 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Track</th>
+                <th>Call For Papers</th>
+                <th>Rooms</th>
+                <th>Saturday (UTC+1)</th>
+                <th>Sunday (UTC+1)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .Site.Data.schedule }}
+            {{ end }}
+        </tbody>
+    </table>
+</div>
+
+{{ end }}

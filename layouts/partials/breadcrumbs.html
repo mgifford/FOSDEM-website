@@ -1,0 +1,10 @@
+<nav class="breadcrumbs">
+    <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+
+    {{ range .Ancestors.Reverse }}
+        {{ if .LinkTitle }}
+            / <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{ end }}
+    {{ end }}
+    / <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+</nav>

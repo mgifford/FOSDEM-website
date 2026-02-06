@@ -1,0 +1,153 @@
+:root {
+    --c-main: #ac1d94;
+    --c-footer: #5f5f5f;
+    --c-bg-footer: #efefef;
+    --c-line-footer: #ccc;
+    --c-link: #3479c4;
+}
+
+@font-face {
+  font-family: "DejaVu Sans";
+  src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.ttf);
+}
+
+body, .no-spacing {
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    font-weight: bold;
+    margin: .2em 0;
+}
+
+p, a {
+    font-family: "DejaVu Sans", sans-serif;
+}
+
+p {
+    padding: 0;
+    margin-top: 0;
+}
+
+a {
+    text-decoration: none;
+    color: var(--c-link);
+}
+
+a.quiet {
+    color: inherit;
+}
+
+table {
+    width: 100%;
+    border: 1px solid var(--c-line-footer);
+    border-radius: .3em;
+}
+
+th {
+    border-right: 1px solid var(--c-line-footer);
+}
+
+th:last-of-type {
+    border-right: none;
+}
+
+* {
+    font-family: "Signika", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+    font-variation-settings: "GRAD" 0;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 1em;
+    padding-top: 0;
+    max-width: 920px;
+}
+
+header {
+    padding-top: 1em;
+    box-shadow: 0 0 3px 0;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav li {
+    float: left;
+    padding: 1em;
+}
+
+.bar {
+    padding-top: 1em;
+    background-color: var(--c-bg-footer);
+}
+
+.breadcrumbs {
+    font-size: .8em;
+    margin: .8em;
+}
+
+.breadcrumbs a {
+    text-decoration: underline;
+}
+
+.pagination {
+    font-size: .8em;
+}
+
+footer .container {
+    padding: 30px 0 60px 10px;
+}
+
+.logo-text {
+    font-weight: bold;
+}
+
+.logo-text span {
+    color: var(--c-main);
+    font-size: 0.6em;
+    font-weight: bold;
+
+    position: relative;
+    top: -0.4em;
+}
+
+footer {
+    background: var(--c-bg-footer);
+    color: var(--c-footer);
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid var(--c-line-footer);
+}
+
+.left-column {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+footer div .logo {
+    float: left;
+    background-color: var(--c-line-footer);
+    height: 100px !important;
+    width: 100px !important;
+    mask: url(../logo.svg) no-repeat center / contain;
+}
+
+footer div .logo-text span {
+    color: var(--c-footer)
+}
+
+footer img {
+    width: 100px;
+}

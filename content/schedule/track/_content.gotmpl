@@ -1,0 +1,9 @@
+{{ range .Site.Data.schedule.schedule.conference.tracks }}
+    {{ $page := dict 
+        "kind" "page" 
+        "path" .slug
+        "title" .name
+        "layout" "track"
+    }}
+    {{ $.AddPage $page }}
+{{ end }}

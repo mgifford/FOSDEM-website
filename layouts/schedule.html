@@ -1,0 +1,210 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+
+    <div>
+        <div style="float: right; padding-left: 1em">
+            <h3>Quick links:</h3>
+            <ul>
+                <li>Timetables: Saturday, Sunday</li>
+                <li>Overview of rooms per days</li>
+                <li> Mobile apps: many platforms</li>
+                <li>What's on now: Live streaming</li>
+                <li>Printable PDF: A4 A3</li>
+            </ul>
+        </div>
+
+        <p>
+            Every year, FOSDEM hosts a wide variety of activities. This page gives an overview with links to further
+            information about scheduled events. All times <bold>CET (UTC+1)</bold>.
+        </p>
+        <p>
+            FOSDEM is a rather busy conference. This edition features {{ len .Site.Data.speakers }} speakers, {{ len
+            .Site.Data.events }} events, and {{ len .Site.Data.schedule.schedule.conference.tracks }} tracks. We do our
+            best
+            to provide you with as much information and
+            navigation options about the schedule as we can.
+        </p>
+        <p>
+            Activities take place in <a href="{{ `schedule/rooms/` | relURL }}">{{ len .Site.Data.schedule.schedule.conference.rooms }}
+                rooms</a>. An <a href="{{ `schedule/roomtracks/` | relURL }}">overview of the room
+                occupation by track</a> is available, too.
+        </p>
+        <p>
+            There are essentially the following categories of sessions and activities: <a
+                href="{{ `schedule/#keynotes`| relURL }}">keynotes</a>, <a href="{{ `schedule/#maintracks`| relURL }}">main tracks</a>, <a
+                href="{{ `schedule/#devrooms`| relURL }}">developer
+                rooms</a>, <a href="{{ `schedule/#lightningtalks` | relURL }}">lightning talks</a>, <a
+                href="{{ `schedule/#stands` | relURL }}">stands</a>
+            and <a href="{{ `schedule/#bofs` | relURL }}">BOFs</a>.
+        </p>
+        <p>
+            For a complete (but crowded) overview, there is also a <a href="{{ `schedule/events/` | relURL }}">page that lists all
+                events</a>.
+            A <a href="{{ `schedule/speakers/` | relURL }}">list of all speakers</a> is available, too.
+        </p>
+        <p>
+            During the event, the <a href="{{ `schedule/streaming/` | relURL }}">live streaming page</a> is also updated every few
+            minutes
+            to show you what is currently
+            scheduled in each room.
+        </p>
+    </div>
+
+    <h3 id="keynotes">Keynotes</h3>
+
+    <p>
+        Like almost every other conference, FOSDEM invites speakers to gently start the day with talks concerning
+        slightly less technical, but nevertheless interesting topics from the Open Source realm. The closing keynote at
+        the end of the conference helps everyone digest the vast amount of insightful information collected over the
+        weekend.
+    </p>
+    <p>
+        For this edition, the keynotes are as follows:
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Speaker(s)</th>
+                <th>Day</th>
+                <th>When (UTC+1)</th>
+                <th>Room</th>
+            </tr>
+        </thead>
+    </table>
+
+    <h3 id="maintracks">Main tracks</h3>
+
+    <p>
+        The "main tracks" consist of series of talks that are organised by topic, where the FOSDEM program committee
+        selects suggestions and actively invites speakers on those topics.
+    </p>
+    <p>
+        For this edition the main tracks are:
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Track</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+            </tr>
+        </thead>
+    </table>
+
+    <h3 id="devrooms">Developer rooms</h3>
+
+    <p>
+        The vast majority of events (talks, hacking sessions, open discussions) are held in so-called "developer rooms"
+        ("devrooms"), which are organized and managed by open source projects themselves, or even associations between
+        several such projects on a common topic in order to foster collaboration.
+    </p>
+    <p>
+        Here is the list of the devrooms that are present at this edition of FOSDEM, in alphabetical order:
+    </p>
+
+    {{ $devrooms := .Site.Data.devrooms }}
+    {{ $cols := 3 }}
+    {{ $perCol := math.Ceil (div (len $devrooms) $cols) }}
+    <div style="display: flex; gap: 1rem">
+        <ul>
+            {{ range first $perCol $devrooms }}
+                {{ $url := printf "schedule/track/%s/" .slug }}
+                <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+            {{ end }}
+        </ul>
+
+        <ul>
+            {{ range first $perCol (after $perCol $devrooms) }}
+                {{ $url := printf "schedule/track/%s/" .slug }}
+                <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+            {{ end }}
+        </ul>
+
+        <ul>
+            {{ range after (mul 2 $perCol) $devrooms }}
+                {{ $url := printf "schedule/track/%s/" .slug }}
+                <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+            {{ end }}
+        </ul>
+    </div>
+
+    <h3 id="lightningtalks">Lightning talks</h3>
+    <p>
+        The lightning talk is a very popular format, used at many conferences, where speakers have a mere 15 minutes at
+        their disposal to showcase an open source project, an idea, or a concept thereof.
+    </p>
+    <p>
+        While that brief lapse of time may seem awkward, it almost always leads the presenters to concentrate on the
+        absolute essence and what is really important, which is why it is often a much appreciated approach, as is the
+        wide variety of the topics.
+    </p>
+    <p>
+        There are currently <a href="{{ `schedule/track/dev-random/` | relURL }}">
+            <bold>TODO</bold> lightning talks in the schedule
+        </a>.
+    </p>
+
+    <h3 id="bofs">BOFs</h3>
+
+    <p>
+        BOF stands for Birds Of a Feather who, as the saying goes, flock together. FOSDEM has three meeting rooms that
+        may be booked in 30 or 60 minute blocks for discussions. All the meetings are public so anyone who is interested
+        can attend if there is enough space.
+    </p>
+    <ul>
+        <li><a href="{{ `schedule/track/bof/` | relURL }}">BOF/Unconference</a></li>
+    </ul>
+
+    <h3>FOSDEM Junior</h3>
+
+    <p>
+        FOSDEM Junior is a collaboration between FOSDEM, Code Club, CoderDojo, developers, and volunteers to organize
+        workshops and activities for children from age 7 to 17 during the FOSDEM weekend. These activities are for
+        children to learn and get inspired about technology. Last year's activities included microcontrollers,
+        embroidery, plotting, game development, mobile application development, Raspberry Pi's, and Java development.
+    </p>
+    <p>
+        Further details are available on the <a href="{{ `junior/` | relURL }}">FOSDEM Junior page</a>.
+    </p>
+    <ul>
+        <li><a href="{{ `schedule/track/junior/` | relURL }}">Junior</a></li>
+    </ul>
+
+    <h3>The FOSDEM Fringe</h3>
+
+    <p>
+        The FOSDEM Fringe consists of independent events involving free and open source software taking place in the
+        days around the FOSDEM weekend. Why not extend your trip?
+    </p>
+    <p>
+        Further details are available on the <a href="{{ `fringe/` | relURL }}">FOSDEM Fringe page</a>.
+    </p>
+
+    <h3>Mobile Apps</h3>
+
+    <p>
+        People have submitted a variety of <a href="{{ `schedule/mobile/` | relURL }}">apps for mobile devices</a> that display the
+        FOSDEM schedule.
+    </p>
+
+    <h3>Raw schedule data</h3>
+
+    <p>
+        The schedule data is available in:
+    </p>
+
+    <ul>
+        <li>Pentabarf XML</li>
+        <li>iCal</li>
+        <li>xCal</li>
+    </ul>
+</div>
+
+{{ end }}

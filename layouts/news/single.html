@@ -1,0 +1,14 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+    {{ partial "breadcrumbs.html" . }}
+
+    <article>
+        <h1>{{ .Title }}</h1>
+        <p>{{ .Date.Format "Jan 2, 2006" }}</p>
+        {{ .Content }}
+    </article>
+</div>
+{{ end }}

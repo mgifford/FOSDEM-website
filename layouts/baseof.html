@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="{{ `css/style.css` | relURL }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&family=Stack+Sans+Notch:wght@200..700&family=Stack+Sans+Text:wght@200..700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a class="quiet" href="{{ .Site.BaseURL }}">
+                <h1 class="logo-text no-spacing">FOSDEM<span>'{{ now.Format "06" }}</span></h1>
+            </a>
+            <nav>
+                <ul class="no-spacing" style="list-style: none">
+                    {{- range .Site.Menus.main }}
+                    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+                    {{- end }}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    <footer>
+        <div class="container">
+            <hr />
+            <div class="left-column">
+                <div class="logo"></div>
+                <div>
+                    <h1 class="logo-text no-spacing">FOSDEM<span>'{{ now.Format "06" }}</span></h1>
+                    <p class="no-spacing">{{ .Site.Params.Location }} / {{ .Site.Params.DateFull }}</p>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="left-column">
+                <img src="{{ .Site.BaseURL }}/by.svg" />
+                <div>
+                    <small>
+                        <p class="no-spacing">This work is licensed under the Creative Commons Attribution 4.0 International.</p>
+                        <p class="no-spacing">To view a copy of this licence, visit <a class="quiet"
+                                href="https://creativecommons.org/licenses/by/4.0/deed.en"
+                                target="_blank">https://creativecommons.org/licenses/by/4.0/deed.en</a>
+                        </p>
+                        <p class="no-spacing">or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View,
+                            California, 94041, USA.</p>
+                        <p class="no-spacing">All content such as talks and biographies is the sole responsibility of the speaker.</p>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

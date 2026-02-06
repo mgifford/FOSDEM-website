@@ -1,0 +1,30 @@
+baseURL = 'https://fosdem.org'
+languageCode = 'en'
+title = 'FOSDEM 2026'
+
+[pagination]
+  pagerSize = 5
+
+[params]
+  Location = "Brussels"
+  DateFull = "31 January & 1 February 2026"
+
+[[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 1
+
+[[menu.main]]
+  name = "News"
+  url = "/news/"
+  weight = 2
+
+[[menu.main]]
+  name = "Schedule"
+  url = "/schedule/"
+  weight = 3
+
+[[menu.main]]
+  name = "Practical"
+  url = "/practical/"
+  weight = 4
