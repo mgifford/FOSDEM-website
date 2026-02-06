@@ -1,5 +1,7 @@
 :root {
-    --c-bg: #fff;
+    --c-white: #fff;
+
+    --c-bg: var(--c-white);
     --c-text: #000;
     --c-main: #ac1d94;
     --c-footer: #5f5f5f;
@@ -10,8 +12,10 @@
 
 /* Manual dark mode toggle */
 [data-theme='dark'] {
+    --c-white: #eee;
+
     --c-bg: #222;
-    --c-text: #eee;
+    --c-text: var(--c-white);
     --c-main: #ac1d94;
     --c-footer: #eee;
     --c-bg-footer: #333;
@@ -22,8 +26,10 @@
 /* System preference */
 @media (prefers-color-scheme: dark) {
     :root {
+        --c-white: #eee;
+
         --c-bg: #222;
-        --c-text: #eee;
+        --c-text: var(--c-white);
         --c-main: #ac1d94;
         --c-footer: #eee;
         --c-bg-footer: #333;
@@ -53,6 +59,68 @@ body,
     padding: 0;
 }
 
+.banner {
+    min-height: 240px;
+    background-color: var(--c-bg-footer);
+}
+
+ul.banner-gear {
+    margin: 0;
+    padding: 1em;
+    font-size: 1.5em;
+    min-height: 160px;
+    background: url("../logo.svg") no-repeat 50% 0;
+    background-size: contain;
+    background-origin: content-box;
+
+    list-style: none;
+    position: relative;
+
+    --offset: 160px;
+
+    li {
+        font-weight: bold;
+        min-width: var(--offset);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        white-space: nowrap;
+
+        transform: translate(-50%, -50%) rotate(var(--angle)) translateX(calc(var(--offset) + .5em)) rotate(calc(-1 * var(--angle)));
+    }
+
+    li:nth-child(1) {
+        --angle: 200deg;
+        text-align: right;
+    }
+
+    li:nth-child(2) {
+        --angle: 180deg;
+        text-align: right;
+    }
+
+    li:nth-child(3) {
+        --angle: 160deg;
+        text-align: right;
+    }
+
+    li:nth-child(4) {
+        --angle: -20deg;
+        text-align: left;
+    }
+
+    li:nth-child(5) {
+        --angle: 0deg;
+        text-align: left;
+    }
+
+    li:nth-child(6) {
+        --angle: 20deg;
+        text-align: left;
+    }
+}
+
+
 h1,
 h2,
 h3 {
@@ -77,6 +145,20 @@ a {
 
 a.quiet {
     color: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+}
+
+a.quiet:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+a.button {
+    padding: .4em 1em;
+    border-radius: .2em;
+    background-color: var(--c-main);
+    color: var(--c-white);
 }
 
 table {
