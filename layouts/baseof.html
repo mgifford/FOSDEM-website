@@ -27,6 +27,35 @@
                     {{- end }}
                 </ul>
             </nav>
+            <label class="dark-mode-toggle">
+                <input type="checkbox" id="darkModeCheckbox">
+                Dark Mode
+            </label>
+
+            <script>
+                const checkbox = document.getElementById('darkModeCheckbox');
+
+                // Initialize based on saved preference or system preference.
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                    checkbox.checked = savedTheme === 'dark';
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    checkbox.checked = true;
+                }
+
+                // Toggle dark mode.
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.documentElement.removeAttribute('data-theme');
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+            </script>
         </div>
     </header>
 
@@ -51,14 +80,17 @@
                 <img src="{{ .Site.BaseURL }}/by.svg" />
                 <div>
                     <small>
-                        <p class="no-spacing">This work is licensed under the Creative Commons Attribution 4.0 International.</p>
+                        <p class="no-spacing">This work is licensed under the Creative Commons Attribution 4.0
+                            International.</p>
                         <p class="no-spacing">To view a copy of this licence, visit <a class="quiet"
                                 href="https://creativecommons.org/licenses/by/4.0/deed.en"
                                 target="_blank">https://creativecommons.org/licenses/by/4.0/deed.en</a>
                         </p>
-                        <p class="no-spacing">or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View,
+                        <p class="no-spacing">or send a letter to Creative Commons, 444 Castro Street, Suite 900,
+                            Mountain View,
                             California, 94041, USA.</p>
-                        <p class="no-spacing">All content such as talks and biographies is the sole responsibility of the speaker.</p>
+                        <p class="no-spacing">All content such as talks and biographies is the sole responsibility of
+                            the speaker.</p>
                     </small>
                 </div>
             </div>

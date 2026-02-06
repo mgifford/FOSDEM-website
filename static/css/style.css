@@ -1,4 +1,6 @@
 :root {
+    --c-bg: #fff;
+    --c-text: #000;
     --c-main: #ac1d94;
     --c-footer: #5f5f5f;
     --c-bg-footer: #efefef;
@@ -6,22 +8,55 @@
     --c-link: #3479c4;
 }
 
-@font-face {
-  font-family: "DejaVu Sans";
-  src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.ttf);
+/* Manual dark mode toggle */
+[data-theme='dark'] {
+    --c-bg: #222;
+    --c-text: #eee;
+    --c-main: #ac1d94;
+    --c-footer: #eee;
+    --c-bg-footer: #333;
+    --c-line-footer: #555;
+    --c-link: #69a1ff;
 }
 
-body, .no-spacing {
+/* System preference */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --c-bg: #222;
+        --c-text: #eee;
+        --c-main: #ac1d94;
+        --c-footer: #eee;
+        --c-bg-footer: #333;
+        --c-line-footer: #555;
+        --c-link: #69a1ff;
+    }
+}
+
+@font-face {
+    font-family: "DejaVu Sans";
+    src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.ttf);
+}
+
+body {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+}
+
+body,
+.no-spacing {
     margin: 0;
     padding: 0;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     font-weight: bold;
     margin: .2em 0;
 }
 
-p, a {
+p,
+a {
     font-family: "DejaVu Sans", sans-serif;
 }
 
