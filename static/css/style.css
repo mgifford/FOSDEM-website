@@ -37,6 +37,11 @@
     src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.ttf);
 }
 
+@font-face {
+    font-family: "Signika";
+    src: url(fonts/Signika/Signika-VariableFont_GRAD,wght.ttf);
+}
+
 body {
     background-color: var(--c-bg);
     color: var(--c-text);
