@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <header>
+    <header data-pagefind-ignore="all">
         <div class="container">
             <a class="quiet" href="{{ .Site.BaseURL }}">
                 <h1 class="logo-text no-spacing">FOSDEM<span>'{{ now.Format "06" }}</span></h1>
@@ -47,7 +47,7 @@
         </div>
     </header>
 
-    <main>
+    <main data-pagefind-body>
         {{ block "main" . }}{{ end }}
     </main>
 

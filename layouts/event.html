@@ -1,0 +1,30 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+
+    {{ $event := index .Site.Data.events .Slug }}
+
+    <p>{{ $event.abstract }}</p>
+
+    <video preload="none" controls="controls" width="100%">
+        <source src="#" type="video/mp4"/>
+    </video>
+
+    <h1>Speakers</h1>
+    <ul>
+        {{ range $event.persons }}
+            <li>{{ .name }}</li>
+        {{ end }}
+    </ul>
+
+    <h1>Links</h1>
+
+    <p>TODO</p>
+</div>
+
+{{ end }}

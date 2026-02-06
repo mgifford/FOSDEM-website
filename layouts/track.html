@@ -8,6 +8,29 @@
     <h1>{{ .Title }}</h1>
 
     <p>TODO</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2">Event</th>
+                <th>Speakers</th>
+                <th>Start (UTC+1)</th>
+                <th>End (UTC+1)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range index .Site.Data.tracks .Title }}
+                {{ $url := printf "schedule/event/%s/" .slug }}
+                <tr>
+                    <td></td>
+                    <td><a href="{{ $url | relURL }}">{{ .title }}</a></td>
+                    <td>{{ range $i, $p := .persons }}{{ if gt $i 0 }}, {{ end }}{{ $p.name }}{{ end }}</td>
+                    <td>{{ .start }}</td>
+                    <td>{{ .end }}</td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
 </div>
 
 {{ end }}

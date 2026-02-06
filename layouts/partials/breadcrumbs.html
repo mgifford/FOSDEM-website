@@ -1,4 +1,4 @@
-<nav class="breadcrumbs">
+<nav class="breadcrumbs" data-pagefind-ignore="all">
     {{ range $i, $p := .Ancestors.Reverse }}
         {{ if $p.LinkTitle }}
             {{ if gt $i 0 }} / {{ end }}

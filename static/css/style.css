@@ -129,7 +129,8 @@ h3 {
 }
 
 p,
-a {
+a,
+span {
     font-family: "DejaVu Sans", sans-serif;
 }
 
@@ -165,13 +166,20 @@ table {
     width: 100%;
     border: 1px solid var(--c-line-footer);
     border-radius: .3em;
+    border-collapse: collapse;
 }
 
-th {
+th, td {
     border-right: 1px solid var(--c-line-footer);
 }
 
-th:last-of-type {
+td {
+    padding: .2em;
+    border-top: 1px solid var(--c-line-footer);
+}
+
+th:last-of-type,
+td:last-of-type {
     border-right: none;
 }
 
