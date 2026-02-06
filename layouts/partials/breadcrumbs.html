@@ -3,8 +3,8 @@
 
     {{ range .Ancestors.Reverse }}
         {{ if .LinkTitle }}
-            / <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+            <span>/ <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></span>
         {{ end }}
     {{ end }}
-    / <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+    <span>/ {{ .LinkTitle }}</span>
 </nav>

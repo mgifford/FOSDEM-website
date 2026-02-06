@@ -1,0 +1,18 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+
+    <p>
+        All times are <b>CET (UTC+1)</b>. For a less graphical and colorful overview of the rooms and the tracks that are held
+        in them, respectively, you may <a href="{{ `schedule/rooms/` | relURL }}">look at this page instead</a>.
+    </p>
+
+    <p>TODO</p>
+</div>
+
+{{ end }}

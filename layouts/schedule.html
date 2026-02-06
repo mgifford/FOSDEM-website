@@ -21,7 +21,7 @@
 
         <p>
             Every year, FOSDEM hosts a wide variety of activities. This page gives an overview with links to further
-            information about scheduled events. All times <bold>CET (UTC+1)</bold>.
+            information about scheduled events. All times <b>CET (UTC+1)</b>.
         </p>
         <p>
             FOSDEM is a rather busy conference. This edition features {{ len .Site.Data.speakers }} speakers, {{ len
@@ -31,25 +31,29 @@
             navigation options about the schedule as we can.
         </p>
         <p>
-            Activities take place in <a href="{{ `schedule/rooms/` | relURL }}">{{ len .Site.Data.schedule.schedule.conference.rooms }}
+            Activities take place in <a href="{{ `schedule/rooms/` | relURL }}">{{ len
+                .Site.Data.schedule.schedule.conference.rooms }}
                 rooms</a>. An <a href="{{ `schedule/roomtracks/` | relURL }}">overview of the room
                 occupation by track</a> is available, too.
         </p>
         <p>
             There are essentially the following categories of sessions and activities: <a
-                href="{{ `schedule/#keynotes`| relURL }}">keynotes</a>, <a href="{{ `schedule/#maintracks`| relURL }}">main tracks</a>, <a
+                href="{{ `schedule/#keynotes`| relURL }}">keynotes</a>, <a
+                href="{{ `schedule/#maintracks`| relURL }}">main tracks</a>, <a
                 href="{{ `schedule/#devrooms`| relURL }}">developer
                 rooms</a>, <a href="{{ `schedule/#lightningtalks` | relURL }}">lightning talks</a>, <a
                 href="{{ `schedule/#stands` | relURL }}">stands</a>
             and <a href="{{ `schedule/#bofs` | relURL }}">BOFs</a>.
         </p>
         <p>
-            For a complete (but crowded) overview, there is also a <a href="{{ `schedule/events/` | relURL }}">page that lists all
+            For a complete (but crowded) overview, there is also a <a href="{{ `schedule/events/` | relURL }}">page that
+                lists all
                 events</a>.
             A <a href="{{ `schedule/speakers/` | relURL }}">list of all speakers</a> is available, too.
         </p>
         <p>
-            During the event, the <a href="{{ `schedule/streaming/` | relURL }}">live streaming page</a> is also updated every few
+            During the event, the <a href="{{ `schedule/streaming/` | relURL }}">live streaming page</a> is also updated
+            every few
             minutes
             to show you what is currently
             scheduled in each room.
@@ -77,6 +81,11 @@
                 <th>Room</th>
             </tr>
         </thead>
+        <tbody>
+            <tr>
+                <td>TODO</td>
+            </tr>
+        </tbody>
     </table>
 
     <h3 id="maintracks">Main tracks</h3>
@@ -96,6 +105,11 @@
                 <th>Sunday</th>
             </tr>
         </thead>
+        <tbody>
+            <tr>
+                <td>TODO</td>
+            </tr>
+        </tbody>
     </table>
 
     <h3 id="devrooms">Developer rooms</h3>
@@ -115,22 +129,22 @@
     <div style="display: flex; gap: 1rem">
         <ul>
             {{ range first $perCol $devrooms }}
-                {{ $url := printf "schedule/track/%s/" .slug }}
-                <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+            {{ $url := printf "schedule/track/%s/" .slug }}
+            <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
             {{ end }}
         </ul>
 
         <ul>
             {{ range first $perCol (after $perCol $devrooms) }}
-                {{ $url := printf "schedule/track/%s/" .slug }}
-                <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+            {{ $url := printf "schedule/track/%s/" .slug }}
+            <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
             {{ end }}
         </ul>
 
         <ul>
             {{ range after (mul 2 $perCol) $devrooms }}
-                {{ $url := printf "schedule/track/%s/" .slug }}
-                <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+            {{ $url := printf "schedule/track/%s/" .slug }}
+            <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
             {{ end }}
         </ul>
     </div>
@@ -147,8 +161,19 @@
     </p>
     <p>
         There are currently <a href="{{ `schedule/track/dev-random/` | relURL }}">
-            <bold>TODO</bold> lightning talks in the schedule
+            <b>TODO</b> lightning talks in the schedule
         </a>.
+    </p>
+
+    <h3 id="stands">Stands</h3>
+
+    <p>
+        Stands offer a unique chance to get in touch with developers or project members, and discover at a glance what
+        they do.
+    </p>
+
+    <p>
+        A list of projects that will be present with a stand can be found on the <a href="{{ `stands/` | relURL }}">FOSDEM stands page</a>.
     </p>
 
     <h3 id="bofs">BOFs</h3>
@@ -190,7 +215,8 @@
     <h3>Mobile Apps</h3>
 
     <p>
-        People have submitted a variety of <a href="{{ `schedule/mobile/` | relURL }}">apps for mobile devices</a> that display the
+        People have submitted a variety of <a href="{{ `schedule/mobile/` | relURL }}">apps for mobile devices</a> that
+        display the
         FOSDEM schedule.
     </p>
 

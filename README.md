@@ -1,7 +1,7 @@
 # FOSDEM Website
 
 ```sh
-hugo server --baseURL=127.0.0.1/2026 -D
+hugo server --baseURL=http://127.0.0.1/2026 -D
 ```
 
 ```sh

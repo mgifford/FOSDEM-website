@@ -1,0 +1,4 @@
+---
+title: "Rooms"
+layout: "rooms"
+---
