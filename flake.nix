@@ -19,6 +19,7 @@
           pkgs.go
           pkgs.hugo
           pkgs.nixfmt
+          pkgs.pagefind
         ];
         shellHook = ''
           echo "Welcome to the devShell!"

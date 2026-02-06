@@ -1,0 +1,20 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+    <!--<link href="{{ `pagefind/pagefind-ui.css` | relURL }}" rel="stylesheet">-->
+    <script src="{{ `pagefind/pagefind-ui.js` | relURL }}"></script>
+    <div id="search"></div>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            new PagefindUI({
+                element: "#search",
+                showImages: false,
+                showSubResults: true
+            });
+        });
+    </script>
+</div>
+
+{{ end }}

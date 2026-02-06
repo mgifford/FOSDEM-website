@@ -273,3 +273,12 @@ footer div .logo-text span {
 footer img {
     width: 100px;
 }
+
+#search {
+    .pagefind-ui__form {
+        margin: 1em 0;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: .2em;
+    }
+}
