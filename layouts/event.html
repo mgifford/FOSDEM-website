@@ -20,7 +20,7 @@
     <ul>
         {{ range $event.persons }}
             {{ $url := printf "schedule/speaker/%s" .guid }}
-            <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+            <li><a href="{{ $url | relURL }}" data-pagefind-filter="speaker">{{ .name }}</a></li>
         {{ end }}
     </ul>
 
