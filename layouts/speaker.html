@@ -1,0 +1,17 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+
+    {{ $speaker := index .Site.Data.speakers .Slug }}
+
+    <p>TODO</p>
+
+    <p>{{ $speaker.biography | safeHTML }}</p>
+</div>
+
+{{ end }}

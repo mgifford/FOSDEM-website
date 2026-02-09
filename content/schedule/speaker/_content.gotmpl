@@ -1,0 +1,10 @@
+{{ range .Site.Data.speakers }}
+    {{ $page := dict 
+        "kind" "page" 
+        "path" .guid
+        "title" .name
+        "slug" .guid
+        "layout" "speaker"
+    }}
+    {{ $.AddPage $page }}
+{{ end }}

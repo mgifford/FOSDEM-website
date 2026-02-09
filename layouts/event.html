@@ -7,7 +7,8 @@
 
     <h1>{{ .Title }}</h1>
 
-    {{ $event := index .Site.Data.events .Slug }}
+    {{ $events := index .Site.Data.events .Slug }}
+    {{ $event := index $events 0 }}
 
     <p>{{ $event.abstract }}</p>
 
@@ -18,7 +19,8 @@
     <h1>Speakers</h1>
     <ul>
         {{ range $event.persons }}
-            <li>{{ .name }}</li>
+            {{ $url := printf "schedule/speaker/%s" .guid }}
+            <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
         {{ end }}
     </ul>
 

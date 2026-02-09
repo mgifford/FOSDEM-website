@@ -93,8 +93,9 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 }
 
 type Person struct {
-	GUID string `json:"guid"`
-	Name string `json:"name"`
+	GUID      string `json:"guid"`
+	Name      string `json:"name"`
+	Biography string `json:"biography"`
 }
 
 type Link struct {
@@ -146,14 +147,13 @@ func main() {
 
 func events() {
 	var (
-		events = make(map[string]Event)
+		events = make(map[string][]Event)
 	)
 	for _, day := range schedule.Conference.Days {
 		for _, rooms := range day.Rooms {
 			for _, event := range rooms {
-				if _, ok := events[string(event.Slug)]; !ok {
-					events[string(event.Slug)] = event
-				}
+				id := string(event.Slug)
+				events[id] = append(events[id], event)
 			}
 		}
 	}
@@ -167,17 +167,25 @@ func events() {
 }
 
 func speakers() {
-	var (
-		speakers []Person
-		visited  = make(map[string]struct{})
-	)
+	type Speaker struct {
+		Person
+		events []Event
+	}
+
+	var speakers = make(map[string]Speaker)
 	for _, day := range schedule.Conference.Days {
 		for _, rooms := range day.Rooms {
 			for _, event := range rooms {
 				for _, person := range event.Persons {
-					if _, ok := visited[person.GUID]; !ok {
-						visited[person.GUID] = struct{}{}
-						speakers = append(speakers, person)
+					id := person.GUID
+
+					if speaker, ok := speakers[id]; !ok {
+						speakers[id] = Speaker{
+							Person: person,
+							events: []Event{event},
+						}
+					} else {
+						speaker.events = append(speaker.events, event)
 					}
 				}
 			}

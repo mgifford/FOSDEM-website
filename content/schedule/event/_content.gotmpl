@@ -1,9 +1,10 @@
 {{ range .Site.Data.events }}
+    {{ $event := index . 0 }}
     {{ $page := dict 
         "kind" "page" 
-        "path" .slug
-        "title" .title
-        "slug" .slug
+        "path" $event.slug
+        "title" $event.title
+        "slug" $event.slug
         "layout" "event"
     }}
     {{ $.AddPage $page }}
