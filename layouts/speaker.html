@@ -9,9 +9,40 @@
 
     {{ $speaker := index .Site.Data.speakers .Slug }}
 
-    <p>TODO</p>
+    <div class="speaker-picture"></div>
 
     <p>{{ $speaker.biography | safeHTML }}</p>
+
+    <h2>Events</h2>
+
+    <table data-pagefind-ignore="all">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Day</th>
+                <th>Room</th>
+                <th>Track</th>
+                <th>Start (UTC+1)</th>
+                <th>End (UTC+1)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range $speaker.events }}
+                {{ $events := index $.Site.Data.events . }}
+                {{ $event := index $events 0 }}
+
+                {{ $url := printf "schedule/event/%s/" $event.slug }}
+                <tr>
+                    <td><a href="{{ $url | relURL }}">{{ $event.title }}</a></td>
+                    <td>TODO</td>
+                    <td>{{ $event.room }}</td>
+                    <td>{{ $event.track }}</td>
+                    <td>{{ $event.start }}</td>
+                    <td>{{ $event.end }} </td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
 </div>
 
 {{ end }}

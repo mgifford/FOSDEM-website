@@ -1,0 +1,10 @@
+{{ range .Site.Data.schedule.conference.rooms }}
+    {{ $page := dict 
+        "kind" "page" 
+        "path" .slug
+        "title" .description
+        "slug" .slug
+        "layout" "room"
+    }}
+    {{ $.AddPage $page }}
+{{ end }}

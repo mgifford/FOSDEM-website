@@ -169,7 +169,7 @@ func events() {
 func speakers() {
 	type Speaker struct {
 		Person
-		events []Event
+		Events []Slug `json:"events"`
 	}
 
 	var speakers = make(map[string]Speaker)
@@ -178,14 +178,14 @@ func speakers() {
 			for _, event := range rooms {
 				for _, person := range event.Persons {
 					id := person.GUID
-
 					if speaker, ok := speakers[id]; !ok {
 						speakers[id] = Speaker{
 							Person: person,
-							events: []Event{event},
+							Events: []Slug{event.Slug},
 						}
 					} else {
-						speaker.events = append(speaker.events, event)
+						speaker.Events = append(speaker.Events, event.Slug)
+						speakers[id] = speaker
 					}
 				}
 			}
