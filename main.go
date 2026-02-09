@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -14,13 +15,39 @@ type Schedule struct {
 }
 
 type Conference struct {
-	Title  string  `json:"title"`
-	Rooms  []Room  `json:"rooms"`
-	Tracks []Track `json:"tracks"`
-	Days   []Day   `json:"days"`
+	Title   string  `json:"title"`
+	Acronym string  `json:"acronym"`
+	Rooms   []Room  `json:"rooms"`
+	Tracks  []Track `json:"tracks"`
+	Days    []Day   `json:"days"`
 }
 
-type Room struct{}
+// Slug, but without number prefix.
+// I.e. `261-janson -> janson`
+type Slug string
+
+func (s *Slug) UnmarshalJSON(data []byte) error {
+	var slug string
+	if err := json.Unmarshal(data, &slug); err != nil {
+		return err
+	}
+	conferencePrefix := fmt.Sprintf("%s-", schedule.Conference.Acronym)
+	if after, ok := strings.CutPrefix(slug, conferencePrefix); ok {
+		slug = after
+	}
+	if _, err := fmt.Sscanf(slug, "%d-%s", new(uint), s); err != nil {
+		return err
+	}
+	return nil
+}
+
+type Room struct {
+	Name        string `json:"name"`
+	Slug        Slug   `json:"slug"`
+	GUID        string `json:"guid"`
+	Description string `json:"description"`
+	Capacity    uint   `json:"capacity"`
+}
 
 type Event struct {
 	GUID     string   `json:"guid"`
@@ -28,7 +55,7 @@ type Event struct {
 	Abstract string   `json:"abstract"`
 	Track    string   `json:"track"`
 	Start    string   `json:"start"`
-	Slug     string   `json:"slug"`
+	Slug     Slug     `json:"slug"`
 	Duration string   `json:"duration"`
 	Room     string   `json:"room"`
 	Persons  []Person `json:"persons"`
@@ -54,8 +81,7 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 	}
 
 	var hours, minutes int
-	_, err = fmt.Sscanf(e.Duration, "%02d:%02d", &hours, &minutes)
-	if err != nil {
+	if _, err := fmt.Sscanf(e.Duration, "%02d:%02d", &hours, &minutes); err != nil {
 		return fmt.Errorf("invalid duration: %w", err)
 	}
 	duration := time.Duration(hours)*time.Hour + time.Duration(minutes)*time.Minute
@@ -78,7 +104,7 @@ type Link struct {
 
 type Track struct {
 	Name  string `json:"name"`
-	Slug  string `json:"slug"`
+	Slug  Slug   `json:"slug"`
 	Color string `json:"color"`
 }
 
@@ -87,7 +113,7 @@ type Day struct {
 }
 
 var (
-	//go:embed data/schedule.json
+	//go:embed schedule.json
 	rawSchedule []byte
 	schedule    Schedule
 )
@@ -108,6 +134,14 @@ func main() {
 	events()
 	devRooms()
 	tracks()
+
+	f, err := os.OpenFile("data/schedule.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.NewEncoder(f).Encode(schedule); err != nil {
+		panic(err)
+	}
 }
 
 func events() {
@@ -117,8 +151,8 @@ func events() {
 	for _, day := range schedule.Conference.Days {
 		for _, rooms := range day.Rooms {
 			for _, event := range rooms {
-				if _, ok := events[event.Slug]; !ok {
-					events[event.Slug] = event
+				if _, ok := events[string(event.Slug)]; !ok {
+					events[string(event.Slug)] = event
 				}
 			}
 		}

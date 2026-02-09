@@ -1,3 +1,4 @@
 .hugo_build.lock
 data/*.json
 public/
+schedule.json
