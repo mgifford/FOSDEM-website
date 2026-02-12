@@ -30,7 +30,7 @@
         feedback for speakers, you can also use the links under each event in the schedule.
     </p>
 
-    <h1>Videos</h1>
+    <h1 id="videos">Videos</h1>
 
     <p>
         Videos of each talk are being added to their respective web pages as they become available. Check the <a
@@ -38,7 +38,7 @@
         directly from <a href="https://video.fosdem.org/2026">our video archive</a> (organised by room).
     </p>
 
-    <h1>News</h1>
+    <h1 id="news">News</h1>
 
     <div class="news-grid">
         {{ range first 3 (where .Site.RegularPages "Section" "news") }}
@@ -56,7 +56,7 @@
 
     <hr />
 
-    <h1><a href="{{ `about/sponsors/` | relURL }}">Sponsors</a></h1>
+    <h1 id="sponsors"><a href="{{ `about/sponsors/` | relURL }}">Sponsors</a></h1>
 
     <p class="sponsor-list sponsor-platinum">
         {{ range .Site.Data.sponsors.platinum }}
@@ -71,7 +71,7 @@
 
     <hr />
 
-    <h1>Location</h1>
+    <h1 id="location">Location</h1>
 
     <p>
         FOSDEM takes place at the ULB Solbosch Campus, <b>Brussels, Belgium</b>, Europe, Earth. If you aren't there, you
