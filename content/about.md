@@ -22,7 +22,7 @@ Participation and attendance is *totally free*, though the organisers gratefully
 
 # A bit of history
 
- FOSDEM began in 2000 when Raphael Bauduin, a supporter of the Linux movement in Belgium, organised a small gathering for Open Source developers called the "Open Source Developers’ European Meeting" (OSDEM). A mailing list, a simple website, and word of mouth quickly attracted interest, and several prominent figures in the Open Source community, including Carsten Haitzler (Rasterman), Gordon Lyon (Fyodor), and Jeremy Allison, joined the inaugural event. The enthusiasm for the meeting set the stage for its future growth.
+FOSDEM began in 2000 when Raphael Bauduin, a supporter of the Linux movement in Belgium, organised a small gathering for Open Source developers called the "Open Source Developers’ European Meeting" (OSDEM). A mailing list, a simple website, and word of mouth quickly attracted interest, and several prominent figures in the Open Source community, including Carsten Haitzler (Rasterman), Gordon Lyon (Fyodor), and Jeremy Allison, joined the inaugural event. The enthusiasm for the meeting set the stage for its future growth.
 
 The following year, OSDEM was renamed FOSDEM (Free and Open Source Software Developers’ European Meeting). Since then, FOSDEM has evolved into one of the largest gatherings of Free and Open Source enthusiasts in the world. Today, it hosts over 8000 developers annually at the ULB Solbosch campus in Brussels, offering a platform for collaboration across hundreds of projects and diverse technical tracks.
 

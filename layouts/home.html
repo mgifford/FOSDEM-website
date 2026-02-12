@@ -6,9 +6,11 @@
             <li><a class="quiet" href="https://en.wikipedia.org/wiki/Beer_in_Belgium">beer</a></li>
             <li><a class="quiet" href="https://en.wikipedia.org/wiki/Open-source_model">open source</a></li>
             <li><a class="quiet">lightning talks</a></li>
-            <li><a class="quiet" href="{{ `schedule/tracks/` | relURL }}">{{ len .Site.Data.devrooms }} devrooms</a></li>
+            <li><a class="quiet" href="{{ `schedule/tracks/` | relURL }}">{{ len .Site.Data.devrooms }} devrooms</a>
+            </li>
             <li><a class="quiet">8000+ hackers</a></li>
-            <li><a class="quiet" href="{{ `schedule/events/` | relURL }}">{{ len .Site.Data.speakers }} lectures</a></li>
+            <li><a class="quiet" href="{{ `schedule/events/` | relURL }}">{{ len .Site.Data.speakers }} lectures</a>
+            </li>
         </ul>
 
         <hr />
@@ -38,7 +40,17 @@
 
     <h1>News</h1>
 
-    <p>TODO</p>
+    <div class="news-grid">
+        {{ range first 3 (where .Site.RegularPages "Section" "news") }}
+        <div>
+            <p>
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                – {{ .Date.Format "Jan 2, 2006" }}
+            </p>
+            {{ .Summary }}
+        </div>
+        {{ end }}
+    </div>
 
     <p style="text-align: center"><a class="button" href="{{ `news/` | relURL }}">more news</a></p>
 
@@ -46,7 +58,16 @@
 
     <h1><a href="{{ `about/sponsors/` | relURL }}">Sponsors</a></h1>
 
-    <p>TODO</p>
+    <p class="sponsor-list sponsor-platinum">
+        {{ range .Site.Data.sponsors.platinum }}
+        <a href="{{ .url }}">{{ .name }}</a>
+        {{ end }}
+    </p>
+    <p class="sponsor-list">
+        {{ range .Site.Data.sponsors.sponsors }}
+        <a href="{{ .url }}">{{ .name }}</a>
+        {{ end }}
+    </p>
 
     <hr />
 
@@ -57,7 +78,118 @@
         may watch the <a href="https://live.fosdem.org">live streams</a> from the main tracks and developer rooms.
     </p>
 
-    <p>TODO</p>
+    <link rel="stylesheet" href="{{ `css/leaflet/leaflet.css` | relURL }}">
+    <div id="map" class="map"></div>
+    <p><small><a href="https://www.openstreetmap.org/?mlat=50.8138&amp;mlon=4.3817#map=16/50.8138/4.3817">Av. F. D.
+                Roosevelt 50, 1050 Bruxelles, Belgium</a></small></p>
+    <script src="{{ `js/leaflet.js` | relURL }}"></script>
+    <script>
+        var map = L.map('map').setView([50.8131, 4.3817], 16);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        L.polygon(
+            [
+                [50.81239802300831, 4.38089843887613],
+                [50.81225033612748, 4.38041786719873],
+                [50.81198256619865, 4.380621017953047],
+                [50.81212887366959, 4.381101589630475],
+                [50.81239802300831, 4.38089843887613]
+            ],
+            { color: '#ac1d94', weight: 2, fillOpacity: 0.1 }
+        ).bindTooltip(
+            'AW',
+            { permanent: true, direction: 'center', className: 'map-label' }
+        ).addTo(map);
+        L.polygon(
+            [
+                [50.8127872501602, 4.379373718140869],
+                [50.81250568085338, 4.379583422144776],
+                [50.81294183650894, 4.381014215093785],
+                [50.8132234031865, 4.380797957838837],
+                [50.8127872501602, 4.379373718140869]
+            ],
+            { color: '#ac1d94', weight: 2, fillOpacity: 0.1 }
+        ).bindTooltip(
+            'H',
+            { permanent: true, direction: 'center', className: 'map-label' }
+        ).addTo(map);
+        L.polygon(
+            [
+                [50.813460052214225, 4.379221546003919],
+                [50.813356879548905, 4.378897523011972],
+                [50.81281456443492, 4.379310432781687],
+                [50.81291839318041, 4.379632315308157],
+                [50.81311345563935, 4.379466476769323],
+                [50.81308766230299, 4.379823667468969],
+                [50.81322468923889, 4.37997419783548],
+                [50.813314965588745, 4.380015019629013],
+                [50.81337138821905, 4.379992057370032],
+                [50.81341813834612, 4.37992061923012],
+                [50.813448767714846, 4.3797879483989846],
+                [50.81346327635589, 4.379543017633637],
+                [50.81326982743562, 4.3793567681971695],
+                [50.81345844014308, 4.379224097366091],
+                [50.813460052214225, 4.379221546003919]
+            ],
+            { color: '#ac1d94', weight: 2, fillOpacity: 0.1 }
+        ).bindTooltip(
+            'J',
+            { permanent: true, direction: 'center', className: 'map-label' }
+        ).addTo(map);
+        L.polygon(
+            [
+                [50.813104647204796, 4.382662768799207],
+                [50.81276247191755, 4.381554951790321],
+                [50.81131767265518, 4.382664739321598],
+                [50.81166299890944, 4.383765061294895],
+                [50.812008539863314, 4.383509661893754],
+                [50.811725652129496, 4.382584214652468],
+                [50.81247236710146, 4.382021420355528],
+                [50.812752208202824, 4.382934349572849],
+                [50.813104647204796, 4.382662768799207]
+            ],
+            { color: '#ac1d94', weight: 2, fillOpacity: 0.1 }
+        ).bindTooltip(
+            'U',
+            { permanent: true, direction: 'center', className: 'map-label' }
+        ).addTo(map);
+        L.polygon(
+            [
+                [50.81490836335132, 4.381423405662332],
+                [50.81443589016595, 4.381779839815891],
+                [50.814559064569835, 4.382194467302753],
+                [50.81503153650917, 4.38183366864817],
+                [50.81490836335132, 4.381423405662332]
+            ],
+            { color: '#ac1d94', weight: 2, fillOpacity: 0.1 }
+        ).bindTooltip(
+            'K',
+            { permanent: true, direction: 'center', className: 'map-label' }
+        ).addTo(map);
+        L.polygon(
+            [
+                [50.81381715249424, 4.383094912067861],
+                [50.81371808772798, 4.382758473344154],
+                [50.81376349243877, 4.382724176192369],
+                [50.813575681758635, 4.382095395080938],
+                [50.81352718107564, 4.382129692232638],
+                [50.813405413181954, 4.381742624380905],
+                [50.813227920428915, 4.381886345776849],
+                [50.81330428367278, 4.382119893046848],
+                [50.81331666688976, 4.382110093861115],
+                [50.81356742632667, 4.382928325903606],
+                [50.81365307636105, 4.382867897588284],
+                [50.813737694313204, 4.383153707185528],
+                [50.81381715249424, 4.383094912067861]
+            ],
+            { color: '#ac1d94', weight: 2, fillOpacity: 0.1 }
+        ).bindTooltip(
+            'F',
+            { permanent: true, direction: 'center', className: 'map-label' }
+        ).addTo(map);
+    </script>
 </div>
 
 {{ end }}
