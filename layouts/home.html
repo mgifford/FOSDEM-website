@@ -78,11 +78,11 @@
         may watch the <a href="https://live.fosdem.org">live streams</a> from the main tracks and developer rooms.
     </p>
 
-    <link rel="stylesheet" href="{{ `css/leaflet/leaflet.css` | relURL }}">
+    <link rel="stylesheet" href="{{ `css/leaflet/leaflet.css` | absURL }}">
     <div id="map" class="map"></div>
     <p><small><a href="https://www.openstreetmap.org/?mlat=50.8138&amp;mlon=4.3817#map=16/50.8138/4.3817">Av. F. D.
                 Roosevelt 50, 1050 Bruxelles, Belgium</a></small></p>
-    <script src="{{ `js/leaflet.js` | relURL }}"></script>
+    <script src="{{ `js/leaflet.js` | absURL }}"></script>
     <script>
         var map = L.map('map').setView([50.8131, 4.3817], 16);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -3,8 +3,8 @@
 {{ partial "bar.html" . }}
 
 <div class="container">
-    <!--<link href="{{ `pagefind/pagefind-ui.css` | relURL }}" rel="stylesheet">-->
-    <script src="{{ `pagefind/pagefind-ui.js` | relURL }}"></script>
+    <!--<link href="{{ `pagefind/pagefind-ui.css` | absURL }}" rel="stylesheet">-->
+    <script src="{{ `pagefind/pagefind-ui.js` | absURL }}"></script>
     <div id="search"></div>
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {

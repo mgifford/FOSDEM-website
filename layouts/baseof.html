@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Title }}</title>
-    <link rel="icon" href="{{ `logo.svg` | relURL }}" sizes="any" type="image/svg+xml">
-    <link rel="stylesheet" href="{{ `css/style.css` | relURL }}">
+    <link rel="icon" href="{{ `logo.svg` | absURL }}" sizes="any" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ `css/style.css` | absURL }}">
 </head>
 
 <body>
@@ -20,7 +20,7 @@
                     {{- range .Site.Menus.main }}
                         <li><a href="{{ .URL }}">{{ .Name }}</a></li>
                     {{- end }}
-                    <li><a href="{{ `search/` | relURL }}">Search</a></li>
+                    <li><a href="{{ `search/` | absURL }}">Search</a></li>
                 </ul>
             </nav>
             <label class="dark-mode-toggle">
