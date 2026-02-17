@@ -290,11 +290,106 @@ footer img {
 }
 
 #search {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--c-main);
+    --pagefind-ui-text: var(--c-text);
+    --pagefind-ui-background: var(--c-bg);
+    --pagefind-ui-border: var(--c-line-footer);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: .3em;
+    --pagefind-ui-font: "Signika", sans-serif;
+
     .pagefind-ui__form {
         margin: 1em 0;
         display: grid;
         grid-template-columns: 1fr auto;
         gap: .2em;
+    }
+
+    .pagefind-ui__search-input {
+        font-size: 1em;
+        padding: .5em .8em;
+        border: 1px solid var(--c-line-footer);
+        border-radius: .3em;
+        background: var(--c-bg);
+        color: var(--c-text);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .pagefind-ui__search-clear {
+        font-size: .9em;
+        padding: .5em 1em;
+        border: 1px solid var(--c-line-footer);
+        border-radius: .3em;
+        background: var(--c-bg);
+        color: var(--c-text);
+        cursor: pointer;
+    }
+
+    .pagefind-ui__drawer {
+        gap: 1em;
+    }
+
+    .pagefind-ui__filter-panel {
+        min-width: 0;
+        border: 1px solid var(--c-line-footer);
+        border-radius: .3em;
+        padding: .8em;
+        margin-top: .5em;
+        margin-bottom: 1em;
+    }
+
+    .pagefind-ui__filter-group {
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid var(--c-line-footer);
+        border-radius: .3em;
+        padding: .4em;
+    }
+
+    .filter-search {
+        width: 100%;
+        box-sizing: border-box;
+        padding: .3em .5em;
+        margin-bottom: .4em;
+        font-size: .85em;
+        border: 1px solid var(--c-line-footer);
+        border-radius: .2em;
+        background: var(--c-bg);
+        color: var(--c-text);
+    }
+
+    .pagefind-ui__filter-name {
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .pagefind-ui__filter-value {
+        display: block;
+        padding: .15em 0;
+        font-size: .9em;
+    }
+
+    .pagefind-ui__result {
+        border-bottom: 1px solid var(--c-line-footer);
+        padding: .8em 0;
+    }
+
+    .pagefind-ui__result-link {
+        font-weight: bold;
+    }
+
+    .pagefind-ui__result-excerpt {
+        font-size: .9em;
+        margin-top: .3em;
+    }
+
+    mark {
+        background-color: #f0c808;
+        color: #000;
+        padding: 0 .1em;
+        border-radius: .15em;
     }
 }
 

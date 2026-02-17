@@ -11,8 +11,29 @@
             new PagefindUI({
                 element: "#search",
                 showImages: false,
-                showSubResults: true
+                showSubResults: true,
+                openFilters: []
             });
+
+            // Add a search box inside each filter group to filter the checkboxes.
+            const observer = new MutationObserver(() => {
+                document.querySelectorAll('.pagefind-ui__filter-group').forEach(group => {
+                    if (group.querySelector('.filter-search')) return;
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.placeholder = 'Filter\u2026';
+                    input.className = 'filter-search';
+                    input.addEventListener('input', () => {
+                        const query = input.value.toLowerCase();
+                        group.querySelectorAll('.pagefind-ui__filter-value').forEach(item => {
+                            const label = item.textContent.toLowerCase();
+                            item.style.display = label.includes(query) ? '' : 'none';
+                        });
+                    });
+                    group.prepend(input);
+                });
+            });
+            observer.observe(document.getElementById('search'), { childList: true, subtree: true });
         });
     </script>
 </div>

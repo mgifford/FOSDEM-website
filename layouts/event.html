@@ -10,6 +10,7 @@
     {{ $events := index .Site.Data.events .Slug }}
     {{ $event := index $events 0 }}
 
+    <p data-pagefind-filter="track">{{ $event.track }}</p>
     <p>{{ $event.abstract }}</p>
 
     <video preload="none" controls="controls" width="100%">
