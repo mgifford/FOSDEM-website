@@ -19,10 +19,11 @@
             </tr>
         </thead>
         <tbody>
-            {{ range index .Site.Data.tracks .Title }}
+            {{ range $i, $e := index .Site.Data.tracks .Title }}
                 {{ $url := printf "schedule/event/%s/" .slug }}
+                {{ $c := printf "c%d" (add (mod $i 10) 1) }}
                 <tr>
-                    <td></td>
+                    <td class="track-color {{ $c }}"></td>
                     <td><a href="{{ $url | relURL }}">{{ .title }}</a></td>
                     <td>{{ range $i, $p := .persons }}{{ if gt $i 0 }}, {{ end }}{{ $p.name }}{{ end }}</td>
                     <td>{{ .start }}</td>
