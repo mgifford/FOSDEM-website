@@ -82,9 +82,16 @@
             </tr>
         </thead>
         <tbody>
+            {{ range .Site.Data.keynotes }}
             <tr>
-                <td>TODO</td>
+                {{ $url := printf "schedule/event/%s/" .slug }}
+                <td><a href="{{ $url | relURL }}">{{ .title }}</a></td>
+                <td>{{ range .persons }}{{ .name }}{{ end }}</td>
+                <td>{{ .day }}</td>
+                <td>{{ .start }}-{{ .end }}</td>
+                <td>{{ .room }}</td>
             </tr>
+            {{ end }}
         </tbody>
     </table>
 
@@ -106,9 +113,14 @@
             </tr>
         </thead>
         <tbody>
+            {{ range .Site.Data.maintracks }}
+            {{ $url := printf "schedule/track/%s/" .slug }}
             <tr>
+                <td><a href="{{ $url | relURL }}">{{ .name }}</a></td>
+                <td>TODO</td>
                 <td>TODO</td>
             </tr>
+            {{ end }}
         </tbody>
     </table>
 

@@ -110,7 +110,16 @@ type Track struct {
 }
 
 type Day struct {
+	Date  string             `json:"date"`
 	Rooms map[string][]Event `json:"rooms"`
+}
+
+var keynoteSlugs = map[string]bool{
+	"welcome-to-fosdem-2026":                                true,
+	"foss-in-times-of-war-scarcity-and-adversarial-ai":      true,
+	"free-as-in-burned-out-who-really-pays-for-open-source": true,
+	"open-source-security-in-spite-of-ai":                   true,
+	"closing-fosdem-2026":                                   true,
 }
 
 var (
@@ -135,6 +144,8 @@ func main() {
 	events()
 	devRooms()
 	tracks()
+	keynotes()
+	mainTracks()
 
 	f, err := os.OpenFile("data/schedule.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
 	if err != nil {
@@ -218,6 +229,56 @@ func devRooms() {
 		panic(err)
 	}
 	if err := json.NewEncoder(f).Encode(devrooms); err != nil {
+		panic(err)
+	}
+}
+
+func keynotes() {
+	type KeynoteEvent struct {
+		Event
+		Day string `json:"day"`
+	}
+
+	var keynoteEvents []KeynoteEvent
+	for _, day := range schedule.Conference.Days {
+		date, err := time.Parse("2006-01-02", day.Date)
+		if err != nil {
+			panic(err)
+		}
+		dayName := date.Weekday().String()
+		for _, events := range day.Rooms {
+			for _, event := range events {
+				if keynoteSlugs[string(event.Slug)] {
+					keynoteEvents = append(keynoteEvents, KeynoteEvent{
+						Event: event,
+						Day:   dayName,
+					})
+				}
+			}
+		}
+	}
+	f, err := os.OpenFile("data/keynotes.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.NewEncoder(f).Encode(keynoteEvents); err != nil {
+		panic(err)
+	}
+}
+
+func mainTracks() {
+	var mt []Track
+	for _, track := range schedule.Conference.Tracks {
+		switch track.Name {
+		case "Main Track", "Main Track (K-building)":
+			mt = append(mt, track)
+		}
+	}
+	f, err := os.OpenFile("data/maintracks.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.NewEncoder(f).Encode(mt); err != nil {
 		panic(err)
 	}
 }
