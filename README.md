@@ -28,10 +28,6 @@ schedule.json  ──>  go run main.go  ──>  data/*.json  ──>  Hugo temp
 it from [Pretalx](https://pretalx.fosdem.org/fosdem-2026/schedule/export/schedule.json)
 and place it in the project root. Note: you must be logged in, otherwise you will get a 404.
 
-```sh
-curl -o schedule.json https://pretalx.fosdem.org/fosdem-2026/schedule/export/schedule.json
-```
-
 `main.go` reads this file (via `//go:embed`) and writes the following to `data/`:
 
 | File              | Contents                                    |
@@ -42,7 +38,7 @@ curl -o schedule.json https://pretalx.fosdem.org/fosdem-2026/schedule/export/sch
 | `tracks.json`     | Map of track name to events                 |
 | `devrooms.json`   | Filtered list of devroom tracks             |
 
-`data/sponsors.json` is maintained by hand.
+`data/sponsors.json` is maintained **by hand**.
 
 All files under `data/` are gitignored.
 
