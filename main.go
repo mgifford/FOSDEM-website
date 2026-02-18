@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bytes"
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"time"
@@ -22,8 +22,8 @@ type Conference struct {
 	Days    []Day   `json:"days"`
 }
 
-// Slug, but without number prefix.
-// I.e. `261-janson -> janson`
+// Slug strips the numeric prefix from Pretalx slugs.
+// e.g. "261-janson" → "janson"
 type Slug string
 
 func (s *Slug) UnmarshalJSON(data []byte) error {
@@ -61,7 +61,7 @@ type Event struct {
 	Persons  []Person `json:"persons"`
 	Links    []Link   `json:"links"`
 
-	// NOTE: all fields below get calculated upon unmarshaling.
+	// Calculated from Start + Duration during unmarshaling.
 	End string `json:"end"`
 }
 
@@ -84,11 +84,9 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 	if _, err := fmt.Sscanf(e.Duration, "%02d:%02d", &hours, &minutes); err != nil {
 		return fmt.Errorf("invalid duration: %w", err)
 	}
-	duration := time.Duration(hours)*time.Hour + time.Duration(minutes)*time.Minute
-	endTime := startTime.Add(duration)
+	endTime := startTime.Add(time.Duration(hours)*time.Hour + time.Duration(minutes)*time.Minute)
 
 	e.End = endTime.Format("15:04")
-
 	return nil
 }
 
@@ -107,6 +105,7 @@ type Track struct {
 	Name  string `json:"name"`
 	Slug  Slug   `json:"slug"`
 	Color string `json:"color"`
+	Type  string `json:"type"`
 }
 
 type Day struct {
@@ -128,38 +127,53 @@ var (
 	schedule    Schedule
 )
 
-func init() {
-	s := struct {
+func main() {
+	if err := json.Unmarshal(rawSchedule, &struct {
 		*Schedule `json:"schedule"`
 	}{
 		Schedule: &schedule,
+	}); err != nil {
+		log.Fatal(err)
 	}
-	if err := json.NewDecoder(bytes.NewReader(rawSchedule)).Decode(&s); err != nil {
-		panic(err)
+
+	if err := run(); err != nil {
+		log.Fatal(err)
 	}
 }
 
-func main() {
-	speakers()
-	events()
-	devRooms()
-	tracks()
-	keynotes()
-	mainTracks()
+func run() error {
+	if err := writeJSON("data/schedule.json", schedule); err != nil {
+		return err
+	}
+	if err := writeEvents(); err != nil {
+		return err
+	}
+	if err := writeSpeakers(); err != nil {
+		return err
+	}
+	if err := writeTracks(); err != nil {
+		return err
+	}
+	if err := writeTracksByType("data/devrooms.json", "devroom"); err != nil {
+		return err
+	}
+	if err := writeTracksByType("data/maintracks.json", "maintrack"); err != nil {
+		return err
+	}
+	return writeKeynotes()
+}
 
-	f, err := os.OpenFile("data/schedule.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
+func writeJSON(path string, v any) error {
+	f, err := os.Create(path)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	if err := json.NewEncoder(f).Encode(schedule); err != nil {
-		panic(err)
-	}
+	defer f.Close()
+	return json.NewEncoder(f).Encode(v)
 }
 
-func events() {
-	var (
-		events = make(map[string][]Event)
-	)
+func writeEvents() error {
+	events := make(map[string][]Event)
 	for _, day := range schedule.Conference.Days {
 		for _, rooms := range day.Rooms {
 			for _, event := range rooms {
@@ -168,22 +182,16 @@ func events() {
 			}
 		}
 	}
-	f, err := os.OpenFile("data/events.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-	if err := json.NewEncoder(f).Encode(events); err != nil {
-		panic(err)
-	}
+	return writeJSON("data/events.json", events)
 }
 
-func speakers() {
+func writeSpeakers() error {
 	type Speaker struct {
 		Person
 		Events []Slug `json:"events"`
 	}
 
-	var speakers = make(map[string]Speaker)
+	speakers := make(map[string]Speaker)
 	for _, day := range schedule.Conference.Days {
 		for _, rooms := range day.Rooms {
 			for _, event := range rooms {
@@ -202,54 +210,36 @@ func speakers() {
 			}
 		}
 	}
-	f, err := os.OpenFile("data/speakers.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-	if err := json.NewEncoder(f).Encode(speakers); err != nil {
-		panic(err)
-	}
+	return writeJSON("data/speakers.json", speakers)
 }
 
-func devRooms() {
-	var (
-		devrooms []Track
-	)
+func writeTracksByType(path, trackType string) error {
+	var tracks []Track
 	for _, track := range schedule.Conference.Tracks {
-		switch track.Name {
-		case "Junior", "Main Track", "Main Track (K-building)",
-			"BOF/Unconference", "/dev/random", "Workshops", "Lightning talks":
-			// Would be nice if the tracks would be tagged somehow as a devroom.
-		default:
-			devrooms = append(devrooms, track)
+		if track.Type == trackType {
+			tracks = append(tracks, track)
 		}
 	}
-	f, err := os.OpenFile("data/devrooms.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-	if err := json.NewEncoder(f).Encode(devrooms); err != nil {
-		panic(err)
-	}
+	return writeJSON(path, tracks)
 }
 
-func keynotes() {
+func writeKeynotes() error {
 	type KeynoteEvent struct {
 		Event
 		Day string `json:"day"`
 	}
 
-	var keynoteEvents []KeynoteEvent
+	var keynotes []KeynoteEvent
 	for _, day := range schedule.Conference.Days {
 		date, err := time.Parse("2006-01-02", day.Date)
 		if err != nil {
-			panic(err)
+			return fmt.Errorf("invalid day date %q: %w", day.Date, err)
 		}
 		dayName := date.Weekday().String()
 		for _, events := range day.Rooms {
 			for _, event := range events {
 				if keynoteSlugs[string(event.Slug)] {
-					keynoteEvents = append(keynoteEvents, KeynoteEvent{
+					keynotes = append(keynotes, KeynoteEvent{
 						Event: event,
 						Day:   dayName,
 					})
@@ -257,49 +247,17 @@ func keynotes() {
 			}
 		}
 	}
-	f, err := os.OpenFile("data/keynotes.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-	if err := json.NewEncoder(f).Encode(keynoteEvents); err != nil {
-		panic(err)
-	}
+	return writeJSON("data/keynotes.json", keynotes)
 }
 
-func mainTracks() {
-	var mt []Track
-	for _, track := range schedule.Conference.Tracks {
-		switch track.Name {
-		case "Main Track", "Main Track (K-building)":
-			mt = append(mt, track)
-		}
-	}
-	f, err := os.OpenFile("data/maintracks.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-	if err := json.NewEncoder(f).Encode(mt); err != nil {
-		panic(err)
-	}
-}
-
-func tracks() {
-	var (
-		tracks = make(map[string][]Event)
-	)
+func writeTracks() error {
+	tracks := make(map[string][]Event)
 	for _, day := range schedule.Conference.Days {
 		for _, events := range day.Rooms {
 			for _, event := range events {
-				track := event.Track
-				tracks[track] = append(tracks[track], event)
+				tracks[event.Track] = append(tracks[event.Track], event)
 			}
 		}
 	}
-	f, err := os.OpenFile("data/tracks.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
-	if err := json.NewEncoder(f).Encode(tracks); err != nil {
-		panic(err)
-	}
+	return writeJSON("data/tracks.json", tracks)
 }

@@ -1,0 +1,34 @@
+baseURL: https://fosdem.org
+languageCode: en
+title: FOSDEM 2026
+disableKinds:
+  - taxonomy
+  - term
+
+pagination:
+  pagerSize: 5
+
+params:
+  Location: Brussels
+  DateFull: 31 January & 1 February 2026
+
+menu:
+  main:
+    - name: About
+      url: /about/
+      weight: 1
+    - name: News
+      url: /news/
+      weight: 2
+    - name: Schedule
+      url: /schedule/
+      weight: 3
+    - name: Stands
+      url: /stands/
+      weight: 4
+    - name: Volunteer
+      url: /volunteer/
+      weight: 5
+    - name: Practical
+      url: /practical/
+      weight: 6

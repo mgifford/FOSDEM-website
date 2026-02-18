@@ -25,7 +25,7 @@ schedule.json  ──>  go run main.go  ──>  data/*.json  ──>  Hugo temp
 ```
 
 `schedule.json` is the raw Pretalx schedule export (~5 MB). It is gitignored — download
-it from [Pretalx](https://pretalx.fosdem.org/fosdem-2026/schedule/export/schedule.json)
+it from [Pretalx](https://pretalx.fosdem.org/fosdem-2026/schedule/export/schedule_fosdem.json)
 and place it in the project root. Note: you must be logged in, otherwise you will get a 404.
 
 `main.go` reads this file (via `//go:embed`) and writes the following to `data/`:
