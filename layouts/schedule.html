@@ -24,8 +24,10 @@
             information about scheduled events. All times <b>CET (UTC+1)</b>.
         </p>
         <p>
+            {{ $tl := .Site.Data.tracklist }}
+            {{ $trackCount := add (add (len $tl.other) (len $tl.maintracks)) (len $tl.devrooms) }}
             FOSDEM is a rather busy conference. This edition features {{ len .Site.Data.speakers }} speakers, {{ len
-            .Site.Data.events }} events, and {{ len .Site.Data.schedule.conference.tracks }} tracks. We do our
+            .Site.Data.events }} events, and {{ $trackCount }} tracks. We do our
             best
             to provide you with as much information and
             navigation options about the schedule as we can.
@@ -83,14 +85,7 @@
         </thead>
         <tbody>
             {{ range .Site.Data.keynotes }}
-            <tr>
-                {{ $url := printf "schedule/event/%s/" .slug }}
-                <td><a href="{{ $url | relURL }}">{{ .title }}</a></td>
-                <td>{{ range .persons }}{{ .name }}{{ end }}</td>
-                <td>{{ .day }}</td>
-                <td>{{ .start }}-{{ .end }}</td>
-                <td>{{ .room }}</td>
-            </tr>
+                {{ template "keynote-row" . }}
             {{ end }}
         </tbody>
     </table>
@@ -114,12 +109,7 @@
         </thead>
         <tbody>
             {{ range .Site.Data.maintracks }}
-            {{ $url := printf "schedule/track/%s/" .slug }}
-            <tr>
-                <td><a href="{{ $url | relURL }}">{{ .name }}</a></td>
-                <td>TODO</td>
-                <td>TODO</td>
-            </tr>
+                {{ template "maintrack-row" . }}
             {{ end }}
         </tbody>
     </table>
@@ -141,22 +131,19 @@
     <div style="display: flex; gap: 1rem">
         <ul>
             {{ range first $perCol $devrooms }}
-            {{ $url := printf "schedule/track/%s/" .slug }}
-            <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+                {{ template "devroom-item" . }}
             {{ end }}
         </ul>
 
         <ul>
             {{ range first $perCol (after $perCol $devrooms) }}
-            {{ $url := printf "schedule/track/%s/" .slug }}
-            <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+                {{ template "devroom-item" . }}
             {{ end }}
         </ul>
 
         <ul>
             {{ range after (mul 2 $perCol) $devrooms }}
-            {{ $url := printf "schedule/track/%s/" .slug }}
-            <li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
+                {{ template "devroom-item" . }}
             {{ end }}
         </ul>
     </div>
@@ -245,4 +232,29 @@
     </ul>
 </div>
 
+{{ end }}
+
+{{ define "keynote-row" }}
+{{ $url := printf "schedule/event/%s/" .slug }}
+<tr>
+    <td><a href="{{ $url | relURL }}">{{ .title }}</a></td>
+    <td>{{ range .persons }}{{ .name }}{{ end }}</td>
+    <td>{{ .day }}</td>
+    <td>{{ .start }}-{{ .end }}</td>
+    <td>{{ .room }}</td>
+</tr>
+{{ end }}
+
+{{ define "maintrack-row" }}
+{{ $url := printf "schedule/track/%s/" .slug }}
+<tr>
+    <td><a href="{{ $url | relURL }}">{{ .name }}</a></td>
+    <td>{{ with .saturday }}{{ . }} ({{ $.rooms }}){{ end }}</td>
+    <td>{{ with .sunday }}{{ . }} ({{ $.rooms }}){{ end }}</td>
+</tr>
+{{ end }}
+
+{{ define "devroom-item" }}
+{{ $url := printf "schedule/track/%s/" .slug }}
+<li><a href="{{ $url | relURL }}">{{ .name }}</a></li>
 {{ end }}

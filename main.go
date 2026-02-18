@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strings"
 	"time"
 )
@@ -154,13 +155,19 @@ func run() error {
 	if err := writeTracks(); err != nil {
 		return err
 	}
+	if err := writeTrackList(); err != nil {
+		return err
+	}
 	if err := writeTracksByType("data/devrooms.json", "devroom"); err != nil {
 		return err
 	}
 	if err := writeTracksByType("data/maintracks.json", "maintrack"); err != nil {
 		return err
 	}
-	return writeKeynotes()
+	if err := writeKeynotes(); err != nil {
+		return err
+	}
+	return writeRoomInfo()
 }
 
 func writeJSON(path string, v any) error {
@@ -213,14 +220,127 @@ func writeSpeakers() error {
 	return writeJSON("data/speakers.json", speakers)
 }
 
-func writeTracksByType(path, trackType string) error {
-	var tracks []Track
-	for _, track := range schedule.Conference.Tracks {
-		if track.Type == trackType {
-			tracks = append(tracks, track)
+type TrackInfo struct {
+	Track
+	Rooms    string `json:"rooms"`
+	Saturday string `json:"saturday"`
+	Sunday   string `json:"sunday"`
+}
+
+func computeTrackInfo() []TrackInfo {
+	// Room name → description lookup.
+	roomDesc := make(map[string]string)
+	for _, r := range schedule.Conference.Rooms {
+		roomDesc[r.Name] = r.Description
+	}
+
+	type dayRange struct {
+		min, max time.Time
+	}
+
+	// Per-track: collect unique rooms and time ranges per weekday.
+	trackRooms := make(map[string][]string)    // track name → room descriptions (ordered)
+	trackSeen := make(map[string]map[string]bool) // track name → room names seen
+	trackDays := make(map[string]map[string]*dayRange) // track name → weekday → range
+
+	for _, day := range schedule.Conference.Days {
+		date, _ := time.Parse("2006-01-02", day.Date)
+		weekday := date.Weekday().String()
+		for _, events := range day.Rooms {
+			for _, event := range events {
+				name := event.Track
+
+				// Collect unique rooms in order.
+				if trackSeen[name] == nil {
+					trackSeen[name] = make(map[string]bool)
+				}
+				if !trackSeen[name][event.Room] {
+					trackSeen[name][event.Room] = true
+					if desc, ok := roomDesc[event.Room]; ok {
+						trackRooms[name] = append(trackRooms[name], desc)
+					}
+				}
+
+				// Track time ranges per day.
+				start, _ := time.Parse("15:04", event.Start)
+				end, _ := time.Parse("15:04", event.End)
+				if trackDays[name] == nil {
+					trackDays[name] = make(map[string]*dayRange)
+				}
+				if dr, ok := trackDays[name][weekday]; !ok {
+					trackDays[name][weekday] = &dayRange{min: start, max: end}
+				} else {
+					if start.Before(dr.min) {
+						dr.min = start
+					}
+					if end.After(dr.max) {
+						dr.max = end
+					}
+				}
+			}
 		}
 	}
-	return writeJSON(path, tracks)
+
+	formatRange := func(dr *dayRange) string {
+		if dr == nil {
+			return ""
+		}
+		return dr.min.Format("15:04") + " - " + dr.max.Format("15:04")
+	}
+
+	var infos []TrackInfo
+	for _, track := range schedule.Conference.Tracks {
+		if len(trackRooms[track.Name]) == 0 {
+			continue
+		}
+		infos = append(infos, TrackInfo{
+			Track:    track,
+			Rooms:    strings.Join(trackRooms[track.Name], ", "),
+			Saturday: formatRange(trackDays[track.Name]["Saturday"]),
+			Sunday:   formatRange(trackDays[track.Name]["Sunday"]),
+		})
+	}
+	return infos
+}
+
+func writeTrackList() error {
+	infos := computeTrackInfo()
+
+	type TrackList struct {
+		Other      []TrackInfo `json:"other"`
+		MainTracks []TrackInfo `json:"maintracks"`
+		DevRooms   []TrackInfo `json:"devrooms"`
+	}
+
+	var list TrackList
+	for _, info := range infos {
+		switch info.Type {
+		case "maintrack":
+			list.MainTracks = append(list.MainTracks, info)
+		case "devroom":
+			list.DevRooms = append(list.DevRooms, info)
+		default:
+			list.Other = append(list.Other, info)
+		}
+	}
+	slices.SortFunc(list.Other, func(a, b TrackInfo) int { return strings.Compare(a.Name, b.Name) })
+	slices.SortFunc(list.MainTracks, func(a, b TrackInfo) int { return strings.Compare(a.Name, b.Name) })
+	slices.SortFunc(list.DevRooms, func(a, b TrackInfo) int { return strings.Compare(a.Name, b.Name) })
+	return writeJSON("data/tracklist.json", list)
+}
+
+func writeTracksByType(path, trackType string) error {
+	infos := computeTrackInfo()
+	var filtered []TrackInfo
+	for _, info := range infos {
+		if info.Type == trackType {
+			filtered = append(filtered, info)
+		}
+	}
+	slices.SortFunc(filtered, func(a, b TrackInfo) int {
+		return strings.Compare(a.Name, b.Name)
+	})
+	return writeJSON(path, filtered)
 }
 
 func writeKeynotes() error {
@@ -260,4 +380,92 @@ func writeTracks() error {
 		}
 	}
 	return writeJSON("data/tracks.json", tracks)
+}
+
+func writeRoomInfo() error {
+	// Track name → slug lookup.
+	trackSlug := make(map[string]string)
+	for _, t := range schedule.Conference.Tracks {
+		trackSlug[t.Name] = string(t.Slug)
+	}
+
+	type dayRange struct{ min, max time.Time }
+	type dayInfo struct {
+		rng    dayRange
+		tracks []string // ordered unique track names
+		seen   map[string]bool
+	}
+	// room name → weekday → info
+	roomDays := make(map[string]map[string]*dayInfo)
+
+	for _, day := range schedule.Conference.Days {
+		date, _ := time.Parse("2006-01-02", day.Date)
+		weekday := date.Weekday().String()
+		for roomName, events := range day.Rooms {
+			for _, event := range events {
+				if roomDays[roomName] == nil {
+					roomDays[roomName] = make(map[string]*dayInfo)
+				}
+				start, _ := time.Parse("15:04", event.Start)
+				end, _ := time.Parse("15:04", event.End)
+				di, ok := roomDays[roomName][weekday]
+				if !ok {
+					di = &dayInfo{
+						rng:  dayRange{min: start, max: end},
+						seen: make(map[string]bool),
+					}
+					roomDays[roomName][weekday] = di
+				} else {
+					if start.Before(di.rng.min) {
+						di.rng.min = start
+					}
+					if end.After(di.rng.max) {
+						di.rng.max = end
+					}
+				}
+				if !di.seen[event.Track] {
+					di.seen[event.Track] = true
+					di.tracks = append(di.tracks, event.Track)
+				}
+			}
+		}
+	}
+
+	type RoomTrack struct {
+		Name string `json:"name"`
+		Slug string `json:"slug"`
+	}
+	type RoomDayInfo struct {
+		Time   string      `json:"time"`
+		Tracks []RoomTrack `json:"tracks"`
+	}
+	type RoomInfo struct {
+		Saturday *RoomDayInfo `json:"saturday,omitempty"`
+		Sunday   *RoomDayInfo `json:"sunday,omitempty"`
+	}
+
+	formatDayInfo := func(di *dayInfo) *RoomDayInfo {
+		if di == nil {
+			return nil
+		}
+		rdi := &RoomDayInfo{
+			Time: di.rng.min.Format("15:04") + "-" + di.rng.max.Format("15:04"),
+		}
+		for _, name := range di.tracks {
+			rdi.Tracks = append(rdi.Tracks, RoomTrack{
+				Name: name,
+				Slug: trackSlug[name],
+			})
+		}
+		return rdi
+	}
+
+	info := make(map[string]RoomInfo)
+	for name, days := range roomDays {
+		info[name] = RoomInfo{
+			Saturday: formatDayInfo(days["Saturday"]),
+			Sunday:   formatDayInfo(days["Sunday"]),
+		}
+	}
+	return writeJSON("data/roominfo.json", info)
 }

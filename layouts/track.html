@@ -5,9 +5,19 @@
 <div class="container">
     {{ partial "breadcrumbs.html" . }}
 
-    <h1>{{ .Title }}</h1>
-
-    <p>TODO</p>
+    {{ $events := index .Site.Data.tracks .Title }}
+    <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <h1>{{ .Title }}</h1>
+        {{ with index $events 0 }}
+            {{ $roomSlug := .room }}
+            {{ range $.Site.Data.schedule.conference.rooms }}
+                {{ if eq .name $roomSlug }}
+                    {{ $url := printf "schedule/room/%s/" .slug }}
+                    <span>Room: <a href="{{ $url | relURL }}">{{ .description }}</a></span>
+                {{ end }}
+            {{ end }}
+        {{ end }}
+    </div>
 
     <table data-pagefind-ignore="all">
         <thead>
@@ -20,18 +30,22 @@
         </thead>
         <tbody>
             {{ range $i, $e := index .Site.Data.tracks .Title }}
-                {{ $url := printf "schedule/event/%s/" .slug }}
-                {{ $c := printf "c%d" (add (mod $i 10) 1) }}
-                <tr>
-                    <td class="track-color {{ $c }}"></td>
-                    <td><a href="{{ $url | relURL }}">{{ .title }}</a></td>
-                    <td>{{ range $i, $p := .persons }}{{ if gt $i 0 }}, {{ end }}{{ $p.name }}{{ end }}</td>
-                    <td>{{ .start }}</td>
-                    <td>{{ .end }}</td>
-                </tr>
+                {{ template "event-row" dict "event" . "index" $i }}
             {{ end }}
         </tbody>
     </table>
 </div>
 
+{{ end }}
+
+{{ define "event-row" }}
+{{ $url := printf "schedule/event/%s/" .event.slug }}
+{{ $c := printf "c%d" (add (mod .index 10) 1) }}
+<tr>
+    <td class="track-color {{ $c }}"></td>
+    <td><a href="{{ $url | relURL }}">{{ .event.title }}</a></td>
+    <td>{{ range $i, $p := .event.persons }}{{ if gt $i 0 }}, {{ end }}{{ $p.name }}{{ end }}</td>
+    <td>{{ .event.start }}</td>
+    <td>{{ .event.end }}</td>
+</tr>
 {{ end }}

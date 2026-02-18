@@ -7,20 +7,40 @@
 
     <h1>{{ .Title }}</h1>
 
+    {{ $list := .Site.Data.tracklist }}
+
     <table>
         <thead>
             <tr>
                 <th>Track</th>
-                <th>Call For Papers</th>
                 <th>Rooms</th>
                 <th>Saturday (UTC+1)</th>
                 <th>Sunday (UTC+1)</th>
             </tr>
         </thead>
         <tbody>
-            <td>TODO</td>
+            {{ range $list.other }}
+                {{ template "track-row" . }}
+            {{ end }}
+            <tr><td colspan="4"><b>Main tracks</b></td></tr>
+            {{ range $list.maintracks }}
+                {{ template "track-row" . }}
+            {{ end }}
+            <tr><td colspan="4"><b>Developer rooms</b></td></tr>
+            {{ range $list.devrooms }}
+                {{ template "track-row" . }}
+            {{ end }}
         </tbody>
     </table>
 </div>
 
+{{ end }}
+
+{{ define "track-row" }}
+<tr>
+    <td><a href="{{ printf "schedule/track/%s/" .slug | relURL }}">{{ .name }}</a></td>
+    <td>{{ .rooms }}</td>
+    <td>{{ with .saturday }}{{ . }}{{ else }}-{{ end }}</td>
+    <td>{{ with .sunday }}{{ . }}{{ else }}-{{ end }}</td>
+</tr>
 {{ end }}
