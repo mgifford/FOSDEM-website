@@ -23,27 +23,6 @@
                     <li><a href="{{ `search/` | absURL }}">Search</a></li>
                 </ul>
             </nav>
-            <label class="dark-mode-toggle">
-                <input type="checkbox" id="darkModeCheckbox">
-                Dark Mode
-            </label>
-
-            <script>
-                const checkbox = document.getElementById('darkModeCheckbox');
-
-                const savedTheme = localStorage.getItem('theme');
-                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const theme = savedTheme || (prefersDark ? 'dark' : 'light');
-                document.documentElement.setAttribute('data-theme', theme);
-                checkbox.checked = theme === 'dark';
-
-                // Toggle dark mode.
-                checkbox.addEventListener('change', () => {
-                    const newTheme = checkbox.checked ? 'dark' : 'light';
-                    document.documentElement.setAttribute('data-theme', newTheme);
-                    localStorage.setItem('theme', newTheme);
-                });
-            </script>
         </div>
     </header>
 
@@ -82,8 +61,32 @@
                     </small>
                 </div>
             </div>
+
+            <br />
+
+            <label class="dark-mode-toggle">
+                <input type="checkbox" id="darkModeCheckbox">
+                Dark Mode
+            </label>
         </div>
     </footer>
+
+    <script>
+        const checkbox = document.getElementById('darkModeCheckbox');
+
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        checkbox.checked = theme === 'dark';
+
+        // Toggle dark mode.
+        checkbox.addEventListener('change', () => {
+            const newTheme = checkbox.checked ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
 </body>
 
 </html>
