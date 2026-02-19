@@ -95,6 +95,7 @@ type Person struct {
 	GUID      string `json:"guid"`
 	Name      string `json:"name"`
 	Biography string `json:"biography"`
+	Avatar    string `json:"avatar"`
 }
 
 type Link struct {

@@ -1,0 +1,23 @@
+{
+  "platinum": [
+    {"name": "Google", "url": "https://opensource.google/"},
+    {"name": "Red Hat", "url": "https://www.redhat.com/"}
+  ],
+  "sponsors": [
+    {"name": "Arm", "url": "https://www.arm.com/"},
+    {"name": "CNCF & OpenInfra", "url": "https://www.cncf.io/"},
+    {"name": "Codethink", "url": "https://www.codethink.co.uk/"},
+    {"name": "Colt", "url": "https://www.colt.net/"},
+    {"name": "Dstny", "url": "https://www.dstny.com/"},
+    {"name": "Eclipse Foundation", "url": "https://www.eclipse.org/"},
+    {"name": "Element", "url": "https://element.io/"},
+    {"name": "Grafana Labs", "url": "https://grafana.com/"},
+    {"name": "LMAX Group", "url": "https://www.lmax.com/"},
+    {"name": "Mozilla", "url": "https://www.mozilla.org/"},
+    {"name": "Percona", "url": "https://www.percona.com/"},
+    {"name": "SAP", "url": "https://www.sap.com/"},
+    {"name": "Université Libre de Bruxelles", "url": "https://www.ulb.be/"},
+    {"name": "UpCloud", "url": "https://upcloud.com/"},
+    {"name": "Zabbix", "url": "https://www.zabbix.com/"}
+  ]
+}

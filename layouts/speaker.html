@@ -9,7 +9,11 @@
 
     {{ $speaker := index .Site.Data.speakers .Slug }}
 
-    <div class="speaker-picture"></div>
+    <div class="speaker-picture">
+        {{ with $speaker.avatar }}
+        <img src="{{ . }}" alt="{{ $speaker.name }}">
+        {{ end }}
+    </div>
 
     <p>{{ $speaker.biography | safeHTML }}</p>
 

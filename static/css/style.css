@@ -441,6 +441,12 @@ footer img {
     margin: 0 1em .3em 0;
 }
 
+.speaker-picture img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
 td.track-color {
     width: 1em;
     padding: 0;

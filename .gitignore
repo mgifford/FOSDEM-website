@@ -1,4 +1,5 @@
 .hugo_build.lock
 data/*.json
+!data/sponsors.json
 public/
 schedule.json

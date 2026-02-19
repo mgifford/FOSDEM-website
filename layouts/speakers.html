@@ -1,0 +1,48 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container">
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+
+    {{/* Collect and sort speakers alphabetically by name. */}}
+    {{ $speakers := slice }}
+    {{ range $guid, $speaker := .Site.Data.speakers }}
+        {{ $letter := upper (substr $speaker.name 0 1) }}
+        {{ $speakers = $speakers | append (dict "guid" $guid "name" $speaker.name "letter" $letter) }}
+    {{ end }}
+    {{ $speakers = sort $speakers "name" }}
+
+    {{/* Group by first letter of name. */}}
+    {{ $grouped := dict }}
+    {{ range $speakers }}
+        {{ $existing := index $grouped .letter | default slice }}
+        {{ $grouped = merge $grouped (dict .letter ($existing | append .)) }}
+    {{ end }}
+
+    {{/* Sorted letter keys. */}}
+    {{ $letters := slice }}
+    {{ range $k, $_ := $grouped }}
+        {{ $letters = $letters | append $k }}
+    {{ end }}
+    {{ $letters = sort $letters }}
+
+    <p>
+        {{ range $letters }}
+            <a href="#{{ . }}">{{ . }}</a>
+        {{ end }}
+    </p>
+
+    {{ range $letter := $letters }}
+        <h2 id="{{ $letter }}">{{ $letter }}</h2>
+        <ul>
+            {{ range index $grouped $letter }}
+                <li><a href="{{ printf "schedule/speakers/%s/" .guid | relURL }}">{{ .name }}</a></li>
+            {{ end }}
+        </ul>
+    {{ end }}
+</div>
+
+{{ end }}
