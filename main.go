@@ -48,6 +48,32 @@ type Room struct {
 	GUID        string `json:"guid"`
 	Description string `json:"description"`
 	Capacity    uint   `json:"capacity"`
+	Building    string `json:"building"`
+}
+
+func (r *Room) UnmarshalJSON(data []byte) error {
+	type Alias Room
+	if err := json.Unmarshal(data, &struct {
+		*Alias
+	}{
+		Alias: (*Alias)(r),
+	}); err != nil {
+		return err
+	}
+	name := strings.ToLower(r.Name)
+	switch {
+	case strings.HasPrefix(name, "aw"):
+		r.Building = "AW"
+	case strings.HasPrefix(name, "j"):
+		r.Building = "J"
+	case strings.HasPrefix(name, "k"):
+		r.Building = "K"
+	case strings.HasPrefix(name, "h"):
+		r.Building = "H"
+	case strings.HasPrefix(name, "u"):
+		r.Building = "U"
+	}
+	return nil
 }
 
 type Event struct {

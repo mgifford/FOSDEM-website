@@ -1,5 +1,6 @@
 ---
 title: "About FOSDEM"
+layout: "page"
 ---
 
 ### FOSDEM is a two-day event organised by volunteers to promote the widespread use of free and open source software.

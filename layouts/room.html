@@ -5,9 +5,99 @@
 <div class="container">
     {{ partial "breadcrumbs.html" . }}
 
+    {{/* Find the room object */}}
+    {{ $room := dict }}
+    {{ range .Site.Data.schedule.conference.rooms }}
+        {{ if eq .slug $.Slug }}
+            {{ $room = . }}
+        {{ end }}
+    {{ end }}
+
     <h1>{{ .Title }}</h1>
 
-    <p>TODO</p>
+    {{ with $room.capacity }}
+        <p>Capacity: <b>{{ . }}</b></p>
+    {{ end }}
+
+    {{/* Schedule overview */}}
+    {{ $roomName := $room.name }}
+    {{ with index $.Site.Data.roominfo $roomName }}
+    <h2>Schedule</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Track</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ with .saturday }}
+            {{ $times := split .time "-" }}
+            <tr>
+                <td>Saturday</td>
+                <td>{{ index $times 0 }}</td>
+                <td>{{ index $times 1 }}</td>
+                <td>{{ range $i, $t := .tracks }}{{ if $i }}, {{ end }}<a href="{{ printf `schedule/track/%s/` $t.slug | relURL }}">{{ $t.name }}</a>{{ end }}</td>
+            </tr>
+            {{ end }}
+            {{ with .sunday }}
+            {{ $times := split .time "-" }}
+            <tr>
+                <td>Sunday</td>
+                <td>{{ index $times 0 }}</td>
+                <td>{{ index $times 1 }}</td>
+                <td>{{ range $i, $t := .tracks }}{{ if $i }}, {{ end }}<a href="{{ printf `schedule/track/%s/` $t.slug | relURL }}">{{ $t.name }}</a>{{ end }}</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
+    {{ end }}
+
+    {{/* Build track name → slug lookup */}}
+    {{ $trackSlugs := dict }}
+    {{ range .Site.Data.schedule.conference.tracks }}
+        {{ $trackSlugs = merge $trackSlugs (dict .name (printf "%s" .slug)) }}
+    {{ end }}
+
+    {{/* Events by day */}}
+    {{ range .Site.Data.schedule.conference.days }}
+        {{ $dayName := dateFormat "Monday" .date }}
+        {{ $events := index .rooms $roomName }}
+        {{ with $events }}
+        <h2>{{ $dayName }}</h2>
+        <table data-pagefind-ignore="all">
+            <thead>
+                <tr>
+                    <th colspan="2">Event</th>
+                    <th>Speakers</th>
+                    <th>Track</th>
+                    <th>Start (UTC+1)</th>
+                    <th>End (UTC+1)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range $i, $e := . }}
+                    {{ template "room-event-row" dict "event" . "index" $i "trackSlugs" $trackSlugs }}
+                {{ end }}
+            </tbody>
+        </table>
+        {{ end }}
+    {{ end }}
 </div>
 
+{{ end }}
+
+{{ define "room-event-row" }}
+{{ $url := printf "schedule/event/%s/" .event.slug }}
+{{ $c := printf "c%d" (add (mod .index 10) 1) }}
+<tr>
+    <td class="track-color {{ $c }}"></td>
+    <td><a href="{{ $url | relURL }}">{{ .event.title }}</a></td>
+    <td>{{ range $i, $p := .event.persons }}{{ if gt $i 0 }}, {{ end }}<a href="{{ printf "schedule/speakers/%s/" $p.guid | relURL }}">{{ $p.name }}</a>{{ end }}</td>
+    <td>{{ $trackSlug := index .trackSlugs .event.track }}<a href="{{ printf `schedule/track/%s/` $trackSlug | relURL }}">{{ .event.track }}</a></td>
+    <td>{{ .event.start }}</td>
+    <td>{{ .event.end }}</td>
+</tr>
 {{ end }}

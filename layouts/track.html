@@ -12,7 +12,7 @@
             {{ $roomSlug := .room }}
             {{ range $.Site.Data.schedule.conference.rooms }}
                 {{ if eq .name $roomSlug }}
-                    {{ $url := printf "schedule/room/%s/" .slug }}
+                    {{ $url := printf "schedule/room/%s/%s/" .building .slug }}
                     <span>Room: <a href="{{ $url | relURL }}">{{ .description }}</a></span>
                 {{ end }}
             {{ end }}

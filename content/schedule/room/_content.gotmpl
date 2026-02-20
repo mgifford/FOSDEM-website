@@ -1,7 +1,17 @@
+{{ $buildings := dict }}
 {{ range .Site.Data.schedule.conference.rooms }}
-    {{ $page := dict 
-        "kind" "page" 
-        "path" .slug
+    {{ if not (index $buildings .building) }}
+        {{ $buildings = merge $buildings (dict .building true) }}
+        {{ $section := dict
+            "kind" "section"
+            "path" .building
+            "title" .building
+        }}
+        {{ $.AddPage $section }}
+    {{ end }}
+    {{ $page := dict
+        "kind" "page"
+        "path" (printf "%s/%s" .building .slug)
         "title" .description
         "slug" .slug
         "layout" "room"

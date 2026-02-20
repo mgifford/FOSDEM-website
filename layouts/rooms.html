@@ -43,7 +43,7 @@
 {{ end }}
 
 {{ define "room-row" }}
-{{ $url := printf `schedule/room/%s` .room.slug }}
+{{ $url := printf `schedule/room/%s/%s` .room.building .room.slug }}
 <tr>
     <td></td>
     <td><a href="{{ $url | relURL }}">{{ .room.description }}</a></td>
