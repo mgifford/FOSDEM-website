@@ -108,7 +108,7 @@
             </tr>
         </thead>
         <tbody>
-            {{ range .Site.Data.maintracks }}
+            {{ range .Site.Data.tracklist.maintracks }}
                 {{ template "maintrack-row" . }}
             {{ end }}
         </tbody>
@@ -125,7 +125,7 @@
         Here is the list of the devrooms that are present at this edition of FOSDEM, in alphabetical order:
     </p>
 
-    {{ $devrooms := .Site.Data.devrooms }}
+    {{ $devrooms := .Site.Data.tracklist.devrooms }}
     {{ $cols := 3 }}
     {{ $perCol := math.Ceil (div (len $devrooms) $cols) }}
     <div style="display: flex; gap: 1rem">

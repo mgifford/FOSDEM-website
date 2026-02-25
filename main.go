@@ -185,12 +185,6 @@ func run() error {
 	if err := writeTrackList(); err != nil {
 		return err
 	}
-	if err := writeTracksByType("data/devrooms.json", "devroom"); err != nil {
-		return err
-	}
-	if err := writeTracksByType("data/maintracks.json", "maintrack"); err != nil {
-		return err
-	}
 	if err := writeKeynotes(); err != nil {
 		return err
 	}
@@ -357,20 +351,6 @@ func writeTrackList() error {
 	slices.SortFunc(list.MainTracks, func(a, b TrackInfo) int { return strings.Compare(a.Name, b.Name) })
 	slices.SortFunc(list.DevRooms, func(a, b TrackInfo) int { return strings.Compare(a.Name, b.Name) })
 	return writeJSON("data/tracklist.json", list)
-}
-
-func writeTracksByType(path, trackType string) error {
-	infos := computeTrackInfo()
-	var filtered []TrackInfo
-	for _, info := range infos {
-		if info.Type == trackType {
-			filtered = append(filtered, info)
-		}
-	}
-	slices.SortFunc(filtered, func(a, b TrackInfo) int {
-		return strings.Compare(a.Name, b.Name)
-	})
-	return writeJSON(path, filtered)
 }
 
 func writeKeynotes() error {

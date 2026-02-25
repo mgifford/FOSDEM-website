@@ -36,9 +36,10 @@ and place it in the project root. Note: you must be logged in, otherwise you wil
 | `events.json`     | Map of event slug to event(s)               |
 | `speakers.json`   | Map of speaker GUID to speaker + event list |
 | `tracks.json`     | Map of track name to events                 |
-| `devrooms.json`   | Filtered list of devroom tracks             |
+| `tracklist.json`  | Tracks grouped by type (main/devroom/other) |
 | `keynotes.json`   | Keynote events (curated by slug)            |
-| `maintracks.json` | Main track entries (Janson, K-building)     |
+| `roominfo.json`   | Per-room day/time ranges and track listings |
+| `roomtracks.json` | Room × time grid for schedule overview      |
 
 `data/sponsors.json` is maintained **by hand**.
 
