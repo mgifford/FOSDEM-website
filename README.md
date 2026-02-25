@@ -61,7 +61,7 @@ pagefind --site "public"
 
 ```sh
 go run main.go
-hugo server --baseURL=http://127.0.0.1/2026 -D
+hugo server --baseURL=http://127.0.0.1/2026 -D --disableFastRender
 ```
 
 Always test with a `baseURL` — the site will be deployed under a subpath, and all

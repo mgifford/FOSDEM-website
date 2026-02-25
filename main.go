@@ -194,7 +194,10 @@ func run() error {
 	if err := writeKeynotes(); err != nil {
 		return err
 	}
-	return writeRoomInfo()
+	if err := writeRoomInfo(); err != nil {
+		return err
+	}
+	return writeRoomTracks()
 }
 
 func writeJSON(path string, v any) error {
@@ -495,4 +498,196 @@ func writeRoomInfo() error {
 		}
 	}
 	return writeJSON("data/roominfo.json", info)
+}
+
+func writeRoomTracks() error {
+	// Track name → slug lookup.
+	trackSlug := make(map[string]string)
+	for _, t := range schedule.Conference.Tracks {
+		trackSlug[t.Name] = string(t.Slug)
+	}
+
+	// Per day, per room, per track: compute time range.
+	type timeRange struct{ min, max time.Time }
+	type dayRoomTracks = map[string]map[string]*timeRange // roomName → trackName → range
+
+	dayData := make(map[string]dayRoomTracks) // weekday → ...
+
+	for _, day := range schedule.Conference.Days {
+		date, _ := time.Parse("2006-01-02", day.Date)
+		weekday := date.Weekday().String()
+		if dayData[weekday] == nil {
+			dayData[weekday] = make(dayRoomTracks)
+		}
+		for roomName, events := range day.Rooms {
+			if dayData[weekday][roomName] == nil {
+				dayData[weekday][roomName] = make(map[string]*timeRange)
+			}
+			for _, event := range events {
+				start, _ := time.Parse("15:04", event.Start)
+				end, _ := time.Parse("15:04", event.End)
+				if tr, ok := dayData[weekday][roomName][event.Track]; !ok {
+					dayData[weekday][roomName][event.Track] = &timeRange{min: start, max: end}
+				} else {
+					if start.Before(tr.min) {
+						tr.min = start
+					}
+					if end.After(tr.max) {
+						tr.max = end
+					}
+				}
+			}
+		}
+	}
+
+	const firstHour = 9
+	const numHours = 10           // hours 9–18
+	const slotsPerHour = 12       // 5-minute slots
+	const numSlots = numHours * slotsPerHour // 120
+
+	// Convert a time to a slot index (0-based from 09:00).
+	toSlot := func(t time.Time) int {
+		return (t.Hour()-firstHour)*slotsPerHour + t.Minute()/5
+	}
+
+	type RoomCell struct {
+		Type      string `json:"type"`
+		Span      int    `json:"span"`
+		HourStart bool   `json:"hourStart,omitempty"`
+		Track     string `json:"track,omitempty"`
+		Slug      string `json:"slug,omitempty"`
+	}
+
+	// Split an empty range into chunks at hour boundaries.
+	emptyChunks := func(from, to int) []RoomCell {
+		var cells []RoomCell
+		for from < to {
+			nextHour := ((from/slotsPerHour) + 1) * slotsPerHour
+			if nextHour > to {
+				nextHour = to
+			}
+			cells = append(cells, RoomCell{
+				Type:      "empty",
+				Span:      nextHour - from,
+				HourStart: from%slotsPerHour == 0,
+			})
+			from = nextHour
+		}
+		return cells
+	}
+	type RoomTrackRow struct {
+		Name        string     `json:"name"`
+		Description string     `json:"description"`
+		Slug        string     `json:"slug"`
+		Building    string     `json:"building"`
+		Cells       []RoomCell `json:"cells"`
+	}
+	type BuildingGroup struct {
+		Name  string         `json:"name"`
+		Rooms []RoomTrackRow `json:"rooms"`
+	}
+	type DayGrid struct {
+		Buildings []BuildingGroup `json:"buildings"`
+	}
+	type RoomTracksData struct {
+		Hours    []int   `json:"hours"`
+		Saturday DayGrid `json:"saturday"`
+		Sunday   DayGrid `json:"sunday"`
+	}
+
+	buildDay := func(weekday string) DayGrid {
+		drt := dayData[weekday]
+		if drt == nil {
+			return DayGrid{}
+		}
+
+		var buildings []BuildingGroup
+
+		for _, room := range schedule.Conference.Rooms {
+			trackRanges, ok := drt[room.Name]
+			if !ok {
+				continue
+			}
+
+			// Start a new building group if needed.
+			if len(buildings) == 0 || buildings[len(buildings)-1].Name != room.Building {
+				buildings = append(buildings, BuildingGroup{Name: room.Building})
+			}
+
+			// Collect and sort track blocks by start time.
+			type trackEntry struct {
+				name string
+				tr   *timeRange
+			}
+			var entries []trackEntry
+			for name, tr := range trackRanges {
+				entries = append(entries, trackEntry{name, tr})
+			}
+			slices.SortFunc(entries, func(a, b trackEntry) int {
+				return a.tr.min.Compare(b.tr.min)
+			})
+
+			// Convert blocks to cells with gap-filling.
+			var cells []RoomCell
+			slot := 0
+			for _, e := range entries {
+				startSlot := toSlot(e.tr.min)
+				endSlot := toSlot(e.tr.max)
+				if startSlot < 0 {
+					startSlot = 0
+				}
+				if endSlot > numSlots {
+					endSlot = numSlots
+				}
+				span := endSlot - startSlot
+				if span <= 0 {
+					continue
+				}
+
+				// Insert empty cells for gap before this block.
+				if startSlot > slot {
+					cells = append(cells, emptyChunks(slot, startSlot)...)
+				}
+
+				cells = append(cells, RoomCell{
+					Type:      "track",
+					Span:      span,
+					HourStart: startSlot%slotsPerHour == 0,
+					Track:     e.name,
+					Slug:      trackSlug[e.name],
+				})
+				slot = startSlot + span
+			}
+			// Trailing empty cells.
+			if slot < numSlots {
+				cells = append(cells, emptyChunks(slot, numSlots)...)
+			}
+
+			buildings[len(buildings)-1].Rooms = append(
+				buildings[len(buildings)-1].Rooms,
+				RoomTrackRow{
+					Name:        room.Name,
+					Description: room.Description,
+					Slug:        string(room.Slug),
+					Building:    room.Building,
+					Cells:       cells,
+				},
+			)
+		}
+
+		return DayGrid{Buildings: buildings}
+	}
+
+	hours := make([]int, numHours)
+	for i := range hours {
+		hours[i] = firstHour + i
+	}
+
+	data := RoomTracksData{
+		Hours:    hours,
+		Saturday: buildDay("Saturday"),
+		Sunday:   buildDay("Sunday"),
+	}
+
+	return writeJSON("data/roomtracks.json", data)
 }

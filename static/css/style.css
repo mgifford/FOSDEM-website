@@ -8,6 +8,17 @@
     --c-bg-footer: #efefef;
     --c-line-footer: #ccc;
     --c-link: #3479c4;
+
+    --c1: #69D2E7;
+    --c2: #A7DBD8;
+    --c3: #E0E4CC;
+    --c4: #F38630;
+    --c5: #FA6900;
+    --c6: #EA813D;
+    --c7: #E7A350;
+    --c8: #FCC777;
+    --c9: #C3DBB9;
+    --c10: #A79474;
 }
 
 /* Manual dark mode toggle */
@@ -21,6 +32,17 @@
     --c-bg-footer: #333;
     --c-line-footer: #555;
     --c-link: #69a1ff;
+
+    --c1: #3A8F9E;
+    --c2: #6A9E9B;
+    --c3: #9EA288;
+    --c4: #B5651E;
+    --c5: #B84E00;
+    --c6: #AF622E;
+    --c7: #AD7B3C;
+    --c8: #BF955A;
+    --c9: #7FA577;
+    --c10: #8A7558;
 }
 
 /* System preference */
@@ -35,6 +57,17 @@
         --c-bg-footer: #333;
         --c-line-footer: #555;
         --c-link: #69a1ff;
+
+        --c1: #3A8F9E;
+        --c2: #6A9E9B;
+        --c3: #9EA288;
+        --c4: #B5651E;
+        --c5: #B84E00;
+        --c6: #AF622E;
+        --c7: #AD7B3C;
+        --c8: #BF955A;
+        --c9: #7FA577;
+        --c10: #8A7558;
     }
 }
 
@@ -452,13 +485,61 @@ td.track-color {
     padding: 0;
 }
 
-.c1 { background-color: #69D2E7 }
-.c2 { background-color: #A7DBD8 }
-.c3 { background-color: #E0E4CC }
-.c4 { background-color: #F38630 }
-.c5 { background-color: #FA6900 }
-.c6 { background-color: #EA813D }
-.c7 { background-color: #E7A350 }
-.c8 { background-color: #FCC777 }
-.c9 { background-color: #C3DBB9 }
-.c10 { background-color: #A79474 }
+.c1 { background-color: var(--c1) }
+.c2 { background-color: var(--c2) }
+.c3 { background-color: var(--c3) }
+.c4 { background-color: var(--c4) }
+.c5 { background-color: var(--c5) }
+.c6 { background-color: var(--c6) }
+.c7 { background-color: var(--c7) }
+.c8 { background-color: var(--c8) }
+.c9 { background-color: var(--c9) }
+.c10 { background-color: var(--c10) }
+
+.roomtracks-grid {
+    table-layout: fixed;
+    font-size: 0.8em;
+    min-width: 700px;
+}
+
+.roomtracks-grid th,
+.roomtracks-grid td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.1em 0.2em;
+}
+
+.roomtracks-grid th.room-col {
+    width: 16%;
+}
+
+.roomtracks-grid td.room-col {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: left;
+}
+
+.roomtracks-grid .building-header td {
+    background-color: var(--c-bg-footer);
+    text-align: left;
+    padding: 0.3em 0.4em;
+}
+
+.roomtracks-grid td.track-block {
+    padding: 0;
+    overflow: hidden;
+}
+
+.roomtracks-grid td.track-block a {
+    display: block;
+    padding: 0.1em 0.2em;
+    color: var(--c-text);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.roomtracks-grid td.hour-start {
+    border-left: 1px dashed var(--c-line-footer);
+}

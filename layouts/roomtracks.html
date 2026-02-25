@@ -12,7 +12,63 @@
         in them, respectively, you may <a href="{{ `schedule/room/` | relURL }}">look at this page instead</a>.
     </p>
 
-    <p>TODO</p>
+    {{ $rt := .Site.Data.roomtracks }}
+    {{ $hours := $rt.hours }}
+    {{/* 1 room column + 120 slot columns (10 hours × 12 five-minute slots) */}}
+    {{ $totalCols := add (mul (len $hours) 12) 1 }}
+
+    {{ template "day-table" dict "day" "Saturday" "grid" $rt.saturday "hours" $hours "totalCols" $totalCols }}
+    {{ template "day-table" dict "day" "Sunday" "grid" $rt.sunday "hours" $hours "totalCols" $totalCols }}
 </div>
 
+{{ end }}
+
+{{ define "day-table" }}
+<h2>{{ .day }}</h2>
+<div style="overflow-x: auto">
+    <table class="roomtracks-grid" data-pagefind-ignore="all">
+        <thead>
+            <tr>
+                <th class="room-col">Room</th>
+                {{ range .hours }}
+                    <th colspan="12">{{ printf "%02d" (int .) }}</th>
+                {{ end }}
+            </tr>
+        </thead>
+        <tbody>
+            {{ $colorIdx := 0 }}
+            {{ range .grid.buildings }}
+                <tr class="building-header">
+                    <td colspan="{{ $.totalCols }}"><b>Building {{ .name }}</b></td>
+                </tr>
+                {{ range .rooms }}
+                    {{ template "room-row" dict "room" . "colorIdx" $colorIdx }}
+                    {{ $colorIdx = add $colorIdx 1 }}
+                {{ end }}
+            {{ end }}
+        </tbody>
+    </table>
+</div>
+{{ end }}
+
+{{ define "room-row" }}
+{{ $ci := .colorIdx }}
+<tr>
+    <td class="room-col">
+        <a href="{{ printf "schedule/room/%s/%s/" .room.building .room.slug | relURL }}">
+            {{ .room.description }}
+        </a>
+    </td>
+    {{ range .room.cells }}
+        {{ if eq .type "track" }}
+            {{ $c := printf "c%d" (add (mod $ci 10) 1) }}
+            <td colspan="{{ .span }}" class="track-block {{ $c }}{{ if .hourStart }} hour-start{{ end }}">
+                <a href="{{ printf "schedule/track/%s/" .slug | relURL }}">{{ .track }}</a>
+            </td>
+            {{ $ci = add $ci 1 }}
+        {{ else }}
+            <td colspan="{{ .span }}"{{ if .hourStart }} class="hour-start"{{ end }}></td>
+        {{ end }}
+    {{ end }}
+</tr>
 {{ end }}
