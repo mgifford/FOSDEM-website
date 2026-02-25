@@ -1,0 +1,75 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container" data-pagefind-ignore="all">
+    {{ partial "breadcrumbs.html" . }}
+
+    {{/* Collect sorted track names and count total events. */}}
+    {{ $trackNames := slice }}
+    {{ $totalEvents := 0 }}
+    {{ range $name, $events := .Site.Data.tracks }}
+        {{ $trackNames = $trackNames | append $name }}
+        {{ $totalEvents = add $totalEvents (len $events) }}
+    {{ end }}
+    {{ $trackNames = sort $trackNames }}
+
+    {{/* Build track slug lookup. */}}
+    {{ $trackSlugs := dict }}
+    {{ range .Site.Data.schedule.conference.tracks }}
+        {{ $trackSlugs = merge $trackSlugs (dict .name (printf "%s" .slug)) }}
+    {{ end }}
+
+    {{/* Build room lookup: name → room object. */}}
+    {{ $rooms := dict }}
+    {{ range .Site.Data.schedule.conference.rooms }}
+        {{ $rooms = merge $rooms (dict .name .) }}
+    {{ end }}
+
+    <h1>{{ $totalEvents }} {{ .Title }}</h1>
+
+    <p data-pagefind-ignore="all">
+        {{ range $i, $name := $trackNames }}
+            {{ if $i }} | {{ end }}
+            <a href="#{{ index $trackSlugs $name }}">{{ $name }}</a>
+        {{ end }}
+    </p>
+
+    {{ range $name := $trackNames }}
+        {{ $events := index $.Site.Data.tracks $name }}
+        {{ $slug := index $trackSlugs $name }}
+        <h2 id="{{ $slug }}"><a href="{{ printf "schedule/track/%s/" $slug | relURL }}">{{ $name }}</a> ({{ len $events }})</h2>
+
+        <table data-pagefind-ignore="all">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Speakers</th>
+                    <th>Room</th>
+                    <th>Day</th>
+                    <th>Start</th>
+                    <th>End</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range $events }}
+                    <tr>
+                        <td><a href="{{ printf "schedule/event/%s/" .slug | relURL }}">{{ .title }}</a></td>
+                        <td>{{ range $i, $p := .persons }}{{ if $i }}, {{ end }}<a href="{{ printf "schedule/speakers/%s/" $p.guid | relURL }}">{{ $p.name }}</a>{{ end }}</td>
+                        <td>
+                            {{ $room := index $rooms .room }}
+                            {{ with $room }}
+                                <a href="{{ printf "schedule/room/%s/%s/" .building .slug | relURL }}">{{ .description }}</a>
+                            {{ end }}
+                        </td>
+                        <td>{{ .day }}</td>
+                        <td>{{ .start }}</td>
+                        <td>{{ .end }}</td>
+                    </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    {{ end }}
+</div>
+
+{{ end }}

@@ -400,12 +400,22 @@ func writeKeynotes() error {
 	return writeJSON("data/keynotes.json", keynotes)
 }
 
+type TrackEvent struct {
+	Event
+	Day string `json:"day"`
+}
+
 func writeTracks() error {
-	tracks := make(map[string][]Event)
+	tracks := make(map[string][]TrackEvent)
 	for _, day := range schedule.Conference.Days {
+		date, _ := time.Parse("2006-01-02", day.Date)
+		dayName := date.Weekday().String()
 		for _, events := range day.Rooms {
 			for _, event := range events {
-				tracks[event.Track] = append(tracks[event.Track], event)
+				tracks[event.Track] = append(tracks[event.Track], TrackEvent{
+					Event: event,
+					Day:   dayName,
+				})
 			}
 		}
 	}

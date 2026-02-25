@@ -2,7 +2,7 @@
 
 {{ partial "bar.html" . }}
 
-<div class="container">
+<div class="container" data-pagefind-ignore="all">
     {{ partial "breadcrumbs.html" . }}
 
     <h1>{{ .Title }}</h1>
@@ -48,7 +48,7 @@
             and <a href="{{ `schedule/#bofs` | relURL }}">BOFs</a>.
         </p>
         <p>
-            For a complete (but crowded) overview, there is also a <a href="{{ `schedule/events/` | relURL }}">page that
+            For a complete (but crowded) overview, there is also a <a href="{{ `schedule/event/` | relURL }}">page that
                 lists all
                 events</a>.
             A <a href="{{ `schedule/speakers/` | relURL }}">list of all speakers</a> is available, too.
