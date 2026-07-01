@@ -1,0 +1,21 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container" data-pagefind-ignore="all">
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+
+    <p>
+        Full timetables per day, with every room as a column. All times are <b>CET (UTC+1)</b>.
+    </p>
+
+    <ul>
+        {{ range .Pages.ByTitle }}
+            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+        {{ end }}
+    </ul>
+</div>
+
+{{ end }}

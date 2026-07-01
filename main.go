@@ -191,7 +191,10 @@ func run() error {
 	if err := writeRoomInfo(); err != nil {
 		return err
 	}
-	return writeRoomTracks()
+	if err := writeRoomTracks(); err != nil {
+		return err
+	}
+	return writeDayGrid()
 }
 
 func writeJSON(path string, v any) error {
@@ -680,4 +683,161 @@ func writeRoomTracks() error {
 	}
 
 	return writeJSON("data/roomtracks.json", data)
+}
+
+// writeDayGrid produces the classic per-day timetable: rooms as columns, time
+// as rows in fixed 5-minute slots. Event cells span multiple rows (rowspan) for
+// their duration; cells covered by a rowspan above are precomputed as "covered"
+// so the template skips them. Colors cycle 1..10 in emit order (row by row, left
+// to right) so adjacent events differ, matching the original site.
+func writeDayGrid() error {
+	type DayCell struct {
+		Type    string `json:"type"`              // "event" | "empty" | "covered"
+		Rowspan int    `json:"rowspan,omitempty"` // rows this cell spans (event only)
+		Title   string `json:"title,omitempty"`
+		Slug    string `json:"slug,omitempty"`
+		Color   int    `json:"color,omitempty"`
+	}
+	type DayRow struct {
+		Slot  int       `json:"slot"`  // 5-min slot index from midnight
+		Time  string    `json:"time"`  // "09:30"
+		Anchor string   `json:"anchor"` // "0930"
+		Cells []DayCell `json:"cells"`
+	}
+	type DayColumn struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Slug        string `json:"slug"`
+		Building    string `json:"building"`
+	}
+	type DayGridDay struct {
+		Weekday string      `json:"weekday"`
+		Columns []DayColumn `json:"columns"`
+		Rows    []DayRow    `json:"rows"`
+	}
+
+	toSlot := func(t time.Time) int { return t.Hour()*12 + t.Minute()/5 }
+
+	buildDay := func(day Day) (DayGridDay, error) {
+		date, err := time.Parse("2006-01-02", day.Date)
+		if err != nil {
+			return DayGridDay{}, fmt.Errorf("invalid day date %q: %w", day.Date, err)
+		}
+		weekday := date.Weekday().String()
+
+		// Columns: conference room order, filtered to rooms active this day.
+		var columns []DayColumn
+		colIndex := make(map[string]int)
+		for _, r := range schedule.Conference.Rooms {
+			if evs, ok := day.Rooms[r.Name]; ok && len(evs) > 0 {
+				colIndex[r.Name] = len(columns)
+				columns = append(columns, DayColumn{
+					Name:        r.Name,
+					Description: r.Description,
+					Slug:        string(r.Slug),
+					Building:    r.Building,
+				})
+			}
+		}
+
+		// Placed event: which column, start/end slot, content.
+		type placed struct {
+			col        int
+			start, end int
+			cell       DayCell
+		}
+		var events []placed
+		minSlot, maxSlot := 1<<30, 0
+		for roomName, evs := range day.Rooms {
+			col, ok := colIndex[roomName]
+			if !ok {
+				continue
+			}
+			for _, e := range evs {
+				start, err := time.Parse("15:04", e.Start)
+				if err != nil {
+					return DayGridDay{}, fmt.Errorf("event %q bad start: %w", e.Slug, err)
+				}
+				end, err := time.Parse("15:04", e.End)
+				if err != nil {
+					return DayGridDay{}, fmt.Errorf("event %q bad end: %w", e.Slug, err)
+				}
+				s, en := toSlot(start), toSlot(end)
+				if en <= s {
+					continue
+				}
+				events = append(events, placed{
+					col:   col,
+					start: s,
+					end:   en,
+					cell: DayCell{
+						Type:  "event",
+						Title: e.Title,
+						Slug:  string(e.Slug),
+					},
+				})
+				if s < minSlot {
+					minSlot = s
+				}
+				if en > maxSlot {
+					maxSlot = en
+				}
+			}
+		}
+		if len(events) == 0 {
+			return DayGridDay{Weekday: weekday, Columns: columns}, nil
+		}
+
+		// Fixed 5-minute rows across the active range so row height stays
+		// proportional to duration, matching the classic timetable.
+		numRows := maxSlot - minSlot
+		rows := make([]DayRow, numRows)
+		for i := range rows {
+			t := minSlot + i
+			rows[i] = DayRow{
+				Slot:   t,
+				Time:   fmt.Sprintf("%02d:%02d", t/12, (t%12)*5),
+				Anchor: fmt.Sprintf("%02d%02d", t/12, (t%12)*5),
+				Cells:  make([]DayCell, len(columns)),
+			}
+			for c := range rows[i].Cells {
+				rows[i].Cells[c] = DayCell{Type: "empty"}
+			}
+		}
+
+		for _, p := range events {
+			startRow := p.start - minSlot
+			endRow := p.end - minSlot
+			cell := p.cell
+			cell.Rowspan = endRow - startRow
+			rows[startRow].Cells[p.col] = cell
+			for r := startRow + 1; r < endRow; r++ {
+				rows[r].Cells[p.col] = DayCell{Type: "covered"}
+			}
+		}
+
+		// Color events sequentially in emit order (row by row, left to right)
+		// so neighbours differ, cycling 1..10.
+		color := 0
+		for ri := range rows {
+			for ci := range rows[ri].Cells {
+				if rows[ri].Cells[ci].Type == "event" {
+					rows[ri].Cells[ci].Color = color%10 + 1
+					color++
+				}
+			}
+		}
+
+		return DayGridDay{Weekday: weekday, Columns: columns, Rows: rows}, nil
+	}
+
+	days := make(map[string]DayGridDay)
+	for _, day := range schedule.Conference.Days {
+		dg, err := buildDay(day)
+		if err != nil {
+			return err
+		}
+		days[strings.ToLower(dg.Weekday)] = dg
+	}
+	return writeJSON("data/daygrid.json", days)
 }

@@ -11,11 +11,9 @@
         <div style="float: right; padding-left: 1em">
             <h3>Quick links:</h3>
             <ul>
-                <li>Timetables: Saturday, Sunday</li>
-                <li>Overview of rooms per days</li>
-                <li> Mobile apps: many platforms</li>
-                <li>What's on now: Live streaming</li>
-                <li>Printable PDF: A4 A3</li>
+                <li>Timetables: <a href="{{ `schedule/day/saturday/` | relURL }}">Saturday</a>, <a href="{{ `schedule/day/sunday/` | relURL }}">Sunday</a></li>
+                <li><a href="{{ `schedule/roomtracks/` | relURL }}">Overview of rooms per days</a></li>
+                <li>What's on now: <a href="{{ `schedule/streaming/` | relURL }}">Live streaming</a></li>
             </ul>
         </div>
 

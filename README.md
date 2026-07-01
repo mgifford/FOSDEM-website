@@ -76,7 +76,7 @@ Deploys to Quint's private server for shareable previews:
 ```sh
 hugo build -b https://0x51.dev/fosdem -D
 pagefind --site "public"
-rsync -avz --delete public/ root@0x51.dev:/var/www/0x51.dev/html/fosdem/
+rsync -avz --delete public/ 0x51:/var/www/0x51.dev/html/fosdem/
 ```
 
 ## Project Structure

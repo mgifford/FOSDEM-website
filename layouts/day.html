@@ -1,0 +1,47 @@
+{{ define "main" }}
+
+{{ partial "bar.html" . }}
+
+<div class="container" data-pagefind-ignore="all">
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1>{{ .Title }}</h1>
+
+    {{ $day := index .Site.Data.daygrid .Params.daykey }}
+
+    <p>
+        Rooms are columns; time runs top to bottom. All times are <b>CET (UTC+1)</b>.
+        See also the <a href="{{ `schedule/roomtracks/` | relURL }}">room occupation overview</a>.
+    </p>
+
+    <div class="day-grid-scroll">
+        <table class="day-grid" data-pagefind-ignore="all">
+            <thead>
+                <tr>
+                    <th class="time-col">UTC+1</th>
+                    {{ range $day.columns }}
+                        <th><a href="{{ printf "schedule/room/%s/%s/" (lower .building) .slug | relURL }}" title="{{ .description }}">{{ .description }}</a></th>
+                    {{ end }}
+                </tr>
+            </thead>
+            <tbody>
+                {{ range $day.rows }}
+                    <tr>
+                        <th class="time-col" id="{{ .anchor }}">{{ .time }}</th>
+                        {{ range .cells }}
+                            {{ if eq .type "event" }}
+                                <td rowspan="{{ .rowspan }}" class="event c{{ .color }}{{ if lt .rowspan 3 }} tiny{{ end }}">
+                                    <a href="{{ printf "schedule/event/%s/" .slug | relURL }}" title="{{ .title }}">{{ .title }}</a>
+                                </td>
+                            {{ else if eq .type "empty" }}
+                                <td></td>
+                            {{ end }}
+                        {{ end }}
+                    </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{{ end }}

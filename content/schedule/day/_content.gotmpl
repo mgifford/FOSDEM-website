@@ -1,0 +1,11 @@
+{{ range $key, $day := .Site.Data.daygrid }}
+    {{ $page := dict
+        "kind" "page"
+        "path" $key
+        "title" $day.weekday
+        "slug" $key
+        "layout" "day"
+        "params" (dict "daykey" $key)
+    }}
+    {{ $.AddPage $page }}
+{{ end }}

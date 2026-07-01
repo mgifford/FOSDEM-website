@@ -543,3 +543,98 @@ td.track-color {
 .roomtracks-grid td.hour-start {
     border-left: 1px dashed var(--c-line-footer);
 }
+
+/* Bounded scroll container so the sticky header/time-column have something to
+   stick within; scrolls both axes and never exceeds the page width. */
+.day-grid-scroll {
+    overflow: auto;
+    width: 100%;
+    max-width: 100%;
+    max-height: 85vh;
+}
+
+.day-grid {
+    /* separate (not collapse) so sticky cells keep their borders */
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    font-size: 0.8em;
+    min-width: 3400px;
+}
+
+/* Single-border grid via right/bottom borders only (border-spacing is 0). */
+.day-grid th,
+.day-grid td {
+    border-right: 1px solid var(--c-line-footer);
+    border-bottom: 1px solid var(--c-line-footer);
+    vertical-align: middle;
+    text-align: center;
+    padding: 0 0.2em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Uniform row height keeps the grid continuous; empty slots read as blanks
+   in the grid rather than floating gaps. */
+.day-grid tbody tr {
+    height: 1.4em;
+}
+
+/* Frozen top header row. */
+.day-grid thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--c-bg);
+    font-size: 0.85em;
+    border-top: 1px solid var(--c-line-footer);
+}
+
+/* Frozen left time column. */
+.day-grid th.time-col {
+    position: sticky;
+    left: 0;
+    white-space: nowrap;
+    text-align: right;
+    background-color: var(--c-bg);
+    font-weight: normal;
+    font-family: monospace;
+    border-left: 1px solid var(--c-line-footer);
+    width: 4.5em;
+}
+
+/* Left time column cells sit above scrolling event cells. */
+.day-grid tbody th.time-col {
+    z-index: 1;
+}
+
+/* Top-left corner: frozen in both axes, above everything. */
+.day-grid thead th.time-col {
+    z-index: 3;
+}
+
+.day-grid td.event {
+    padding: 0;
+    vertical-align: top;
+}
+
+/* Track color overrides the striped background. */
+.day-grid td.event.c1 { background-color: var(--c1) }
+.day-grid td.event.c2 { background-color: var(--c2) }
+.day-grid td.event.c3 { background-color: var(--c3) }
+.day-grid td.event.c4 { background-color: var(--c4) }
+.day-grid td.event.c5 { background-color: var(--c5) }
+.day-grid td.event.c6 { background-color: var(--c6) }
+.day-grid td.event.c7 { background-color: var(--c7) }
+.day-grid td.event.c8 { background-color: var(--c8) }
+.day-grid td.event.c9 { background-color: var(--c9) }
+.day-grid td.event.c10 { background-color: var(--c10) }
+
+.day-grid td.event a {
+    display: block;
+    height: 100%;
+    padding: 0.2em 0.3em;
+    color: var(--c-text);
+    text-align: left;
+    line-height: 1.15;
+}
