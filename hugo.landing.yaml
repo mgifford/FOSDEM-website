@@ -1,0 +1,78 @@
+# Landing site — "FOSDEM 2027 is coming" announcement page.
+#
+# This is a SEPARATE Hugo site sharing the repo with the main site. It has its
+# own content and layouts, so the in-progress site under content/ and layouts/
+# is never part of this build:
+#
+#     hugo build --config hugo.landing.yaml
+#
+# hugo.yaml, content/ and layouts/ are untouched by this. As a side effect this
+# site builds from a clean checkout: it needs no schedule.json and no data/*.json.
+
+baseURL: https://fosdem.org/2027/
+languageCode: en
+title: FOSDEM 2027
+# The live feed stamps items in Brussels local time (+0100/+0200). Without this
+# Hugo would resolve front matter dates as UTC and emit +0000.
+timeZone: Europe/Brussels
+
+contentDir: content-landing
+layoutDir: layouts-landing
+publishDir: public
+
+disableKinds:
+  - taxonomy
+  - term
+  - section # no /news/ index page — the feed links straight to the items
+
+# The live feed is served at /rss.xml — https://fosdem.org/rss.xml redirects to
+# the current edition's /<year>/rss.xml. Hugo's default base name is "index",
+# which would publish to /index.xml, a URL nobody is subscribed to. Override it.
+outputFormats:
+  RSS:
+    mediaType: application/rss+xml
+    baseName: rss
+
+outputs:
+  home:
+    - HTML
+    - RSS
+  page:
+    - HTML
+
+services:
+  rss:
+    limit: 10 # matches the item count of the 2026 feed
+
+params:
+  Location: Brussels
+  DateFull: "30 & 31 January 2027"
+  # The old templates derived the edition year from the build clock
+  # (now.Format "06"), which silently goes wrong once the year rolls over.
+  # Pin it instead.
+  Year: "2027"
+  YearShort: "27"
+
+  # Feed metadata, mirroring the live 2026 feed.
+  # NOTE: FeedHome is the site root, not the /<year>/ subpath — that is what the
+  # live feed puts in <channel><link>.
+  FeedHome: https://fosdem.org/
+  FeedDescription: FOSDEM 2027 News Feed
+
+  # Legal entity details, published because the payment provider requires them.
+  #
+  # name/IBAN/BIC are already public on fosdem.org/2026/support/donate/.
+  # address and enterpriseNumber are NOT published anywhere on fosdem.org — the
+  # values below come from third-party registry mirrors (staatsbladmonitor,
+  # companyweb, trendstop), not the official register.
+  #
+  # TODO(quint): verify address + enterpriseNumber against KBO Public Search
+  # before deploying: https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html
+  legal:
+    name: FOSDEM VZW
+    address: Guldendelle 9
+    postcode: "1930"
+    city: Zaventem
+    country: Belgium
+    enterpriseNumber: BE 0477.085.590
+    email: info@fosdem.org

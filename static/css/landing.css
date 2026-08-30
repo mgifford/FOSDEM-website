@@ -1,0 +1,100 @@
+main {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.landing {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    max-width: 920px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.landing-logo {
+    width: 100%;
+    height: clamp(140px, 32vw, 360px);
+    background-color: var(--c-main);
+    mask: url(../logo.svg) no-repeat center / contain;
+    margin-bottom: .5em;
+}
+
+.landing .logo-text {
+    font-size: clamp(3.25rem, 17vw, 11rem);
+    line-height: 1;
+}
+
+.landing-date {
+    font-family: "Signika", sans-serif;
+    font-weight: bold;
+    color: var(--c-main);
+    font-size: clamp(1.4rem, 6.4vw, 4.25rem);
+    line-height: 1.15;
+    margin: .35em 0 0;
+    text-wrap: balance;
+}
+
+.landing-location {
+    font-size: clamp(1rem, 3.4vw, 2rem);
+    margin: .4em 0 0;
+}
+
+.landing-footer {
+    margin-top: auto;
+    width: 100%;
+    max-width: 920px;
+    margin-inline: auto;
+    padding: 1.5rem 1rem 2rem;
+    box-sizing: border-box;
+    border-top: 1px solid var(--c-line-footer);
+    text-align: center;
+    background: none;
+    color: inherit;
+}
+
+.landing-legal {
+    font-family: "DejaVu Sans", sans-serif;
+    font-style: normal;
+    font-size: .75rem;
+    line-height: 1.6;
+    color: var(--c-footer);
+    text-wrap: balance;
+}
+
+.landing-legal .sep {
+    opacity: .5;
+    padding: 0 .15em;
+}
+
+.landing-article {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    line-height: 1.6;
+}
+
+.landing-article h1 {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    line-height: 1.2;
+}
+
+.landing-date-small {
+    color: var(--c-footer);
+    font-size: .9em;
+}
+
+@media (max-height: 480px) and (orientation: landscape) {
+    .landing-logo {
+        display: none;
+    }
+}
+

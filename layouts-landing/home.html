@@ -1,0 +1,26 @@
+{{ define "main" }}
+
+<div class="landing">
+    <div class="landing-logo"></div>
+
+    <h1 class="logo-text no-spacing">FOSDEM<span>'{{ .Site.Params.YearShort }}</span></h1>
+
+    <p class="landing-date">{{ .Site.Params.DateFull }}</p>
+    <p class="landing-location">{{ .Site.Params.Location }}, Belgium</p>
+</div>
+
+<footer class="landing-footer">
+    <address class="landing-legal">
+        {{- with .Site.Params.legal -}}
+        <strong>{{ .name }}</strong>
+        <span class="sep">·</span> {{ .address }}, {{ .postcode }} {{ .city }}, {{ .country }}
+        <span class="sep">·</span> {{ .enterpriseNumber }}
+        <span class="sep">·</span> <a href="mailto:{{ .email }}">{{ .email }}</a>
+        {{- end }}
+        {{- with .OutputFormats.Get "rss" }}
+        <span class="sep">·</span> <a href="{{ .Permalink }}">RSS</a>
+        {{- end }}
+    </address>
+</footer>
+
+{{ end }}

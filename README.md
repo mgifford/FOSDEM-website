@@ -79,6 +79,24 @@ pagefind --site "public"
 rsync -avz --delete public/ 0x51:/var/www/0x51.dev/html/fosdem/
 ```
 
+## Landing Site
+
+`hugo.landing.yaml` is a separate site in this repo — one page announcing the next
+edition, plus the news feed. Own `contentDir`/`layoutDir`, so `hugo.yaml`, `content/`
+and `layouts/` are not involved and no `schedule.json` is needed.
+
+```sh
+hugo server --config hugo.landing.yaml --baseURL=http://127.0.0.1/2027 --disableFastRender
+hugo build  --config hugo.landing.yaml -b https://fosdem.org/2027/
+```
+
+The feed is published at `/rss.xml`, not Hugo's default `/index.xml` — that is the URL
+subscribers use (`fosdem.org/rss.xml` redirects to the current edition). News items get
+real pages so `<link>`/`<guid>` resolve; there is no `/news/` index.
+
+> The `/rss.xml` → `/<year>/rss.xml` redirect is server-side, not in this repo. It must be
+> repointed to `/2027/` or subscribers keep getting the 2026 feed.
+
 ## Project Structure
 
 ```
