@@ -73,12 +73,16 @@
 
 @font-face {
     font-family: "DejaVu Sans";
-    src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.ttf);
+    src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.woff2) format("woff2"),
+         url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.ttf) format("truetype");
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Signika";
-    src: url(fonts/Signika/Signika-VariableFont_GRAD,wght.ttf);
+    src: url("fonts/Signika/Signika-VariableFont_GRAD,wght.woff2") format("woff2"),
+         url("fonts/Signika/Signika-VariableFont_GRAD,wght.ttf") format("truetype");
+    font-display: swap;
 }
 
 body {

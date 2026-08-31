@@ -1,0 +1,22 @@
+{{ define "main" }}
+
+<div class="landing-article">
+    <p><a href="{{ .Site.Home.RelPermalink }}">← FOSDEM {{ .Site.Params.Year }}</a></p>
+
+    <h1>{{ .Title }}</h1>
+
+    {{ with .Pages.ByDate.Reverse }}
+    <ul class="news-list">
+        {{ range . }}
+        <li>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <time class="landing-date-small" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+        </li>
+        {{ end }}
+    </ul>
+    {{ else }}
+    <p>No news yet.</p>
+    {{ end }}
+</div>
+
+{{ end }}

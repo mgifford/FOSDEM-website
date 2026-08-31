@@ -1,0 +1,12 @@
+{{- $img := "" -}}
+{{- with .Params.image -}}
+{{- $img = $.Resources.GetMatch . -}}
+{{- else -}}
+{{- range $.Resources.ByType "image" -}}
+{{- if not $img -}}{{- $img = . -}}{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- if and $img (or (ne $img.ResourceType "image") (eq $img.MediaType.SubType "svg")) -}}
+{{- $img = "" -}}
+{{- end -}}
+{{- return $img -}}

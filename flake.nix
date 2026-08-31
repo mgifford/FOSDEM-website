@@ -19,6 +19,7 @@
             pkgs.go
             pkgs.hugo
             pkgs.pagefind
+            pkgs.woff2
           ];
         };
       }

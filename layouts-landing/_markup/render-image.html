@@ -1,0 +1,50 @@
+{{- $src := .Destination -}}
+{{- $remote := or (strings.HasPrefix $src "http://") (strings.HasPrefix $src "https://") -}}
+
+{{- $img := "" -}}
+{{- if not $remote -}}
+{{- with .PageInner.Resources.GetMatch $src -}}{{- $img = . -}}{{- end -}}
+{{- if not $img -}}{{- with resources.Get $src -}}{{- $img = . -}}{{- end -}}{{- end -}}
+{{- if not $img -}}
+{{- errorf "render-image: no resource %q found for %s" $src .PageInner.File.Path -}}
+{{- end -}}
+{{- end -}}
+
+{{- $scalable := and $img (eq $img.ResourceType "image") (ne $img.MediaType.SubType "svg") -}}
+{{- $url := $src -}}
+{{- $attrs := "" -}}
+
+{{- if $scalable -}}
+{{- $display := 920 -}}
+{{- $max := 1840 -}}
+
+{{- $targets := slice -}}
+{{- range (slice 640 920 1400 1840) -}}
+{{- if lt . $img.Width -}}{{- $targets = $targets | append . -}}{{- end -}}
+{{- end -}}
+{{- if le $img.Width $max -}}{{- $targets = $targets | append $img.Width -}}{{- end -}}
+
+{{- $set := slice -}}
+{{- $base := $img -}}
+{{- range $targets -}}
+{{- $r := $img -}}
+{{- if ne . $img.Width -}}{{- $r = $img.Resize (printf "%dx" .) -}}{{- end -}}
+{{- $set = $set | append (printf "%s %dw" $r.RelPermalink $r.Width) -}}
+{{- if le $r.Width $display -}}{{- $base = $r -}}{{- end -}}
+{{- end -}}
+
+{{- $url = $base.RelPermalink -}}
+{{- $attrs = printf ` width="%d" height="%d" srcset="%s" sizes="(max-width: 952px) calc(100vw - 2rem), 920px"` $base.Width $base.Height (delimit $set ", ") -}}
+{{- else if and (not $remote) $img -}}
+{{- $url = $img.RelPermalink -}}
+{{- end -}}
+
+{{- $tag := printf `<img src="%s" alt="%s"%s loading="lazy" decoding="async">` $url (.PlainText | htmlEscape) $attrs -}}
+
+{{- if and .IsBlock (ne .Title "") -}}
+<figure class="landing-figure">{{ $tag | safeHTML }}
+<figcaption>{{ .Title }}</figcaption>
+</figure>
+{{- else -}}
+{{- $tag | safeHTML -}}
+{{- end -}}

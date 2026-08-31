@@ -1,0 +1,12 @@
+{{ define "main" }}
+
+<div class="landing">
+    <div class="landing-logo"></div>
+
+    <h1 class="logo-text no-spacing">404</h1>
+
+    <p class="landing-date">Page not found</p>
+    <p class="landing-location"><a href="{{ .Site.Home.RelPermalink }}">FOSDEM {{ .Site.Params.Year }}</a></p>
+</div>
+
+{{ end }}

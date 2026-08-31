@@ -3,8 +3,10 @@
 {{- $limit := .Site.Config.Services.RSS.Limit -}}
 {{- if ge $limit 1 -}}{{- $pages = first $limit $pages -}}{{- end -}}
 {{- $rfc822 := "Mon, 02 Jan 2006 15:04:05 -0700" -}}
+{{- $u := urls.Parse .Site.BaseURL -}}
+{{- $origin := printf "%s://%s" $u.Scheme $u.Host -}}
 {{- printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" | safeHTML }}
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <link>{{ .Site.Params.FeedHome }}</link>
     <atom:link href="{{ with .OutputFormats.Get "rss" }}{{ .Permalink }}{{ end }}" rel="self" type="application/rss+xml"/>
@@ -16,14 +18,26 @@
     {{- end }}
     <ttl>1800</ttl>
     {{- range $pages }}
+    {{- $id := .RelPermalink }}
+    {{- with .File }}{{ $id = printf "news/%s" .ContentBaseName }}{{ end }}
     <item>
       <title>{{ .Title }}</title>
-      <guid>{{ .Permalink }}</guid>
+      <guid isPermaLink="false">tag:fosdem.org,{{ .Date.Format "2006-01-02" }}:{{ $id }}</guid>
       <pubDate>{{ .Date.Format $rfc822 | safeHTML }}</pubDate>
       <link>{{ .Permalink }}</link>
-      <description>{{ .Content | transform.XMLEscape | safeHTML }}</description>
+      {{- with partial "featured-image.html" . }}
+      {{- $feed := . }}
+      {{- if gt .Width 1200 }}{{ $feed = .Resize "1200x" }}{{ end }}
+      <enclosure url="{{ $feed.Permalink }}" length="{{ len $feed.Content }}" type="{{ $feed.MediaType.Type }}"/>
+      <media:content url="{{ $feed.Permalink }}" medium="image" type="{{ $feed.MediaType.Type }}" width="{{ $feed.Width }}" height="{{ $feed.Height }}"/>
+      {{- with .Fit "400x400" }}
+      <media:thumbnail url="{{ .Permalink }}" width="{{ .Width }}" height="{{ .Height }}"/>
+      {{- end }}
+      {{- end }}
+      {{- $body := replaceRE `(?i)(<(?:img|a)\b[^>]*\b(?:src|href))="(/[^"]*)"` (printf `${1}="%s${2}"` $origin) .Content }}
+      {{- $body = replaceRE ` srcset="[^"]*"| sizes="[^"]*"` "" $body }}
+      <description>{{ $body | transform.XMLEscape | safeHTML }}</description>
     </item>
     {{- end }}
   </channel>
 </rss>
-
