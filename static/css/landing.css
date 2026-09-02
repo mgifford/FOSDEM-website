@@ -119,6 +119,16 @@ main {
     padding: 0 .15em;
 }
 
+.landing-license {
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: .75rem;
+    line-height: 1.6;
+    color: var(--c-footer);
+    text-wrap: balance;
+    margin: .5em 0 0;
+    opacity: .8;
+}
+
 .theme-toggle {
     position: fixed;
     top: .75rem;
