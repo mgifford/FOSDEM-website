@@ -20,11 +20,11 @@ Without Nix, install these manually: Go 1.25+, Hugo 0.155+, and Pagefind 1.4+.
 The schedule data flows like this:
 
 ```
-schedule.json  ──>  go run main.go  ──>  data/*.json  ──>  Hugo templates
+schedule.json  -->  go run main.go  -->  data/*.json  -->  Hugo templates
 (Pretalx export)                         (derived data)
 ```
 
-`schedule.json` is the raw Pretalx schedule export (~5 MB). It is gitignored — download
+`schedule.json` is the raw Pretalx schedule export (~5 MB). It is gitignored. Download
 it from [Pretalx](https://pretalx.fosdem.org/fosdem-2026/schedule/export/schedule_fosdem.json)
 and place it in the project root. Note: you must be logged in, otherwise you will get a 404.
 
@@ -39,7 +39,7 @@ and place it in the project root. Note: you must be logged in, otherwise you wil
 | `tracklist.json`  | Tracks grouped by type (main/devroom/other) |
 | `keynotes.json`   | Keynote events (curated by slug)            |
 | `roominfo.json`   | Per-room day/time ranges and track listings |
-| `roomtracks.json` | Room × time grid for schedule overview      |
+| `roomtracks.json` | Room x time grid for schedule overview      |
 
 `data/sponsors.json` is maintained **by hand**.
 
@@ -65,7 +65,7 @@ go run main.go
 hugo server --baseURL=http://127.0.0.1/2026 -D --disableFastRender
 ```
 
-Always test with a `baseURL` — the site will be deployed under a subpath, and all
+Always test with a `baseURL`. The site will be deployed under a subpath, and all
 internal links use `relURL` (e.g. `{{ url | relURL }}`) to resolve paths correctly
 against it. Without a `baseURL`, broken links won't surface during development.
 
@@ -104,7 +104,7 @@ root.
 
 ## Landing Site
 
-`hugo.landing.yaml` is a separate site in this repo — one page announcing the next
+`hugo.landing.yaml` is a separate site in this repo: one page announcing the next
 edition, plus the news feed. Own `contentDir`/`layoutDir`, so `hugo.yaml`, `content/`
 and `layouts/` are not involved and no `schedule.json` is needed.
 
@@ -113,7 +113,7 @@ hugo server --config hugo.landing.yaml --baseURL=http://127.0.0.1/2027 --disable
 hugo build  --config hugo.landing.yaml -b https://fosdem.org/2027/
 ```
 
-The feed is published at `/rss.xml`, not Hugo's default `/index.xml` — that is the URL
+The feed is published at `/rss.xml`, not Hugo's default `/index.xml`. That is the URL
 subscribers use (`fosdem.org/rss.xml` redirects to the current edition). News items get
 real pages so `<link>`/`<guid>` resolve, and `/news/` lists them, linked from the footer
 and the homepage.
@@ -147,7 +147,7 @@ directory and overridable with `image:` in front matter.
 > changing a `slug` is free. Renaming the directory re-issues the guid and subscribers see
 > the post again as new.
 
-> The `/rss.xml` → `/<year>/rss.xml` redirect is server-side, not in this repo. It must be
+> The `/rss.xml` -> `/<year>/rss.xml` redirect is server-side, not in this repo. It must be
 > repointed to `/2027/` or subscribers keep getting the 2026 feed.
 
 ## Project Structure
@@ -175,5 +175,5 @@ static/
 ```
 
 Pages under `content/schedule/` use Hugo content adapters (`_content.gotmpl`) to
-dynamically create pages from the data files — no individual Markdown file needed per
+dynamically create pages from the data files, so no individual Markdown file is needed per
 event/speaker/track/room.

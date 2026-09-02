@@ -20,7 +20,7 @@
         {{ $trackSlugs = merge $trackSlugs (dict .name (printf "%s" .slug)) }}
     {{ end }}
 
-    {{/* Build room lookup: name → room object. */}}
+    {{/* Build room lookup: name -> room object. */}}
     {{ $rooms := dict }}
     {{ range .Site.Data.schedule.conference.rooms }}
         {{ $rooms = merge $rooms (dict .name .) }}

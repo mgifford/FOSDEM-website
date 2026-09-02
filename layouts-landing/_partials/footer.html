@@ -2,15 +2,15 @@
     <address class="landing-legal">
         {{- with .Site.Params.legal -}}
         <strong>{{ .name }}</strong>
-        <span class="sep">·</span> {{ .address }}, {{ .postcode }} {{ .city }}, {{ .country }}
-        <span class="sep">·</span> {{ .enterpriseNumber }}
-        <span class="sep">·</span> <a href="mailto:{{ .email }}">{{ .email }}</a>
+        <span class="sep">&middot;</span> {{ .address }}, {{ .postcode }} {{ .city }}, {{ .country }}
+        <span class="sep">&middot;</span> {{ .enterpriseNumber }}
+        <span class="sep">&middot;</span> <a href="mailto:{{ .email }}">{{ .email }}</a>
         {{- end }}
         {{- with .Site.GetPage "/news" }}
-        <span class="sep">·</span> <a href="{{ .RelPermalink }}">News</a>
+        <span class="sep">&middot;</span> <a href="{{ .RelPermalink }}">News</a>
         {{- end }}
         {{- with .Site.Home.OutputFormats.Get "rss" }}
-        <span class="sep">·</span> <a href="{{ .RelPermalink }}">RSS</a>
+        <span class="sep">&middot;</span> <a href="{{ .RelPermalink }}">RSS</a>
         {{- end }}
     </address>
 

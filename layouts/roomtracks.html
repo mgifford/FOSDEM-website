@@ -14,7 +14,7 @@
 
     {{ $rt := .Site.Data.roomtracks }}
     {{ $hours := $rt.hours }}
-    {{/* 1 room column + 120 slot columns (10 hours × 12 five-minute slots) */}}
+    {{/* 1 room column + 120 slot columns (10 hours x 12 five-minute slots) */}}
     {{ $totalCols := add (mul (len $hours) 12) 1 }}
 
     {{ template "day-table" dict "day" "Saturday" "grid" $rt.saturday "hours" $hours "totalCols" $totalCols }}

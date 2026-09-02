@@ -23,7 +23,7 @@ type Conference struct {
 }
 
 // Slug strips the numeric prefix from Pretalx slugs.
-// e.g. "261-janson" → "janson"
+// e.g. "261-janson" -> "janson"
 type Slug string
 
 func (s *Slug) UnmarshalJSON(data []byte) error {
@@ -265,7 +265,7 @@ type TrackInfo struct {
 }
 
 func computeTrackInfo() []TrackInfo {
-	// Room name → description lookup.
+	// Room name -> description lookup.
 	roomDesc := make(map[string]string)
 	for _, r := range schedule.Conference.Rooms {
 		roomDesc[r.Name] = r.Description
@@ -276,9 +276,9 @@ func computeTrackInfo() []TrackInfo {
 	}
 
 	// Per-track: collect unique rooms and time ranges per weekday.
-	trackRooms := make(map[string][]string)            // track name → room descriptions (ordered)
-	trackSeen := make(map[string]map[string]bool)      // track name → room names seen
-	trackDays := make(map[string]map[string]*dayRange) // track name → weekday → range
+	trackRooms := make(map[string][]string)            // track name -> room descriptions (ordered)
+	trackSeen := make(map[string]map[string]bool)      // track name -> room names seen
+	trackDays := make(map[string]map[string]*dayRange) // track name -> weekday -> range
 
 	for _, day := range schedule.Conference.Days {
 		date, _ := time.Parse("2006-01-02", day.Date)
@@ -420,7 +420,7 @@ func writeTracks() error {
 }
 
 func writeRoomInfo() error {
-	// Track name → slug lookup.
+	// Track name -> slug lookup.
 	trackSlug := make(map[string]string)
 	for _, t := range schedule.Conference.Tracks {
 		trackSlug[t.Name] = string(t.Slug)
@@ -432,7 +432,7 @@ func writeRoomInfo() error {
 		tracks []string // ordered unique track names
 		seen   map[string]bool
 	}
-	// room name → weekday → info
+	// room name -> weekday -> info
 	roomDays := make(map[string]map[string]*dayInfo)
 
 	for _, day := range schedule.Conference.Days {
@@ -508,7 +508,7 @@ func writeRoomInfo() error {
 }
 
 func writeRoomTracks() error {
-	// Track name → slug lookup.
+	// Track name -> slug lookup.
 	trackSlug := make(map[string]string)
 	for _, t := range schedule.Conference.Tracks {
 		trackSlug[t.Name] = string(t.Slug)
@@ -516,9 +516,9 @@ func writeRoomTracks() error {
 
 	// Per day, per room, per track: compute time range.
 	type timeRange struct{ min, max time.Time }
-	type dayRoomTracks = map[string]map[string]*timeRange // roomName → trackName → range
+	type dayRoomTracks = map[string]map[string]*timeRange // roomName -> trackName -> range
 
-	dayData := make(map[string]dayRoomTracks) // weekday → ...
+	dayData := make(map[string]dayRoomTracks) // weekday -> ...
 
 	for _, day := range schedule.Conference.Days {
 		date, _ := time.Parse("2006-01-02", day.Date)
@@ -548,7 +548,7 @@ func writeRoomTracks() error {
 	}
 
 	const firstHour = 9
-	const numHours = 10                      // hours 9–18
+	const numHours = 10                      // hours 9-18
 	const slotsPerHour = 12                  // 5-minute slots
 	const numSlots = numHours * slotsPerHour // 120
 

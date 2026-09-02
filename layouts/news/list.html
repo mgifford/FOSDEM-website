@@ -10,7 +10,7 @@
     {{ range $paginator.Pages }}
     <div>
       <p><a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        – {{ .Date.Format "Jan 2, 2006" }}</p>
+        &ndash; {{ .Date.Format "Jan 2, 2006" }}</p>
       {{ .Content }}
       <hr />
     </div>

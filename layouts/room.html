@@ -55,7 +55,7 @@
     </table>
     {{ end }}
 
-    {{/* Build track name → slug lookup */}}
+    {{/* Build track name -> slug lookup */}}
     {{ $trackSlugs := dict }}
     {{ range .Site.Data.schedule.conference.tracks }}
         {{ $trackSlugs = merge $trackSlugs (dict .name (printf "%s" .slug)) }}
