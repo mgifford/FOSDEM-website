@@ -4,3 +4,4 @@ data/*.json
 public/
 resources/
 schedule.json
+!testdata/schedule.json

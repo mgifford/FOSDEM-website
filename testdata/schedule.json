@@ -1,0 +1,133 @@
+{
+  "generator": {"name": "pretalx", "version": "2025.1.0"},
+  "schedule": {
+    "version": "fixture",
+    "conference": {
+      "acronym": "fosdem-2026",
+      "title": "FOSDEM 2026",
+      "start": "2026-01-31",
+      "end": "2026-02-01",
+      "daysCount": 2,
+      "timeslot_duration": "00:05",
+      "time_zone_name": "Europe/Brussels",
+      "rooms": [
+        {"name": "janson", "slug": "261-janson", "guid": "11111111-1111-4111-8111-111111111111", "description": "Janson", "capacity": 1415},
+        {"name": "k1105", "slug": "263-k1105", "guid": "22222222-2222-4222-8222-222222222222", "description": "K.1.105 (La Fontaine)", "capacity": 805},
+        {"name": "h1301", "slug": "270-h1301", "guid": "33333333-3333-4333-8333-333333333333", "description": "H.1301 (Cornil)", "capacity": 189}
+      ],
+      "tracks": [
+        {"name": "Keynotes", "slug": "fosdem-2026-1-keynotes", "color": "#f78d1e", "type": "maintrack"},
+        {"name": "Community and Ethics", "slug": "fosdem-2026-2-community-and-ethics", "color": "#4a90d9", "type": "maintrack"},
+        {"name": "Retrocomputing", "slug": "fosdem-2026-3-retrocomputing", "color": "#00add8", "type": "devroom"}
+      ],
+      "days": [
+        {
+          "date": "2026-01-31",
+          "rooms": {
+            "janson": [
+              {
+                "guid": "aaaaaaaa-0001-4000-8000-000000000001",
+                "slug": "fosdem-2026-101-welcome-to-fosdem-2026",
+                "title": "Welcome to FOSDEM 2026",
+                "abstract": "Doors open, coffee runs out, the wifi holds. Probably.",
+                "track": "Keynotes",
+                "room": "janson",
+                "start": "09:30",
+                "duration": "00:25",
+                "persons": [{"guid": "pppppppp-0001-4000-8000-000000000001", "name": "Alice", "biography": "Has opened more conferences than they have closed tabs.", "avatar": ""}],
+                "links": []
+              },
+              {
+                "guid": "aaaaaaaa-0002-4000-8000-000000000002",
+                "slug": "fosdem-2026-102-your-build-is-slow-and-it-is-your-fault",
+                "title": "Your build is slow and it is your fault",
+                "abstract": "Forty minutes of uncomfortable truths about caching, followed by a group apology to the CI runners.",
+                "track": "Keynotes",
+                "room": "janson",
+                "start": "10:00",
+                "duration": "00:50",
+                "persons": [{"guid": "pppppppp-0002-4000-8000-000000000002", "name": "Bob", "biography": "Once waited out a full rebuild rather than admit the typo.", "avatar": ""}],
+                "links": [{"title": "Slides", "url": "https://example.org/slides"}]
+              }
+            ],
+            "k1105": [
+              {
+                "guid": "aaaaaaaa-0003-4000-8000-000000000003",
+                "slug": "fosdem-2026-201-running-a-community-on-stroopwafels",
+                "title": "Running a community on stroopwafels",
+                "abstract": "Governance, burnout and snacks. Mostly snacks, if we are honest about what actually keeps a devroom running.",
+                "track": "Community and Ethics",
+                "room": "k1105",
+                "start": "11:00",
+                "duration": "00:40",
+                "persons": [{"guid": "pppppppp-0003-4000-8000-000000000003", "name": "Carol", "biography": "Maintains four projects and one very tired coffee machine.", "avatar": ""}],
+                "links": []
+              }
+            ],
+            "h1301": [
+              {
+                "guid": "aaaaaaaa-0004-4000-8000-000000000004",
+                "slug": "fosdem-2026-301-bootstrapping-a-distro-on-a-potato",
+                "title": "Bootstrapping a distro on a potato",
+                "abstract": "What happens when the build host is a single board computer taped to a bookshelf. Spoiler: it takes nine days.",
+                "track": "Retrocomputing",
+                "room": "h1301",
+                "start": "13:00",
+                "duration": "00:30",
+                "persons": [{"guid": "pppppppp-0001-4000-8000-000000000001", "name": "Alice", "biography": "Has opened more conferences than they have closed tabs.", "avatar": ""}],
+                "links": []
+              }
+            ]
+          }
+        },
+        {
+          "date": "2026-02-01",
+          "rooms": {
+            "janson": [
+              {
+                "guid": "aaaaaaaa-0005-4000-8000-000000000005",
+                "slug": "fosdem-2026-103-closing-fosdem-2026",
+                "title": "Closing FOSDEM 2026",
+                "abstract": "Thanks to the volunteers, the cleaners, and whoever found the missing HDMI adapter.",
+                "track": "Keynotes",
+                "room": "janson",
+                "start": "17:00",
+                "duration": "00:30",
+                "persons": [{"guid": "pppppppp-0002-4000-8000-000000000002", "name": "Bob", "biography": "Once waited out a full rebuild rather than admit the typo.", "avatar": ""}],
+                "links": []
+              }
+            ],
+            "k1105": [
+              {
+                "guid": "aaaaaaaa-0006-4000-8000-000000000006",
+                "slug": "fosdem-2026-202-the-licence-nobody-read",
+                "title": "The licence nobody read",
+                "abstract": "A field guide to the files sitting at the root of your repository, and what they actually oblige you to do.",
+                "track": "Community and Ethics",
+                "room": "k1105",
+                "start": "14:00",
+                "duration": "00:45",
+                "persons": [{"guid": "pppppppp-0003-4000-8000-000000000003", "name": "Carol", "biography": "Maintains four projects and one very tired coffee machine.", "avatar": ""}],
+                "links": []
+              }
+            ],
+            "h1301": [
+              {
+                "guid": "aaaaaaaa-0007-4000-8000-000000000007",
+                "slug": "fosdem-2026-302-my-yaml-has-feelings",
+                "title": "My YAML has feelings",
+                "abstract": "On indentation, the Norway problem, and why your config parser is quietly disagreeing with you.",
+                "track": "Retrocomputing",
+                "room": "h1301",
+                "start": "10:30",
+                "duration": "00:40",
+                "persons": [{"guid": "pppppppp-0004-4000-8000-000000000004", "name": "Dave", "biography": "Believes every problem is a whitespace problem, eventually.", "avatar": ""}],
+                "links": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

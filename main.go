@@ -156,7 +156,12 @@ const (
 var schedule Schedule
 
 func main() {
-	rawSchedule, err := os.ReadFile(scheduleFile)
+	path := scheduleFile
+	if len(os.Args) > 1 {
+		path = os.Args[1]
+	}
+
+	rawSchedule, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatalf("%v\n\nDownload the Pretalx export (login required) and place it in the project root:\n\n\t%s\n", err, scheduleURL)
 	}
@@ -344,7 +349,11 @@ func writeTrackList() error {
 		DevRooms   []TrackInfo `json:"devrooms"`
 	}
 
-	var list TrackList
+	list := TrackList{
+		Other:      make([]TrackInfo, 0),
+		MainTracks: make([]TrackInfo, 0),
+		DevRooms:   make([]TrackInfo, 0),
+	}
 	for _, info := range infos {
 		switch info.Type {
 		case "maintrack":

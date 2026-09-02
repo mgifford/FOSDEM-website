@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  NIX_CONFIG: "experimental-features = nix-command flakes"
+  NIXPKGS: github:nixos/nixpkgs/2fc6539b481e1d2569f25f8799236694180c0993
+
+jobs:
+  build:
+    runs-on: docker
+    container:
+      image: nixos/nix:2.35.2@sha256:7a007c766426c1877758ddc5cb87a965ac131fc78c582ce0083d922d51ae945c
+    steps:
+      - name: Checkout
+        env:
+          # Forgejo fills the github.* context itself; server_url is git.fosdem.org.
+          REPO: ${{ github.server_url }}/${{ github.repository }}.git
+          SHA: ${{ github.sha }}
+        run: |
+          nix shell $NIXPKGS#git -c sh -c '
+            git init -q .
+            git fetch -q --depth 1 "$REPO" "$SHA"
+            git checkout -q FETCH_HEAD
+          '
+
+      - name: Check formatting
+        run: |
+          unformatted=$(nix develop -c gofmt -l .)
+          test -z "$unformatted" || { echo "$unformatted"; exit 1; }
+
+      - name: Vet
+        run: nix develop -c go vet ./...
+
+      - name: Generate data from fixture
+        run: nix develop -c go run . testdata/schedule.json
+
+      - name: Build main site
+        run: nix develop -c hugo build
+
+      - name: Build landing site
+        run: nix develop -c hugo build --config hugo.landing.yaml
