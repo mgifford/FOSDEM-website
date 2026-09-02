@@ -9,4 +9,26 @@
     <p class="landing-location">{{ .Site.Params.Location }}, Belgium</p>
 </div>
 
+{{ $news := (where .Site.RegularPages "Section" "news").ByDate.Reverse }}
+{{ with $news }}
+<section class="landing-news">
+    <h2>Latest news</h2>
+
+    <ul class="news-list">
+        {{ range first 3 . }}
+        <li>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <time class="landing-date-small" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+        </li>
+        {{ end }}
+    </ul>
+
+    {{ if gt (len $news) 3 }}
+    {{ with $.Site.GetPage "/news" }}
+    <p class="landing-news-more"><a href="{{ .RelPermalink }}">All news</a></p>
+    {{ end }}
+    {{ end }}
+</section>
+{{ end }}
+
 {{ end }}

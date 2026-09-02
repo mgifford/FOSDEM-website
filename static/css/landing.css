@@ -370,6 +370,27 @@ main {
     text-align: left;
 }
 
+.landing-news {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 1rem 1rem 3rem;
+    box-sizing: border-box;
+}
+
+.landing-news h2 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--c-footer);
+    margin: 0;
+}
+
+.landing-news-more {
+    margin: 1em 0 0;
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: .85rem;
+}
+
 .news-list {
     list-style: none;
     padding: 0;
@@ -379,15 +400,21 @@ main {
 .news-list li {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 .75em;
+    gap: 0 1.5em;
     align-items: baseline;
     padding: .75em 0;
     border-bottom: 1px solid var(--c-line-footer);
+    font-family: "DejaVu Sans", sans-serif;
 }
 
 .news-list a {
     font-family: "Signika", sans-serif;
     font-size: 1.05em;
+}
+
+.news-list time {
+    margin-left: auto;
+    white-space: nowrap;
 }
 
 .landing-figure {

@@ -1,14 +1,3 @@
-# Landing site — "FOSDEM 2027 is coming" announcement page.
-#
-# This is a SEPARATE Hugo site sharing the repo with the main site. It has its
-# own content and layouts, so the in-progress site under content/ and layouts/
-# is never part of this build:
-#
-#     hugo build --config hugo.landing.yaml
-#
-# hugo.yaml, content/ and layouts/ are untouched by this. As a side effect this
-# site builds from a clean checkout: it needs no schedule.json and no data/*.json.
-
 baseURL: https://fosdem.org/2027/
 languageCode: en
 title: FOSDEM 2027
@@ -23,9 +12,6 @@ disableKinds:
   - taxonomy
   - term
 
-# The live feed is served at /rss.xml — https://fosdem.org/rss.xml redirects to
-# the current edition's /<year>/rss.xml. Hugo's default base name is "index",
-# which would publish to /index.xml, a URL nobody is subscribed to. Override it.
 markup:
   goldmark:
     parser:
@@ -49,7 +35,7 @@ outputs:
 
 services:
   rss:
-    limit: 10 # matches the item count of the 2026 feed
+    limit: 10
 
 params:
   Location: Brussels
@@ -60,7 +46,6 @@ params:
   FeedHome: https://fosdem.org/
   FeedDescription: FOSDEM 2027 News Feed
 
-  # Legal entity details, published because the payment provider requires them.
   legal:
     name: FOSDEM VZW
     address: Guldendelle 9

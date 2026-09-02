@@ -28,7 +28,7 @@ schedule.json  ──>  go run main.go  ──>  data/*.json  ──>  Hugo temp
 it from [Pretalx](https://pretalx.fosdem.org/fosdem-2026/schedule/export/schedule_fosdem.json)
 and place it in the project root. Note: you must be logged in, otherwise you will get a 404.
 
-`main.go` reads this file (via `//go:embed`) and writes the following to `data/`:
+`main.go` reads this file at startup and writes the following to `data/`:
 
 | File              | Contents                                    |
 |-------------------|---------------------------------------------|
@@ -69,15 +69,38 @@ Always test with a `baseURL` — the site will be deployed under a subpath, and 
 internal links use `relURL` (e.g. `{{ url | relURL }}`) to resolve paths correctly
 against it. Without a `baseURL`, broken links won't surface during development.
 
-## Deploy (Preview)
+## Deploy (Staging)
 
-Deploys to Quint's private server for shareable previews:
+Staging is served from `www-public0.fosdem.org` and authenticates with Kerberos, so get a
+ticket first. It prompts for a password and lasts a few hours:
 
 ```sh
-hugo build -b https://0x51.dev/fosdem -D
-pagefind --site "public"
-rsync -avz --delete public/ 0x51:/var/www/0x51.dev/html/fosdem/
+kinit {id}@FOSDEM.ORG
+klist                      # confirm a krbtgt/FOSDEM.ORG ticket exists
 ```
+
+`rsync` runs over `ssh`, which needs GSSAPI auth switched on. Either pass it per command
+or put it in `~/.ssh/config` once:
+
+```
+Host *.fosdem.org
+    GSSAPIAuthentication yes
+    PreferredAuthentications gssapi-with-mic,publickey,password
+```
+
+Then build with the staging `baseURL` and sync. The landing site sits under `/2027/`,
+mirroring production, so the `relURL` paths exercised on staging are the ones that ship.
+Drafts are included, since staging is where they get reviewed:
+
+```sh
+hugo build --config hugo.landing.yaml -b https://staging.fosdem.org/2027/ -D
+rsync -avz --delete public/ \
+    www-staging@www-public0.fosdem.org:/var/www/staging.fosdem.org/public/2027/
+```
+
+`--delete` is scoped to the `2027/` subdirectory, so it cleans up files removed since the
+last deploy without touching anything else in the docroot. Never point it at the docroot
+root.
 
 ## Landing Site
 
@@ -92,7 +115,37 @@ hugo build  --config hugo.landing.yaml -b https://fosdem.org/2027/
 
 The feed is published at `/rss.xml`, not Hugo's default `/index.xml` — that is the URL
 subscribers use (`fosdem.org/rss.xml` redirects to the current edition). News items get
-real pages so `<link>`/`<guid>` resolve; there is no `/news/` index.
+real pages so `<link>`/`<guid>` resolve, and `/news/` lists them, linked from the footer
+and the homepage.
+
+### News Posts
+
+Posts are page bundles, created with the directory form. Passing `index.md` on the end
+silently falls back to Hugo's built-in archetype and you lose the `slug`:
+
+```sh
+nix develop -c hugo new content --config hugo.landing.yaml \
+    --kind news news/2026-10-02-call-for-participation
+```
+
+The directory keeps the date so `content-landing/news/` stays chronological, while the
+generated `slug` drops it from the URL (`/2027/news/call-for-participation/`). Posts start
+`draft: true`; preview with `-D`.
+
+Images go beside `index.md` and are referenced by filename. A render hook resolves them as
+page resources and generates a `srcset` capped to the article width. A quoted title turns
+the image into a `<figure>` with that caption:
+
+```markdown
+![Alt text](campus.png "Optional caption")
+```
+
+The feed and `og:image` use a featured image, defaulting to the first image in the
+directory and overridable with `image:` in front matter.
+
+> Feed `<guid>`s are path-independent tag URIs derived from the **directory name**, so
+> changing a `slug` is free. Renaming the directory re-issues the guid and subscribers see
+> the post again as new.
 
 > The `/rss.xml` → `/<year>/rss.xml` redirect is server-side, not in this repo. It must be
 > repointed to `/2027/` or subscribers keep getting the 2026 feed.

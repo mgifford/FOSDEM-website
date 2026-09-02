@@ -1,7 +1,6 @@
 package main
 
 import (
-	_ "embed"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -149,13 +148,19 @@ var keynoteSlugs = map[string]bool{
 	"closing-fosdem-2026":                                   true,
 }
 
-var (
-	//go:embed schedule.json
-	rawSchedule []byte
-	schedule    Schedule
+const (
+	scheduleFile = "schedule.json"
+	scheduleURL  = "https://pretalx.fosdem.org/fosdem-2026/schedule/export/schedule_fosdem.json"
 )
 
+var schedule Schedule
+
 func main() {
+	rawSchedule, err := os.ReadFile(scheduleFile)
+	if err != nil {
+		log.Fatalf("%v\n\nDownload the Pretalx export (login required) and place it in the project root:\n\n\t%s\n", err, scheduleURL)
+	}
+
 	if err := json.Unmarshal(rawSchedule, &struct {
 		*Schedule `json:"schedule"`
 	}{
@@ -266,8 +271,8 @@ func computeTrackInfo() []TrackInfo {
 	}
 
 	// Per-track: collect unique rooms and time ranges per weekday.
-	trackRooms := make(map[string][]string)    // track name → room descriptions (ordered)
-	trackSeen := make(map[string]map[string]bool) // track name → room names seen
+	trackRooms := make(map[string][]string)            // track name → room descriptions (ordered)
+	trackSeen := make(map[string]map[string]bool)      // track name → room names seen
 	trackDays := make(map[string]map[string]*dayRange) // track name → weekday → range
 
 	for _, day := range schedule.Conference.Days {
@@ -534,8 +539,8 @@ func writeRoomTracks() error {
 	}
 
 	const firstHour = 9
-	const numHours = 10           // hours 9–18
-	const slotsPerHour = 12       // 5-minute slots
+	const numHours = 10                      // hours 9–18
+	const slotsPerHour = 12                  // 5-minute slots
 	const numSlots = numHours * slotsPerHour // 120
 
 	// Convert a time to a slot index (0-based from 09:00).
@@ -555,7 +560,7 @@ func writeRoomTracks() error {
 	emptyChunks := func(from, to int) []RoomCell {
 		var cells []RoomCell
 		for from < to {
-			nextHour := ((from/slotsPerHour) + 1) * slotsPerHour
+			nextHour := ((from / slotsPerHour) + 1) * slotsPerHour
 			if nextHour > to {
 				nextHour = to
 			}
@@ -699,10 +704,10 @@ func writeDayGrid() error {
 		Color   int    `json:"color,omitempty"`
 	}
 	type DayRow struct {
-		Slot  int       `json:"slot"`  // 5-min slot index from midnight
-		Time  string    `json:"time"`  // "09:30"
-		Anchor string   `json:"anchor"` // "0930"
-		Cells []DayCell `json:"cells"`
+		Slot   int       `json:"slot"`   // 5-min slot index from midnight
+		Time   string    `json:"time"`   // "09:30"
+		Anchor string    `json:"anchor"` // "0930"
+		Cells  []DayCell `json:"cells"`
 	}
 	type DayColumn struct {
 		Name        string `json:"name"`
