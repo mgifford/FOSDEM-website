@@ -1,0 +1,18 @@
+when:
+  - event: push
+    branch: main
+  - event: pull_request
+
+steps:
+  - name: build
+    image: nixos/nix:2.35.2@sha256:7a007c766426c1877758ddc5cb87a965ac131fc78c582ce0083d922d51ae945c
+    environment:
+      NIX_CONFIG: "experimental-features = nix-command flakes"
+    commands:
+      - unformatted=$(nix develop -c gofmt -l .)
+      - test -z "$unformatted" || { echo "$unformatted"; exit 1; }
+      - nix develop -c go vet ./...
+      - nix develop -c go run . testdata/schedule.json
+      - nix develop -c hugo build
+      - nix develop -c hugo build --config hugo.landing.yaml
+      - nix develop -c validate-ics public
