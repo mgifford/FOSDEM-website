@@ -143,6 +143,55 @@ the image into a `<figure>` with that caption:
 The feed and `og:image` use a featured image, defaulting to the first image in the
 directory and overridable with `image:` in front matter.
 
+The draft `2026-08-31-example-post-with-image` exercises every element a post can
+contain, callouts included. Preview it with `-D` rather than documenting it here.
+
+`/news/` renders posts in full, newest first, `pagination.pagerSize` per page.
+
+### Calendars
+
+The homepage emits `/2027/fosdem.ics` from the `DateStart`/`DateEnd` params. Keep those
+in sync with `DateFull`.
+
+A post ships its own calendar by listing dates and picking a calendar output:
+
+```yaml
+outputs:
+  - html
+  - calendar-cfp
+events:
+  - date: 2026-10-11
+    summary: "FOSDEM 2027: deadline for developer room proposals"
+```
+
+The filename comes from the output format, so another name means another format in
+`hugo.landing.yaml` (`calendar-cfp` writes `fosdem-cfp.ics`). No template needed:
+`page.ics` carries no format name, so it serves them all.
+
+All-day `VEVENT`s, no timezone. Each carries the post link as `URL` and in
+`DESCRIPTION`, since Google Calendar drops `URL` on import.
+
+> `UID`s derive from the post directory and the list position. Append to `events:`;
+> reordering re-issues them and subscribers see the entries again as new.
+
+Validation runs in CI after the landing build:
+
+```sh
+nix develop -c validate-ics public
+```
+
+### Standalone Pages
+
+Pages outside `news/` sit at the top of `content-landing/` with `url:` set to the path
+the main site uses, so links survive the switch to the full site:
+
+```yaml
+title: "Code of Conduct"
+url: /practical/conduct/
+```
+
+Dateless, so the layout omits the dateline. Link them from the footer.
+
 > Feed `<guid>`s are path-independent tag URIs derived from the **directory name**, so
 > changing a `slug` is free. Renaming the directory re-issues the guid and subscribers see
 > the post again as new.

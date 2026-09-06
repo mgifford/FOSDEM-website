@@ -1,4 +1,5 @@
 {{- $pages := where .Site.RegularPages "Section" "news" -}}
+{{- $pages = where $pages "Draft" false -}}
 {{- $pages = $pages.ByDate.Reverse -}}
 {{- $limit := .Site.Config.Services.RSS.Limit -}}
 {{- if ge $limit 1 -}}{{- $pages = first $limit $pages -}}{{- end -}}

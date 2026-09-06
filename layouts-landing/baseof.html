@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} &mdash; {{ .Site.Title }}{{ end }}</title>
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ partial "title.html" . }} &mdash; {{ .Site.Title }}{{ end }}</title>
     <link rel="icon" href="{{ `logo.svg` | relURL }}" sizes="any" type="image/svg+xml">
     <link rel="stylesheet" href="{{ `css/style.css` | relURL }}">
     <link rel="stylesheet" href="{{ `css/landing.css` | relURL }}">
@@ -13,7 +13,7 @@
     {{- end }}
 
     <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
-    <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+    <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ partial "title.html" . }}{{ end }}">
     <meta property="og:url" content="{{ .Permalink }}">
     {{ with partial "featured-image.html" . -}}
     {{ $og := . }}{{ if gt .Width 1200 }}{{ $og = .Resize "1200x" }}{{ end -}}

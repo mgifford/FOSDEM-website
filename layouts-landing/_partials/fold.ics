@@ -1,0 +1,13 @@
+{{- /* RFC 5545 3.1: content lines are folded at 75 octets, continuations start with a space. */ -}}
+{{- $line := . -}}
+{{- $length := len $line -}}
+{{- $out := $line -}}
+{{- if gt $length 75 -}}
+{{- $out = substr $line 0 75 -}}
+{{- $chunks := int (math.Ceil (div (sub $length 75) 74.0)) -}}
+{{- range $i := seq $chunks -}}
+{{- $start := add 75 (mul (sub $i 1) 74) -}}
+{{- $out = printf "%s\r\n %s" $out (substr $line $start (int (math.Min 74 (sub $length $start)))) -}}
+{{- end -}}
+{{- end -}}
+{{- return $out -}}

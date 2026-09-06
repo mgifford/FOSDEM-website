@@ -4,6 +4,14 @@ date: 2026-08-31
 slug: example-post-with-image
 image: solbosch-campus.png
 draft: true
+outputs:
+  - html
+  - calendar-dates
+events:
+  - date: 2027-01-30
+    summary: "FOSDEM 2027: first day"
+  - date: 2027-01-31
+    summary: "FOSDEM 2027: second day"
 ---
 
 This post is a draft, so it is excluded from `hugo build` and from the RSS feed.
@@ -49,6 +57,27 @@ Lists keep the body font:
 
 > A blockquote sits flush with the text column rather than taking the browser
 > default side margins.
+
+## Callouts
+
+An alert renders as a boxed callout. The type sets the class
+(`note`, `tip`, `important`, `warning`, `caution`) and the text after it sets
+the heading; without one the type is used as the heading. Put a TL;DR at the top
+of a long post:
+
+> [!NOTE] TL;DR
+> - Callouts take any Markdown inside them, including **bold** and
+>   [links](https://fosdem.org/).
+> - The heading after `[!NOTE]` is optional.
+
+> [!WARNING]
+> Without an explicit heading the alert type becomes the heading.
+
+## Calendars
+
+Dates listed under `events:` in front matter, together with a calendar output format,
+produce the `.ics` file and the widget at the end of this post. `calendar-dates` is the
+generic one; a post wanting its own filename gets its own format.
 
 Code blocks scroll horizontally instead of stretching the article:
 

@@ -17,7 +17,7 @@
     <ul class="news-list">
         {{ range first 3 . }}
         <li>
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <a href="{{ .RelPermalink }}">{{ partial "title.html" . }}</a>
             <time class="landing-date-small" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
         </li>
         {{ end }}

@@ -1,4 +1,6 @@
 :root {
+    --vh: 1vh;
+
     --c-code-bg: #f6f6f6;
     --c-code-text: #24292f;
     --c-code-comment: #6a737d;
@@ -8,6 +10,11 @@
     --c-code-name: #3479c4;
     --c-code-type: #6f42c1;
     --c-code-punct: #57606a;
+
+    --c-callout-note: #3479c4;
+    --c-callout-tip: #0a7a45;
+    --c-callout-warning: #b35900;
+    --c-callout-caution: #c62828;
 }
 
 [data-theme='dark'] {
@@ -20,6 +27,11 @@
     --c-code-name: #69a1ff;
     --c-code-type: #c8a2ff;
     --c-code-punct: #b0b6bd;
+
+    --c-callout-note: #69a1ff;
+    --c-callout-tip: #7ddc9a;
+    --c-callout-warning: #ffb86c;
+    --c-callout-caution: #ff8a80;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,6 +45,17 @@
         --c-code-name: #69a1ff;
         --c-code-type: #c8a2ff;
         --c-code-punct: #b0b6bd;
+
+        --c-callout-note: #69a1ff;
+        --c-callout-tip: #7ddc9a;
+        --c-callout-warning: #ffb86c;
+        --c-callout-caution: #ff8a80;
+    }
+}
+
+@supports (height: 1dvh) {
+    :root {
+        --vh: 1dvh;
     }
 }
 
@@ -59,21 +82,21 @@ main {
     max-width: 920px;
     width: 100%;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: clamp(1rem, calc(3 * var(--vh)), 2rem) 1rem;
     box-sizing: border-box;
     text-align: center;
 }
 
 .landing-logo {
     width: 100%;
-    height: clamp(140px, 32vw, 360px);
+    height: clamp(110px, min(32vw, calc(20 * var(--vh))), 360px);
     background-color: var(--c-main);
     mask: url(../logo.svg) no-repeat center / contain;
     margin-bottom: .5em;
 }
 
 .landing .logo-text {
-    font-size: clamp(3.25rem, 17vw, 11rem);
+    font-size: clamp(2.75rem, min(17vw, calc(10.5 * var(--vh))), 11rem);
     line-height: 1;
 }
 
@@ -81,14 +104,14 @@ main {
     font-family: "Signika", sans-serif;
     font-weight: bold;
     color: var(--c-main);
-    font-size: clamp(1.4rem, 6.4vw, 4.25rem);
+    font-size: clamp(1.3rem, min(6.4vw, calc(4.3 * var(--vh))), 4.25rem);
     line-height: 1.15;
     margin: .35em 0 0;
     text-wrap: balance;
 }
 
 .landing-location {
-    font-size: clamp(1rem, 3.4vw, 2rem);
+    font-size: clamp(.95rem, min(3.4vw, calc(2.3 * var(--vh))), 2rem);
     margin: .4em 0 0;
 }
 
@@ -166,9 +189,11 @@ main {
 }
 
 .landing-article {
+    width: 100%;
     max-width: 920px;
     margin: 0 auto;
     padding: 2rem 1rem 4rem;
+    box-sizing: border-box;
     line-height: 1.6;
 }
 
@@ -375,6 +400,50 @@ main {
     color: var(--c-footer);
 }
 
+.landing-article .callout {
+    padding: 1em 1.25em;
+    border-left-color: var(--c-callout, var(--c-main));
+    border-radius: 0 .3em .3em 0;
+    background: var(--c-code-bg);
+    color: inherit;
+}
+
+.landing-article .callout-note {
+    --c-callout: var(--c-callout-note);
+}
+
+.landing-article .callout-tip {
+    --c-callout: var(--c-callout-tip);
+}
+
+.landing-article .callout-warning {
+    --c-callout: var(--c-callout-warning);
+}
+
+.landing-article .callout-caution {
+    --c-callout: var(--c-callout-caution);
+}
+
+.landing-article .callout > :first-child {
+    margin-top: 0;
+}
+
+.landing-article .callout > :last-child {
+    margin-bottom: 0;
+}
+
+.landing-article .callout ul,
+.landing-article .callout ol {
+    margin: .5em 0;
+}
+
+.landing-article .callout-title {
+    font-family: "Signika", sans-serif;
+    font-weight: bold;
+    color: var(--c-callout, var(--c-main));
+    margin: 0 0 .5em;
+}
+
 .landing-article th {
     padding: .2em;
     text-align: left;
@@ -384,7 +453,7 @@ main {
     width: 100%;
     max-width: 920px;
     margin: 0 auto;
-    padding: 1rem 1rem 3rem;
+    padding: 1rem 1rem clamp(1.5rem, calc(4 * var(--vh)), 3rem);
     box-sizing: border-box;
 }
 
@@ -401,10 +470,100 @@ main {
     font-size: .85rem;
 }
 
+.news-post {
+    margin-top: 2.5rem;
+}
+
+.news-post + .news-post {
+    margin-top: 3.5rem;
+    padding-top: 3.5rem;
+    border-top: 1px solid var(--c-line-footer);
+}
+
+.landing-article .news-post-title {
+    margin-top: 0;
+    font-size: 1.6em;
+}
+
+.news-post-title a {
+    color: inherit;
+}
+
+.landing-article .news-post .landing-date-small {
+    margin: .3em 0 0;
+}
+
+.calendar-widget {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75em 1.25em;
+    margin: 2.5em 0 0;
+    padding: 1em 1.25em;
+    border: 1px solid var(--c-line-footer);
+    border-radius: .4em;
+    font-family: "DejaVu Sans", sans-serif;
+}
+
+.calendar-widget-icon {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--c-main);
+}
+
+.calendar-widget-text {
+    flex: 1 1 14em;
+    line-height: 1.4;
+}
+
+.calendar-widget-text strong {
+    display: block;
+    font-family: "Signika", sans-serif;
+}
+
+.calendar-widget-meta {
+    color: var(--c-footer);
+    font-size: .85em;
+}
+
+.calendar-widget-actions {
+    flex: none;
+    display: flex;
+    gap: 1em;
+    font-size: .9em;
+    white-space: nowrap;
+}
+
+.calendar-widget-actions a {
+    color: var(--c-main);
+    text-decoration: none;
+}
+
+.calendar-widget-actions a:hover {
+    text-decoration: underline;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1em;
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--c-line-footer);
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: .85rem;
+}
+
+.pagination-count {
+    color: var(--c-footer);
+}
+
 .news-list {
     list-style: none;
     padding: 0;
-    margin: 1.5em 0 0;
+    margin: clamp(.75em, calc(2 * var(--vh)), 1.5em) 0 0;
 }
 
 .news-list li {
@@ -412,7 +571,7 @@ main {
     flex-wrap: wrap;
     gap: 0 1.5em;
     align-items: baseline;
-    padding: .75em 0;
+    padding: clamp(.5em, calc(1.2 * var(--vh)), .75em) 0;
     border-bottom: 1px solid var(--c-line-footer);
     font-family: "DejaVu Sans", sans-serif;
 }

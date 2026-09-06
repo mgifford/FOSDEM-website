@@ -9,6 +9,9 @@
         {{- with .Site.GetPage "/news" }}
         <span class="sep">&middot;</span> <a href="{{ .RelPermalink }}">News</a>
         {{- end }}
+        {{- with .Site.GetPage "/conduct" }}
+        <span class="sep">&middot;</span> <a href="{{ .RelPermalink }}">Code of Conduct</a>
+        {{- end }}
         {{- with .Site.Home.OutputFormats.Get "rss" }}
         <span class="sep">&middot;</span> <a href="{{ .RelPermalink }}">RSS</a>
         {{- end }}

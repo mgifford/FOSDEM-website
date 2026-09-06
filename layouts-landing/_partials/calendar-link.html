@@ -1,0 +1,35 @@
+{{- range .OutputFormats -}}
+{{- if eq .MediaType.SubType "calendar" -}}
+{{- $format := . -}}
+{{- $webcal := replaceRE "^https?://" "webcal://" .Permalink -}}
+{{- with $.Params.events -}}
+{{- $events := sort . "date" -}}
+{{- $first := time.AsTime (index $events 0).date -}}
+{{- $last := time.AsTime (index $events (sub (len $events) 1)).date -}}
+<aside class="calendar-widget">
+    <svg class="calendar-widget-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="17" rx="2" />
+        <path d="M3 10h18M8 2v4M16 2v4" />
+    </svg>
+
+    <div class="calendar-widget-text">
+        <strong>Add these dates to your calendar</strong>
+        <span class="calendar-widget-meta">
+            {{ len $events }} dates,
+            {{ if eq ($first.Format "2006-01") ($last.Format "2006-01") -}}
+            {{ $first.Format "2 January 2006" }}
+            {{- else -}}
+            {{ $first.Format "2 January" }} to {{ $last.Format "2 January 2006" }}
+            {{- end }}
+        </span>
+    </div>
+
+    <span class="calendar-widget-actions">
+        <a href="{{ $webcal | safeURL }}">Subscribe</a>
+        <a href="{{ $format.RelPermalink }}" download>Download</a>
+    </span>
+</aside>
+{{- end -}}
+{{- end -}}
+{{- end -}}

@@ -44,3 +44,6 @@ jobs:
 
       - name: Build landing site
         run: nix develop -c hugo build --config hugo.landing.yaml
+
+      - name: Validate calendars
+        run: nix develop -c validate-ics public

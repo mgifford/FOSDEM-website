@@ -12,6 +12,9 @@ disableKinds:
   - taxonomy
   - term
 
+pagination:
+  pagerSize: 3
+
 markup:
   goldmark:
     parser:
@@ -23,11 +26,24 @@ outputFormats:
   RSS:
     mediaType: application/rss+xml
     baseName: rss
+  calendar-conference:
+    mediaType: text/calendar
+    baseName: fosdem
+    isPlainText: true
+  calendar-cfp:
+    mediaType: text/calendar
+    baseName: fosdem-cfp
+    isPlainText: true
+  calendar-dates:
+    mediaType: text/calendar
+    baseName: fosdem-dates
+    isPlainText: true
 
 outputs:
   home:
     - HTML
     - RSS
+    - calendar-conference
   section:
     - HTML
   page:
@@ -40,6 +56,8 @@ services:
 params:
   Location: Brussels
   DateFull: "30 & 31 January 2027"
+  DateStart: "2027-01-30"
+  DateEnd: "2027-01-31"
   Year: "2027"
   YearShort: "27"
 

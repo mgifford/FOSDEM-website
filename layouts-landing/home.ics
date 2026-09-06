@@ -1,0 +1,33 @@
+{{- $start := time.AsTime .Site.Params.DateStart -}}
+{{- $end := (time.AsTime .Site.Params.DateEnd).AddDate 0 0 1 -}}
+{{- $stamp := .Site.Lastmod.UTC.Format "20060102T150405Z" -}}
+{{- $lines := slice
+    "BEGIN:VCALENDAR"
+    "VERSION:2.0"
+    (printf "PRODID:-//FOSDEM//%s//EN" .Site.Title)
+    "CALSCALE:GREGORIAN"
+    "METHOD:PUBLISH"
+    (printf "NAME:%s" .Site.Title)
+    (printf "DESCRIPTION:Dates for %s." .Site.Title)
+    (printf "URL;VALUE=URI:%s" .Site.Home.Permalink)
+    (printf "SOURCE;VALUE=URI:%s" (.OutputFormats.Get "calendar-conference").Permalink)
+    "REFRESH-INTERVAL;VALUE=DURATION:PT12H"
+    "BEGIN:VEVENT"
+    (printf "UID:fosdem-%s@fosdem.org" .Site.Params.Year)
+    (printf "DTSTAMP:%s" $stamp)
+    (printf "DTSTART;VALUE=DATE:%s" ($start.Format "20060102"))
+    (printf "DTEND;VALUE=DATE:%s" ($end.Format "20060102"))
+    (printf "SUMMARY:%s" .Site.Title)
+    (printf "LOCATION:ULB Campus Solbosch\\, %s\\, Belgium" .Site.Params.Location)
+    (printf "DESCRIPTION:%s in %s\\n%s" .Site.Title .Site.Params.Location .Site.Home.Permalink)
+    (printf "URL:%s" .Site.Home.Permalink)
+    "TRANSP:TRANSPARENT"
+    "END:VEVENT"
+    "END:VCALENDAR"
+-}}
+{{- $folded := slice -}}
+{{- range $lines -}}
+{{- $folded = $folded | append (partial "fold.ics" .) -}}
+{{- end -}}
+{{- delimit $folded "\r\n" -}}
+{{- "\r\n" -}}

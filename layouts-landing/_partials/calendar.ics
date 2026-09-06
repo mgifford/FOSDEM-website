@@ -1,0 +1,43 @@
+{{- $stamp := .Lastmod.UTC.Format "20060102T150405Z" -}}
+{{- $title := replace (printf "%s%s" (cond .Draft "[Draft] " "") .Title) "," "\\," -}}
+{{- $source := "" -}}
+{{- range .OutputFormats -}}
+{{- if eq .MediaType.SubType "calendar" -}}
+{{- $source = .Permalink -}}
+{{- end -}}
+{{- end -}}
+{{- $lines := slice
+    "BEGIN:VCALENDAR"
+    "VERSION:2.0"
+    (printf "PRODID:-//FOSDEM//%s//EN" .Site.Title)
+    "CALSCALE:GREGORIAN"
+    "METHOD:PUBLISH"
+    (printf "NAME:%s" $title)
+    (printf "DESCRIPTION:Key dates announced in \"%s\"." $title)
+    (printf "URL;VALUE=URI:%s" .Permalink)
+    (printf "SOURCE;VALUE=URI:%s" $source)
+    "REFRESH-INTERVAL;VALUE=DURATION:PT12H"
+-}}
+{{- range $i, $e := .Params.events -}}
+{{- $day := time.AsTime $e.date -}}
+{{- $summary := replace $e.summary "," "\\," -}}
+{{- $lines = $lines | append
+    "BEGIN:VEVENT"
+    (printf "UID:%s-%d@fosdem.org" $.File.ContentBaseName $i)
+    (printf "DTSTAMP:%s" $stamp)
+    (printf "DTSTART;VALUE=DATE:%s" ($day.Format "20060102"))
+    (printf "DTEND;VALUE=DATE:%s" (($day.AddDate 0 0 1).Format "20060102"))
+    (printf "SUMMARY:%s" $summary)
+    (printf "DESCRIPTION:Announced in \"%s\":\\n%s" $title $.Permalink)
+    (printf "URL:%s" $.Permalink)
+    "TRANSP:TRANSPARENT"
+    "END:VEVENT"
+-}}
+{{- end -}}
+{{- $lines = $lines | append "END:VCALENDAR" -}}
+{{- $folded := slice -}}
+{{- range $lines -}}
+{{- $folded = $folded | append (partial "fold.ics" .) -}}
+{{- end -}}
+{{- delimit $folded "\r\n" -}}
+{{- "\r\n" -}}

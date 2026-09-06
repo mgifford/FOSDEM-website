@@ -3,10 +3,14 @@
 <article class="landing-article">
     <p><a href="{{ .Site.Home.RelPermalink }}">&larr; FOSDEM {{ .Site.Params.Year }}</a></p>
 
-    <h1>{{ .Title }}</h1>
+    <h1>{{ partial "title.html" . }}</h1>
+    {{ if not .Date.IsZero }}
     <p class="landing-date-small">{{ .Date.Format "2 January 2006" }}</p>
+    {{ end }}
 
     {{ .Content }}
+
+    {{ partial "calendar-link.html" . }}
 </article>
 
 {{ end }}

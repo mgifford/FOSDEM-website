@@ -5,18 +5,20 @@
 
     <h1>{{ .Title }}</h1>
 
-    {{ with .Pages.ByDate.Reverse }}
-    <ul class="news-list">
-        {{ range . }}
-        <li>
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            <time class="landing-date-small" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
-        </li>
-        {{ end }}
-    </ul>
+    {{ range (.Paginate .Pages.ByDate.Reverse).Pages }}
+    <article class="news-post">
+        <h2 class="news-post-title"><a href="{{ .RelPermalink }}">{{ partial "title.html" . }}</a></h2>
+        <p class="landing-date-small"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time></p>
+
+        {{ .Content }}
+
+        {{ partial "calendar-link.html" . }}
+    </article>
     {{ else }}
     <p>No news yet.</p>
     {{ end }}
+
+    {{ partial "pagination.html" . }}
 </div>
 
 {{ end }}
