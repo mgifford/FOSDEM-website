@@ -160,7 +160,7 @@ outputs:
   - html
   - calendar-cfp
 events:
-  - date: 2026-10-11
+  - date: 2026-10-04
     summary: "FOSDEM 2027: deadline for developer room proposals"
 ```
 
