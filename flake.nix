@@ -35,6 +35,7 @@
           buildInputs = [
             pkgs.go
             pkgs.hugo
+            pkgs.just
             pkgs.pagefind
             pkgs.woff2
             validate-ics
