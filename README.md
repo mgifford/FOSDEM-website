@@ -69,10 +69,10 @@ Always test with a `baseURL`. The site will be deployed under a subpath, and all
 internal links use `relURL` (e.g. `{{ url | relURL }}`) to resolve paths correctly
 against it. Without a `baseURL`, broken links won't surface during development.
 
-## Deploy (Staging)
+## Deploy
 
-Staging is served from `www-public0.fosdem.org` and authenticates with Kerberos, so get a
-ticket first. It prompts for a password and lasts a few hours:
+Both targets are served from `www-public0.fosdem.org` and authenticate with Kerberos, so
+get a ticket first. It prompts for a password and lasts a few hours:
 
 ```sh
 kinit {id}@FOSDEM.ORG
@@ -88,19 +88,28 @@ Host *.fosdem.org
     PreferredAuthentications gssapi-with-mic,publickey,password
 ```
 
-Then build with the staging `baseURL` and sync. The landing site sits under `/2027/`,
-mirroring production, so the `relURL` paths exercised on staging are the ones that ship.
-Drafts are included, since staging is where they get reviewed:
+Deploys run from the `justfile`. Both build first, then rsync:
 
 ```sh
-hugo build --config hugo.landing.yaml -b https://staging.fosdem.org/2027/ -D
-rsync -avz --delete public/ \
-    www-staging@www-public0.fosdem.org:/var/www/staging.fosdem.org/public/2027/
+just deploy-staging          # dry run
+just deploy-staging go=1     # writes
+just deploy-live go=1
 ```
+
+The landing site sits under `/2027/`, mirroring production, so the `relURL` paths
+exercised on staging are the ones that ship. Staging builds with `-D`, production
+without, so drafts are reviewable on staging and never reach production.
+
+Each target has its own output directory, `dist/staging` and `dist/live`, built with
+`--cleanDestinationDir`. Without it Hugo leaves stale output in place, leaking drafts and
+the wrong `baseURL` from the previous build.
 
 `--delete` is scoped to the `2027/` subdirectory, so it cleans up files removed since the
 last deploy without touching anything else in the docroot. Never point it at the docroot
 root.
+
+Production is `/var/www/fosdem.org/public/2027/` as `www-live`. A dry run does not test
+write permission, so a clean `-n` pass is no guarantee the real sync will succeed.
 
 ## Landing Site
 
