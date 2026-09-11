@@ -22,9 +22,21 @@
             python3 ${./scripts/validate-ics.py} "$@"
           '';
         };
+
+        pr-comment = pkgs.writeShellApplication {
+          name = "pr-comment";
+          runtimeInputs = [
+            pkgs.curl
+            pkgs.jq
+          ];
+          text = ''
+            bash ${./scripts/pr-comment.sh} "$@"
+          '';
+        };
       in
       {
         packages.validate-ics = validate-ics;
+        packages.pr-comment = pr-comment;
 
         apps.validate-ics = {
           type = "app";
@@ -36,8 +48,11 @@
             pkgs.go
             pkgs.hugo
             pkgs.just
+            pkgs.openssh
             pkgs.pagefind
+            pkgs.rsync
             pkgs.woff2
+            pr-comment
             validate-ics
           ];
         };

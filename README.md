@@ -111,6 +111,20 @@ root.
 Production is `/var/www/fosdem.org/public/2027/` as `www-live`. A dry run does not test
 write permission, so a clean `-n` pass is no guarantee the real sync will succeed.
 
+### PR Previews
+
+Every pull request is published at `https://staging.fosdem.org/pr-{number}/` and emptied
+when the PR closes. Locally:
+
+```sh
+just build-preview 123         # dist/pr-123, baseURL https://staging.fosdem.org/pr-123/
+just deploy-preview 123        # dry run
+just deploy-preview 123 go=1   # writes
+just undeploy-preview 123 go=1 # removes the remote directory
+```
+
+Previews build the landing site only, with `-D`. `pr` must be a number.
+
 ## Landing Site
 
 `hugo.landing.yaml` is a separate site in this repo: one page announcing the next

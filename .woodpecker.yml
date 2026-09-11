@@ -1,13 +1,19 @@
 when:
   - event: push
     branch: main
-  - event: pull_request
+  - event: [pull_request, pull_request_closed]
+
+variables:
+  - &nix_image nixos/nix:2.35.2@sha256:7a007c766426c1877758ddc5cb87a965ac131fc78c582ce0083d922d51ae945c
+  - &nix_config "experimental-features = nix-command flakes"
+  - &rsync_image drillster/drone-rsync@sha256:c79d15e8456dd4ebfde333f59a0e595e273fd6c4f6db7e70da87c2e1126241e3
+  - &preview_target /var/www/staging.fosdem.org/public/pr-${CI_COMMIT_PULL_REQUEST}
 
 steps:
   - name: build
-    image: nixos/nix:2.35.2@sha256:7a007c766426c1877758ddc5cb87a965ac131fc78c582ce0083d922d51ae945c
+    image: *nix_image
     environment:
-      NIX_CONFIG: "experimental-features = nix-command flakes"
+      NIX_CONFIG: *nix_config
     commands:
       - unformatted=$(nix develop -c gofmt -l .)
       - test -z "$unformatted" || { echo "$unformatted"; exit 1; }
@@ -16,3 +22,65 @@ steps:
       - nix develop -c hugo build
       - nix develop -c hugo build --config hugo.landing.yaml
       - nix develop -c validate-ics public
+    when:
+      - event: [push, pull_request]
+
+  - name: build-preview
+    image: *nix_image
+    environment:
+      NIX_CONFIG: *nix_config
+    commands:
+      - nix develop -c just build-preview "$CI_COMMIT_PULL_REQUEST"
+      - 'echo "preview at https://staging.fosdem.org/pr-$CI_COMMIT_PULL_REQUEST/"'
+    when:
+      - event: pull_request
+
+  - name: deploy-preview
+    image: *rsync_image
+    settings:
+      hosts:
+        - www-public0.fosdem.org
+      user: www-staging
+      key:
+        from_secret: staging_publish_key
+      source: dist/pr-${CI_COMMIT_PULL_REQUEST}/
+      target: *preview_target
+      recursive: true
+      delete: true
+    when:
+      - event: pull_request
+
+  # TODO: comment plugin, so forgejo_token can be image-filtered.
+  # - name: comment-preview
+  #   image: *nix_image
+  #   environment:
+  #     NIX_CONFIG: *nix_config
+  #     FORGEJO_TOKEN:
+  #       from_secret: forgejo_token
+  #   commands:
+  #     - 'url="https://staging.fosdem.org/pr-$CI_COMMIT_PULL_REQUEST/"'
+  #     - 'nix develop -c pr-comment "$CI_COMMIT_PULL_REQUEST" preview-link "Staging preview: $url"'
+  #   when:
+  #     - event: pull_request
+
+  - name: empty-preview
+    image: *nix_image
+    commands:
+      - mkdir -p empty
+    when:
+      - event: pull_request_closed
+
+  - name: cleanup-preview
+    image: *rsync_image
+    settings:
+      hosts:
+        - www-public0.fosdem.org
+      user: www-staging
+      key:
+        from_secret: staging_publish_key
+      source: empty/
+      target: *preview_target
+      recursive: true
+      delete: true
+    when:
+      - event: pull_request_closed
