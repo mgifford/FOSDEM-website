@@ -53,5 +53,5 @@ open-source projects to connect with the community.
 
 Reach out to us at **[stands@fosdem.org](mailto:stands@fosdem.org)**.
 
-*Share your submission with **#FOSDEM2027** and spread the word about
+*Share your submission with **#FOSDEM** and **#FOSDEM2027**. Spread the word about
 your project!*
