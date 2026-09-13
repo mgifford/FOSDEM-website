@@ -39,7 +39,7 @@ open-source projects to connect with the community.
 
 ## 🔗 How to Apply
 
-1. [Submit your proposal](fosdem.org/stands).
+1. [Submit your proposal](https://fosdem.org/stands).
 2. Add all team members who will be at the stand.
 3. Wait for confirmation—and get ready for FOSDEM! 🎉
 
