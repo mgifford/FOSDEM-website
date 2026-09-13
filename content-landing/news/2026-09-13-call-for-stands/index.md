@@ -21,21 +21,15 @@ open-source projects to connect with the community.
 ## What you can do at your stand
 
 ✔️ Present your project and engage with attendees
-
 ✔️ Demo your project live
-
 ✔️ Sell merchandise or collect donations
-
 ✔️ Hand out goodies and grow your contributor base
 
 ## What we provide
 
 ✅ **1 table (180x80 cm)** with chairs and a power socket
-
 ✅ **Fast wireless internet** for demos and presentations
-
 ✅ A spot for **one or both days** (choose what suits you best)
-
 ✅ **Shared stands encouraged!** (Joint submissions will be prioritized)
 
 ## 📅 Key Dates
