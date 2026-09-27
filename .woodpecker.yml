@@ -7,6 +7,7 @@ variables:
   - &nix_image nixos/nix:2.35.2@sha256:7a007c766426c1877758ddc5cb87a965ac131fc78c582ce0083d922d51ae945c
   - &nix_config "experimental-features = nix-command flakes"
   - &rsync_image drillster/drone-rsync@sha256:c79d15e8456dd4ebfde333f59a0e595e273fd6c4f6db7e70da87c2e1126241e3
+  - &comment_image git.fosdem.org/fosdem/woodpecker-plugins/pr-comment@sha256:0b11ebc3501a10b9a2a259aec82743cb19209aa7aa064ca7d26d85f82d5d4830
   - &preview_target /var/www/staging.fosdem.org/public/pr-${CI_COMMIT_PULL_REQUEST}
 
 steps:
@@ -50,18 +51,15 @@ steps:
     when:
       - event: pull_request
 
-  # TODO: comment plugin, so forgejo_token can be image-filtered.
-  # - name: comment-preview
-  #   image: *nix_image
-  #   environment:
-  #     NIX_CONFIG: *nix_config
-  #     FORGEJO_TOKEN:
-  #       from_secret: forgejo_token
-  #   commands:
-  #     - 'url="https://staging.fosdem.org/pr-$CI_COMMIT_PULL_REQUEST/"'
-  #     - 'nix develop -c pr-comment "$CI_COMMIT_PULL_REQUEST" preview-link "Staging preview: $url"'
-  #   when:
-  #     - event: pull_request
+  - name: comment-preview
+    image: *comment_image
+    settings:
+      token:
+        from_secret: forgejo_token
+      marker: preview-link
+      comment: "Staging preview: https://staging.fosdem.org/pr-${CI_COMMIT_PULL_REQUEST}/"
+    when:
+      - event: pull_request
 
   - name: empty-preview
     image: *nix_image
