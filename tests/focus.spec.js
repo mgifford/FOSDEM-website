@@ -131,13 +131,26 @@ function measureFocused() {
   return result;
 }
 
-test('focus indicators are visible and have sufficient contrast', async ({ page }, testInfo) => {
+// Both routes to a theme are covered: the OS preference (project colorScheme) and the manual
+// toggle, which stores 'theme' in localStorage and overrides the OS preference.
+const MODES = [{ name: 'os-preference', manual: false }, { name: 'manual-toggle', manual: true }];
+
+for (const mode of MODES) test(`focus indicators are visible and have sufficient contrast (${mode.name})`, async ({ page, colorScheme }, testInfo) => {
+  const scheme = colorScheme;
+  if (mode.manual) {
+    // Opposite of the OS scheme, so a pass proves the toggle path, not the OS path.
+    await page.addInitScript((t) => { try { localStorage.setItem('theme', t); } catch {} }, scheme === 'dark' ? 'light' : 'dark');
+  }
   const report = [];
   const failures = [];
   const cantTell = [];
 
   for (const p of PAGES) {
     await page.goto(p, { waitUntil: 'networkidle' });
+    // The site sets data-theme from localStorage, else the OS scheme. Assert the theme under test really applied.
+    const expected = mode.manual ? (scheme === 'dark' ? 'light' : 'dark') : scheme;
+    const theme = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
+    expect(theme, `/${p} rendered the wrong theme`).toBe(expected);
     await page.evaluate(() => { document.activeElement && document.activeElement.blur(); window.__seen = new WeakSet(); });
     let stops = 0;
     for (let i = 0; i < MAX_STOPS; i++) {
@@ -189,7 +202,7 @@ test('focus indicators are visible and have sufficient contrast', async ({ page 
   }
 
   fs.mkdirSync('a11y-report', { recursive: true });
-  fs.writeFileSync(`a11y-report/focus-${testInfo.project.name}.json`, JSON.stringify(report, null, 2));
-  console.log(`[${testInfo.project.name}] focus stops: ${report.length}, fail: ${failures.length}, cantTell: ${cantTell.length}`);
+  fs.writeFileSync(`a11y-report/focus-${testInfo.project.name}-${mode.name}.json`, JSON.stringify(report, null, 2));
+  console.log(`[${testInfo.project.name} ${mode.name}] focus stops: ${report.length}, fail: ${failures.length}, cantTell: ${cantTell.length}`);
   expect(failures, 'focus indicator failures (cantTell stops are listed in the JSON report, not failed)').toEqual([]);
 });

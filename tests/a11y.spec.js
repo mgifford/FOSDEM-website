@@ -40,7 +40,14 @@ async function crawl(page, baseURL) {
   return pages;
 }
 
-test('axe-core crawl', async ({ page, baseURL }, testInfo) => {
+// Theme via the OS preference (project colorScheme) and via the manual toggle, which stores
+// 'theme' in localStorage and overrides the OS preference. The toggle runs the opposite theme.
+const MODES = [{ name: 'os-preference', manual: false }, { name: 'manual-toggle', manual: true }];
+
+for (const mode of MODES) test(`axe-core crawl (${mode.name})`, async ({ page, baseURL, colorScheme }, testInfo) => {
+  if (mode.manual) {
+    await page.addInitScript((t) => { try { localStorage.setItem('theme', t); } catch {} }, colorScheme === 'dark' ? 'light' : 'dark');
+  }
   const pages = await crawl(page, baseURL);
   expect(pages.length, 'crawl found no pages').toBeGreaterThan(0);
 
@@ -59,7 +66,7 @@ test('axe-core crawl', async ({ page, baseURL }, testInfo) => {
   }
 
   fs.mkdirSync('a11y-report', { recursive: true });
-  const out = `a11y-report/${testInfo.project.name}.json`;
+  const out = `a11y-report/${testInfo.project.name}-${mode.name}.json`;
   fs.writeFileSync(out, JSON.stringify({ axeTags: TAGS, results }, null, 2));
 
   const byRule = {};
@@ -68,7 +75,7 @@ test('axe-core crawl', async ({ page, baseURL }, testInfo) => {
     byRule[v.id].pages++;
     byRule[v.id].nodes += v.nodes.length;
   }
-  console.log(`[${testInfo.project.name}] pages: ${pages.length}, rules failing: ${Object.keys(byRule).length}`);
+  console.log(`[${testInfo.project.name} ${mode.name}] pages: ${pages.length}, rules failing: ${Object.keys(byRule).length}`);
   console.table(byRule);
   const failing = results.filter((p) => p.violations.length).map((p) => p.url);
   expect(failing, `pages with axe violations (details in ${out})`).toEqual([]);

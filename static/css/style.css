@@ -51,14 +51,14 @@
 
 /* System preference */
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme='light']) {
         --c-white: #eee;
 
         --c-bg: #222;
         --c-text: var(--c-white);
         --c-main: #c620aa;
-    --c-accent-text: #e879d0;
-    --c-focus: #ffd54f;
+        --c-accent-text: #e879d0;
+        --c-focus: #ffd54f;
         --c-footer: #eee;
         --c-bg-footer: #333;
         --c-line-footer: #555;
