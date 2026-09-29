@@ -10,3 +10,4 @@ _site/
 a11y-report/
 node_modules/
 test-results/
+tests/.build/
