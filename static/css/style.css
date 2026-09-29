@@ -47,7 +47,7 @@
 
 /* System preference */
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme='light']) {
         --c-white: #eee;
 
         --c-bg: #222;
