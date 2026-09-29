@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # the comparison builds each PR branch
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
@@ -27,6 +29,12 @@ jobs:
           extended: true
       - name: Build
         run: BASE="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/" scripts/build-pages.sh
+      - name: Before/after comparison against upstream (published at /compare/)
+        # Clones FOSDEM/website from git.fosdem.org. If that is unreachable the site still deploys, without /compare/.
+        continue-on-error: true
+        run: |
+          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+          PUBLIC_BASE="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/compare" tools/compare/build.sh
       - uses: actions/upload-artifact@v4
         with:
           name: site

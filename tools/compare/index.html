@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Before and after: upstream vs changes</title>
+<style>
+  :root { --bg:#fff; --fg:#111; --muted:#444; --line:#bbb; --panel:#f3f3f3; --accent:#0b5cad; --focus:#0b5cad }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#161616; --fg:#eee; --muted:#bbb; --line:#555; --panel:#242424; --accent:#8ab4ff; --focus:#ffd54f }
+  }
+  * { box-sizing: border-box }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui,sans-serif }
+  header, .controls, .info, .diff, footer { padding: 8px 16px }
+  h1 { font-size:1.25rem; margin:8px 0 } h2 { font-size:1rem; margin:0 0 4px }
+  a { color:var(--accent) } :focus-visible { outline:3px solid var(--focus); outline-offset:2px }
+  .controls { display:flex; flex-wrap:wrap; gap:12px 24px; align-items:end; background:var(--panel); border-block:1px solid var(--line) }
+  fieldset { border:1px solid var(--line); margin:0; padding:4px 10px 6px } legend { font-size:.85rem; color:var(--muted); padding:0 4px }
+  label { margin-right:8px } select, button { font:inherit; padding:3px 8px; color:var(--fg); background:var(--bg); border:1px solid var(--fg); border-radius:4px }
+  select { max-width:100% } button { cursor:pointer }
+  .info { font-size:.95rem } .info p { margin:.25rem 0 } .badge { display:inline-block; padding:0 8px; border:1px solid var(--fg); border-radius:99px; font-size:.85rem }
+  .panes { display:flex; gap:12px; padding:0 16px 12px; justify-content:center }
+  .pane { flex:0 0 auto; width:var(--w, 50%); max-width:100% }
+  iframe { width:100%; height:70vh; border:1px solid var(--line); background:#fff; display:block }
+  .status { font-size:.85rem; color:var(--muted); min-height:1.3em; padding:0 16px }
+  .diff pre { background:var(--panel); border:1px solid var(--line); padding:8px; overflow:auto; max-height:50vh; margin:4px 0 0; font-size:.8rem }
+  footer { font-size:.85rem; color:var(--muted) }
+  @media (max-width: 800px) { .panes { flex-direction:column } .pane { width:100% } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Before and after</h1>
+  <p id="intro">Loading…</p>
+</header>
+
+<section class="controls" aria-label="Controls">
+  <div>
+    <label for="variant">Compare upstream with</label><br>
+    <select id="variant"></select>
+  </div>
+  <div>
+    <label for="page">Page</label><br>
+    <select id="page"></select>
+  </div>
+  <fieldset>
+    <legend>Site theme (the sites' own toggle, stored in localStorage)</legend>
+    <button type="button" data-theme="light">Light</button>
+    <button type="button" data-theme="dark">Dark</button>
+    <button type="button" data-theme="">Follow OS</button>
+  </fieldset>
+  <fieldset>
+    <legend>Frame width</legend>
+    <label><input type="radio" name="w" value="50%" checked> Half</label>
+    <label><input type="radio" name="w" value="390px"> Phone</label>
+    <label><input type="radio" name="w" value="820px"> Tablet</label>
+  </fieldset>
+  <label><input type="checkbox" id="syncscroll" checked> Sync scrolling</label>
+</section>
+
+<section class="info" aria-live="polite" id="info"></section>
+<p class="status" id="status" role="status"></p>
+
+<div class="panes">
+  <section class="pane" aria-labelledby="hb"><h2 id="hb">Before (upstream)</h2><iframe id="before" title="Before: upstream"></iframe></section>
+  <section class="pane" aria-labelledby="ha"><h2 id="ha">After</h2><iframe id="after" title="After: with the changes"></iframe></section>
+</div>
+
+<section class="diff" aria-labelledby="dh">
+  <h2 id="dh">What differs in the built site</h2>
+  <p>Both sides are built from the same test data. Base URLs are normalised before comparing, so only real differences appear.</p>
+  <pre id="diff" tabindex="0">loading…</pre>
+</section>
+
+<footer>
+  <p><strong>Theme bug (PR 2):</strong> set your operating system to dark, reload, press <em>Light</em>. Before stays dark; after goes light.</p>
+  <p>Built by <code>tools/compare/build.sh</code>. Frames share one origin, so navigation, scrolling and the theme setting stay in step.</p>
+</footer>
+
+<script>
+(async () => {
+  const PAGES = [
+    ['', 'Landing page'], ['news/', 'Landing: news'], ['news/call-for-stands/', 'Landing: Call for Stands'],
+    ['practical/conduct/', 'Landing: Code of Conduct'], ['full/', 'Full site: home'], ['full/about/', 'Full site: about'],
+    ['full/schedule/', 'Full site: schedule'], ['full/schedule/day/saturday/', 'Full site: Saturday'],
+    ['full/schedule/speakers/', 'Full site: speakers'], ['full/stands/', 'Full site: stands'],
+  ];
+  const $ = (id) => document.getElementById(id);
+  const data = await (await fetch('variants.json')).json();
+  const variants = data.variants;
+  const pageSel = $('page'), varSel = $('variant');
+  const frames = { before: $('before'), after: $('after') };
+  const here = new URL('.', location.href);
+  const baseOf = (side) => new URL(side === 'before' ? 'before/' : `after/${varSel.value}/`, here).pathname;
+
+  PAGES.forEach(([p, l]) => pageSel.append(new Option(`${l} (/${p})`, p)));
+  variants.forEach((v) => varSel.append(new Option(v.label, v.slug)));
+
+  const params = new URLSearchParams(location.hash.slice(1));
+  if (variants.some((v) => v.slug === params.get('variant'))) varSel.value = params.get('variant');
+  let currentPath = params.get('page') || '';
+  if (![...pageSel.options].some((o) => o.value === currentPath)) pageSel.add(new Option(`(current) /${currentPath}`, currentPath), 0);
+  pageSel.value = currentPath;
+
+  const rel = (side, win) => win.location.pathname.startsWith(baseOf(side)) ? win.location.pathname.slice(baseOf(side).length) : null;
+  let syncing = false;
+
+  function describe() {
+    const v = variants.find((x) => x.slug === varSel.value);
+    $('intro').innerHTML = `Left: upstream <code>main</code> @ <code>${data.upstream.sha}</code> (${data.upstream.date}). Right: <strong>${v.label}</strong> @ <code>${v.sha}</code>. Navigate in either frame; the other follows.`;
+    const deps = v.depends.length ? `<p>Depends on: ${v.depends.join('; ')}.</p>` : '';
+    $('info').innerHTML = `<p>${v.description}</p><p><span class="badge">${v.files_changed} file${v.files_changed === 1 ? '' : 's'} differ in the built site</span></p>${deps}`;
+    fetch(`diffs/${v.slug}.txt`).then((r) => r.text()).then((t) => { $('diff').textContent = t; });
+  }
+  function load() {
+    frames.before.src = baseOf('before') + currentPath;
+    frames.after.src = baseOf('after') + currentPath;
+    describe();
+    history.replaceState(null, '', `#variant=${varSel.value}&page=${encodeURIComponent(currentPath)}`);
+  }
+  pageSel.addEventListener('change', () => { currentPath = pageSel.value; load(); });
+  varSel.addEventListener('change', load);
+
+  for (const [side, f] of Object.entries(frames)) {
+    f.addEventListener('load', () => {
+      let path; try { path = rel(side, f.contentWindow); } catch { return; }
+      if (path === null) return;
+      currentPath = path;
+      if (![...pageSel.options].some((o) => o.value === path)) pageSel.add(new Option(`(current) /${path}`, path), 0);
+      pageSel.value = path;
+      const otherSide = side === 'before' ? 'after' : 'before', other = frames[otherSide];
+      let op = null; try { op = rel(otherSide, other.contentWindow); } catch {}
+      if (op !== path && !syncing) { syncing = true; other.src = baseOf(otherSide) + path; setTimeout(() => (syncing = false), 400); }
+      $('status').textContent = `Showing /${path}`;
+      history.replaceState(null, '', `#variant=${varSel.value}&page=${encodeURIComponent(path)}`);
+      try {
+        f.contentWindow.addEventListener('scroll', () => {
+          if (!$('syncscroll').checked) return;
+          const o = frames[otherSide].contentWindow;
+          if (o && !o.__mirroring) {
+            f.contentWindow.__mirroring = true;
+            o.scrollTo(f.contentWindow.scrollX, f.contentWindow.scrollY);
+            setTimeout(() => (f.contentWindow.__mirroring = false), 60);
+          }
+        }, { passive: true });
+      } catch {}
+    });
+  }
+
+  document.querySelectorAll('button[data-theme]').forEach((b) => b.addEventListener('click', () => {
+    const t = b.dataset.theme;
+    try { t ? localStorage.setItem('theme', t) : localStorage.removeItem('theme'); } catch {}
+    for (const f of Object.values(frames)) f.contentWindow.location.reload();
+    $('status').textContent = t ? `Theme set to ${t} in both frames` : 'Theme follows the OS in both frames';
+  }));
+  document.querySelectorAll('input[name=w]').forEach((r) => r.addEventListener('change', () => {
+    document.querySelectorAll('.pane').forEach((p) => p.style.setProperty('--w', r.value));
+  }));
+
+  load();
+})();
+</script>
+</body>
+</html>
