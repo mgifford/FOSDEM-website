@@ -15,6 +15,7 @@ Committed under `static/` and served to every visitor.
 | Component | Version | Licence | Licence text |
 |-----------|---------|---------|--------------|
 | Leaflet | 1.9.4 | BSD-2-Clause | `static/css/leaflet/LICENSE` |
+| SkipTo | 4.1.7 | BSD-3-Clause | `static/js/SKIPTO-LICENSE.md` |
 | Signika | 2018 | SIL OFL 1.1 | `static/css/fonts/Signika/OFL.txt` |
 | DejaVu Sans | 2.37 | Bitstream Vera and Arev licences, plus public domain changes | `static/css/fonts/dejavu-sans-ttf-2.37/LICENSE` |
 
