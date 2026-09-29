@@ -9,6 +9,8 @@
     --c-line-footer: #ccc;
     --c-link: #3479c4;
 
+    --c-focus: #0b5cad;
+
     --c1: #69D2E7;
     --c2: #A7DBD8;
     --c3: #E0E4CC;
@@ -32,6 +34,8 @@
     --c-bg-footer: #333;
     --c-line-footer: #555;
     --c-link: #69a1ff;
+
+    --c-focus: #ffd54f;
 
     --c1: #3A8F9E;
     --c2: #6A9E9B;
@@ -57,6 +61,8 @@
         --c-bg-footer: #333;
         --c-line-footer: #555;
         --c-link: #69a1ff;
+
+        --c-focus: #ffd54f;
 
         --c1: #3A8F9E;
         --c2: #6A9E9B;
@@ -641,4 +647,22 @@ td.track-color {
     color: var(--c-text);
     text-align: left;
     line-height: 1.15;
+}
+
+/* Keyboard focus: a visible ring on every focusable element (WCAG 2.4.7, 1.4.11). */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid var(--c-focus);
+    outline-offset: 2px;
+}
+
+/* Track-coloured schedule cells: the ring sits next to the cell colour, so draw it inside in near-black. */
+:is(.c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9, .c10) > a:focus-visible {
+    outline: 3px solid #000;
+    outline-offset: -3px;
 }
