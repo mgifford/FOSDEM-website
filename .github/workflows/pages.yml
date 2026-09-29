@@ -37,19 +37,26 @@ jobs:
           path: _site
 
   a11y:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: latest
+          extended: true
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: _site
-      - name: pa11y-ci (axe + HTML_CodeSniffer, WCAG 2.x AA)
-        run: scripts/a11y-check.sh
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Build for local serving
+        run: npm run build:local
+      - name: axe-core crawl (light/dark x desktop/320px)
+        run: npx playwright test
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -58,7 +65,7 @@ jobs:
 
   deploy:
     if: github.ref == 'refs/heads/main'
-    needs: build
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       pages: write
