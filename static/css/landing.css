@@ -6,14 +6,14 @@
     --c-code-comment: #6a737d;
     --c-code-keyword: #ac1d94;
     --c-code-string: #0a7a45;
-    --c-code-number: #b35900;
-    --c-code-name: #3479c4;
+    --c-code-number: #9a4d00;
+    --c-code-name: #2b6cb0;
     --c-code-type: #6f42c1;
     --c-code-punct: #57606a;
 
-    --c-callout-note: #3479c4;
+    --c-callout-note: #2b6cb0;
     --c-callout-tip: #0a7a45;
-    --c-callout-warning: #b35900;
+    --c-callout-warning: #9a4d00;
     --c-callout-caution: #c62828;
 }
 
@@ -149,7 +149,6 @@ main {
     color: var(--c-footer);
     text-wrap: balance;
     margin: .5em 0 0;
-    opacity: .8;
 }
 
 .theme-toggle {
@@ -440,7 +439,7 @@ main {
 .landing-article .callout-title {
     font-family: "Signika", sans-serif;
     font-weight: bold;
-    color: var(--c-callout, var(--c-main));
+    color: var(--c-callout, var(--c-accent-text));
     margin: 0 0 .5em;
 }
 
@@ -536,7 +535,7 @@ main {
 }
 
 .calendar-widget-actions a {
-    color: var(--c-main);
+    color: var(--c-accent-text);
     text-decoration: none;
 }
 
