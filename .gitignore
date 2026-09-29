@@ -6,3 +6,8 @@ public/
 resources/
 schedule.json
 !testdata/schedule.json
+_site/
+a11y-report/
+node_modules/
+test-results/
+tests/.build/

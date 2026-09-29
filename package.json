@@ -1,0 +1,13 @@
+{
+  "name": "fosdem-website-a11y",
+  "private": true,
+  "description": "Accessibility tests (Playwright + axe-core) for the FOSDEM Hugo site",
+  "scripts": {
+    "build:local": "BASE=http://127.0.0.1:8080/FOSDEM-website/ scripts/build-pages.sh",
+    "test:a11y": "playwright test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.3",
+    "@playwright/test": "^1.55.0"
+  }
+}

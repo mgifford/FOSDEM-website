@@ -125,6 +125,23 @@ just undeploy-preview 123 go=1 # removes the remote directory
 
 Previews build the landing site only, with `-D`. `pr` must be a number.
 
+## Accessibility Tests
+
+Playwright drives Chromium against a local build of both sites (landing at `/`, full site under
+`/full/`, built from `testdata/schedule.json`) and scans every reachable page with axe-core
+(WCAG 2.0/2.1/2.2 A and AA). It runs in light and dark theme, at desktop width and at 320px, and
+each theme is set two ways: the OS preference and the site's own toggle (`localStorage`).
+
+```sh
+npm ci
+npx playwright install chromium
+npm run build:local     # builds into _site/
+npm run test:a11y       # reports in a11y-report/
+```
+
+axe-core only finds what a machine can decide. A clean run is not a conformance claim and does not
+replace keyboard and screen reader testing.
+
 ## Landing Site
 
 `hugo.landing.yaml` is a separate site in this repo: one page announcing the next
