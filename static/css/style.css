@@ -22,6 +22,9 @@
     --c8: #FCC777;
     --c9: #C3DBB9;
     --c10: #A79474;
+
+    --c-link-visited: #6b3fa0;
+    --c-link-hover: #1c4f8a;
 }
 
 /* Manual dark mode toggle */
@@ -49,6 +52,9 @@
     --c8: #BF955A;
     --c9: #7FA577;
     --c10: #8A7558;
+
+    --c-link-visited: #c3a6ff;
+    --c-link-hover: #9bc0ff;
 }
 
 /* System preference */
@@ -77,6 +83,9 @@
         --c8: #BF955A;
         --c9: #7FA577;
         --c10: #8A7558;
+
+        --c-link-visited: #c3a6ff;
+        --c-link-hover: #9bc0ff;
     }
 }
 
@@ -212,6 +221,19 @@ a.quiet {
 a.quiet:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+
+/* Link states for text links. :where() keeps specificity low so component rules (buttons, quiet
+   links, calendar actions, news titles) still win. Hover also changes the underline, so it is
+   not colour-only; the focus ring is separate. */
+:where(main :is(p, li), article, footer) a:visited {
+    color: var(--c-link-visited);
+}
+
+:where(main :is(p, li), article, footer) a:hover {
+    color: var(--c-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
 }
 
 a.button {
