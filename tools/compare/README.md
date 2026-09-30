@@ -14,12 +14,16 @@ Needs `go`, `hugo` (extended), `git`, `python3`. Node is only needed to serve.
 
 ```sh
 tools/compare/build.sh                       # writes _site/compare, needs network for the clone
-cd _site/compare && python3 -m http.server 8093 --bind 127.0.0.1
+node tools/compare/serve.mjs          # serves _site/compare on :8093 with caching off
 # open http://127.0.0.1:8093/
 ```
 
 Offline, point it at an existing upstream checkout: `UPSTREAM_DIR=/path/to/upstream tools/compare/build.sh`.
 For a hosted copy set `PUBLIC_BASE` to the URL prefix it will be served under (no trailing slash).
+
+After a rebuild, reload the page. `serve.mjs` sends `Cache-Control: no-store`; a plain
+`python3 -m http.server` does not, and the browser may keep showing the previous diff and CSS
+until you hard-refresh.
 
 ## Add or change a comparison
 
