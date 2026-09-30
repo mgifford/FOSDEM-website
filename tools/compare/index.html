@@ -56,6 +56,7 @@
     <label><input type="radio" name="w" value="820px"> Tablet</label>
   </fieldset>
   <label><input type="checkbox" id="syncscroll" checked> Sync scrolling</label>
+  <label title="Rewrites the prefers-color-scheme: dark media query in both frames so it matches, as on a dark-mode OS. CSS only; the pages' scripts still see your real OS setting."><input type="checkbox" id="darkos"> Simulate a dark-mode OS (CSS only)</label>
 </section>
 
 <section class="info" aria-live="polite" id="info"></section>
@@ -102,8 +103,23 @@
   if (![...pageSel.options].some((o) => o.value === currentPath)) pageSel.add(new Option(`(current) /${currentPath}`, currentPath), 0);
   pageSel.value = currentPath;
 
+  const hash = (path = currentPath) => `#variant=${varSel.value}&page=${encodeURIComponent(path)}${darkos.checked ? '&os=dark' : ''}`;
   const rel = (side, win) => win.location.pathname.startsWith(baseOf(side)) ? win.location.pathname.slice(baseOf(side).length) : null;
   let syncing = false;
+
+  // Make the OS-dark media query match inside a frame (same origin, so its stylesheets are readable).
+  function simulateDarkOs(win) {
+    try {
+      for (const sheet of win.document.styleSheets) {
+        let rules; try { rules = sheet.cssRules; } catch { continue; }
+        for (const r of rules) {
+          if (r instanceof win.CSSMediaRule && /prefers-color-scheme:\s*dark/.test(r.media.mediaText)) r.media.mediaText = 'all';
+        }
+      }
+    } catch {}
+  }
+  const darkos = $('darkos');
+  if (params.get('os') === 'dark') darkos.checked = true;
 
   function describe() {
     const v = variants.find((x) => x.slug === varSel.value);
@@ -116,10 +132,21 @@
     frames.before.src = baseOf('before') + currentPath;
     frames.after.src = baseOf('after') + currentPath;
     describe();
-    history.replaceState(null, '', `#variant=${varSel.value}&page=${encodeURIComponent(currentPath)}`);
+    history.replaceState(null, '', hash());
   }
   pageSel.addEventListener('change', () => { currentPath = pageSel.value; load(); });
-  varSel.addEventListener('change', load);
+  // A variant can declare a demo state (e.g. dark OS + Light theme) that makes its effect visible.
+  function applyDemo() {
+    const v = variants.find((x) => x.slug === varSel.value);
+    if (!v.demo) return false;
+    darkos.checked = !!v.demo.simulateDarkOs;
+    if (v.demo.theme) { try { localStorage.setItem('theme', v.demo.theme); } catch {} }
+    $('status').textContent = `Demo state for this change: ${v.demo.simulateDarkOs ? 'simulated dark-mode OS, ' : ''}${v.demo.theme ? 'site theme set to ' + v.demo.theme : ''}. Use the controls to change it.`;
+    return true;
+  }
+  varSel.addEventListener('change', () => { applyDemo(); load(); });
+  darkos.addEventListener('change', () => { for (const f of Object.values(frames)) f.contentWindow.location.reload(); history.replaceState(null, '', hash()); });
+  if (!params.has('os')) applyDemo();
 
   for (const [side, f] of Object.entries(frames)) {
     f.addEventListener('load', () => {
@@ -131,8 +158,9 @@
       const otherSide = side === 'before' ? 'after' : 'before', other = frames[otherSide];
       let op = null; try { op = rel(otherSide, other.contentWindow); } catch {}
       if (op !== path && !syncing) { syncing = true; other.src = baseOf(otherSide) + path; setTimeout(() => (syncing = false), 400); }
+      if (darkos.checked) simulateDarkOs(f.contentWindow);
       $('status').textContent = `Showing /${path}`;
-      history.replaceState(null, '', `#variant=${varSel.value}&page=${encodeURIComponent(path)}`);
+      history.replaceState(null, '', hash(path));
       try {
         f.contentWindow.addEventListener('scroll', () => {
           if (!$('syncscroll').checked) return;

@@ -44,7 +44,10 @@ a label, a description, and what it depends on. The build resolves the ref local
 ## Limits
 
 - Frames are same-origin only because everything is served from one host.
-- The page cannot emulate the OS colour scheme. To see OS-dependent behaviour (for example the
-  dark-mode fix in PR 2), switch your operating system to dark.
+- The page cannot change your real OS colour scheme. *Simulate a dark-mode OS* rewrites the
+  `prefers-color-scheme: dark` media query in both frames so it matches (CSS only; the pages'
+  scripts still read your real setting). A variant can open in a demo state via `demo` in
+  `variants.json` (PR 2 uses simulated dark OS + Light theme). Confirm a real OS-dark result by
+  switching your OS to dark.
 - It compares built HTML/CSS/JS. It is not a substitute for testing in a browser with assistive
   technology.

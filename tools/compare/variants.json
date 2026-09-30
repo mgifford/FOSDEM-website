@@ -3,8 +3,12 @@
     "slug": "pr02-light-choice",
     "ref": "a11y/02-dark-media-query-respects-light",
     "label": "PR 2: explicit light choice overrides the OS dark preference",
-    "description": "One selector in the dark media query. With the OS in dark, choose Light: before stays dark, after goes light.",
-    "depends": []
+    "description": "One selector in the dark media query. The frames open in the state that shows it: a simulated dark-mode OS with the site theme set to Light. Before stays partly dark; after goes fully light.",
+    "depends": [],
+    "demo": {
+      "simulateDarkOs": true,
+      "theme": "light"
+    }
   },
   {
     "slug": "pr01-contrast-links",
