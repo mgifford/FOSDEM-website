@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('node:fs');
+const { tabKey } = require('./keys');
 
 // Focus-indicator check: real Tab presses, one measurement per focus stop.
 //   WCAG 2.4.7 Focus Visible: some indicator must appear on focus.
@@ -135,7 +136,7 @@ function measureFocused() {
 // toggle, which stores 'theme' in localStorage and overrides the OS preference.
 const MODES = [{ name: 'os-preference', manual: false }, { name: 'manual-toggle', manual: true }];
 
-for (const mode of MODES) test(`focus indicators are visible and have sufficient contrast (${mode.name})`, async ({ page, colorScheme }, testInfo) => {
+for (const mode of MODES) test(`focus indicators are visible and have sufficient contrast (${mode.name})`, async ({ page, colorScheme, browserName }, testInfo) => {
   const scheme = colorScheme;
   if (mode.manual) {
     // Opposite of the OS scheme, so a pass proves the toggle path, not the OS path.
@@ -154,7 +155,7 @@ for (const mode of MODES) test(`focus indicators are visible and have sufficient
     await page.evaluate(() => { document.activeElement && document.activeElement.blur(); window.__seen = new WeakSet(); });
     let stops = 0;
     for (let i = 0; i < MAX_STOPS; i++) {
-      await page.keyboard.press('Tab');
+      await page.keyboard.press(tabKey(browserName));
       const m = await page.evaluate(measureFocused);
       if (!m || m.repeat) break;
       if (!m.visible) continue; // off-screen / zero-size stops are a separate 2.4.7 concern
