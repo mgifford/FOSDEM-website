@@ -1,14 +1,15 @@
 const { test, expect } = require('@playwright/test');
+const { tabKey } = require('./keys');
 
 // Real keyboard events only: Tab to reveal the SkipTo button, Enter to open the menu,
 // arrow to a target and Enter to activate it, then check where focus landed.
 const PAGES = ['', 'news/', 'full/', 'full/schedule/'];
 
 for (const path of PAGES) {
-  test(`SkipTo is the first Tab stop and moves focus: /${path}`, async ({ page }) => {
+  test(`SkipTo is the first Tab stop and moves focus: /${path}`, async ({ page, browserName }) => {
     await page.goto(path, { waitUntil: 'networkidle' });
 
-    await page.keyboard.press('Tab');
+    await page.keyboard.press(tabKey(browserName));
     const button = page.locator('button[aria-haspopup="true"]').first();
     await expect(button, 'first Tab stop should be the SkipTo button').toBeFocused();
     await expect(button).toBeVisible();
