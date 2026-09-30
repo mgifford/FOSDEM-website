@@ -1,6 +1,12 @@
 # Accessibility TODO
 
-## Mobile testing (planned, needs a WebKit download of a few hundred MB)
+## Browsers
+- [x] WebKit: downloaded and runs (`A11Y_BROWSERS=webkit npm run test:a11y`). Skip-link, focus, screen reader and axe results match Chromium. macOS WebKit needs Option+Tab to reach links (handled in `tests/keys.js`).
+- [ ] Firefox: downloaded but will not launch from the assistant's sandbox ("Could not find profile folder"). Run `A11Y_BROWSERS=firefox npm run test:a11y` in a normal terminal, or add Firefox to the Linux CI job.
+- [ ] Link hover and visited colours (proposed: `--c-link-visited`, `--c-link-hover`, thicker underline on hover; all pass 4.5:1 in both themes).
+- [ ] `layouts/speaker.html` sets `alt="{{ $speaker.name }}"` on the speaker photo; if the name is already the heading next to it, consider `alt=""`.
+
+## Mobile testing (planned)
 - [ ] Playwright device projects with touch and mobile UA: iPhone 14 (WebKit), Pixel 7 (Chromium), one landscape run.
 - [ ] Reflow test: no horizontal scroll at 320px and at 400% zoom (WCAG 1.4.10); viewport meta must not block pinch zoom (1.4.4).
 - [ ] Orientation check, portrait and landscape (1.3.4).
