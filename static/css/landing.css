@@ -103,7 +103,7 @@ main {
 .landing-date {
     font-family: "Signika", sans-serif;
     font-weight: bold;
-    color: var(--c-main);
+    color: var(--c-accent-text);
     font-size: clamp(1.3rem, min(6.4vw, calc(4.3 * var(--vh))), 4.25rem);
     line-height: 1.15;
     margin: .35em 0 0;
