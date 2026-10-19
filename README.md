@@ -178,6 +178,14 @@ more than one. Full text lives on the post page.
 The homepage emits `/2027/fosdem.ics` from the `DateStart`/`DateEnd` params. Keep those
 in sync with `DateFull`.
 
+It also emits `/2027/fosdem-all.ics`: every `events:` entry on the site plus the weekend,
+sorted by date. `/calendar/` lists the same set. Both pick up a new post with no edit.
+
+The homepage has two `.ics` outputs, so each template names its format:
+`home.calendar-weekend.ics`, `home.calendar-all.ics`. Named `home.ics`, one template
+would serve both and the two files would come out identical. Posts keep `page.ics`,
+having one calendar each.
+
 A post ships its own calendar by listing dates and picking a calendar output:
 
 ```yaml

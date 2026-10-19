@@ -341,6 +341,46 @@ main {
     margin: .35em 0;
 }
 
+.date-list {
+    list-style: none;
+    margin: 1.2em 0 2.2em;
+    padding: 0;
+}
+
+.landing-article .date-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .2em 1.2em;
+    margin: 0;
+    padding: .6em 0;
+    border-bottom: 1px solid var(--c-line-footer);
+}
+
+.date-list time {
+    flex: none;
+    width: 9.5em;
+    font-family: "Signika", sans-serif;
+}
+
+.date-list span {
+    flex: 1 1 14em;
+}
+
+.date-list a {
+    margin-left: auto;
+    font-size: .85em;
+    white-space: nowrap;
+}
+
+.landing-article .date-list li.is-passed {
+    color: var(--c-footer);
+}
+
+.date-list li.is-passed time {
+    text-decoration: line-through;
+}
+
 .sponsor-index {
     display: flex;
     flex-wrap: wrap;

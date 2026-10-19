@@ -1,0 +1,17 @@
+{{- $page := .page -}}
+{{- $event := .event -}}
+{{- $title := replace (printf "%s%s" (cond $page.Draft "[Draft] " "") $page.Title) "," "\\," -}}
+{{- $day := time.AsTime $event.date -}}
+{{- $summary := replace $event.summary "," "\\," -}}
+{{- return slice
+    "BEGIN:VEVENT"
+    (printf "UID:%s-%d@fosdem.org" $page.File.ContentBaseName .index)
+    (printf "DTSTAMP:%s" ($page.Lastmod.UTC.Format "20060102T150405Z"))
+    (printf "DTSTART;VALUE=DATE:%s" ($day.Format "20060102"))
+    (printf "DTEND;VALUE=DATE:%s" (($day.AddDate 0 0 1).Format "20060102"))
+    (printf "SUMMARY:%s" $summary)
+    (printf "DESCRIPTION:Announced in \"%s\":\\n%s" $title $page.Permalink)
+    (printf "URL:%s" $page.Permalink)
+    "TRANSP:TRANSPARENT"
+    "END:VEVENT"
+-}}

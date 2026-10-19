@@ -1,0 +1,46 @@
+{{- $start := time.AsTime .Site.Params.DateStart -}}
+{{- $end := (time.AsTime .Site.Params.DateEnd).AddDate 0 0 1 -}}
+{{- $stamp := .Site.Lastmod.UTC.Format "20060102T150405Z" -}}
+{{- $entries := slice (dict "date" $start "lines" (slice
+    "BEGIN:VEVENT"
+    (printf "UID:fosdem-%s@fosdem.org" .Site.Params.Year)
+    (printf "DTSTAMP:%s" $stamp)
+    (printf "DTSTART;VALUE=DATE:%s" ($start.Format "20060102"))
+    (printf "DTEND;VALUE=DATE:%s" ($end.Format "20060102"))
+    (printf "SUMMARY:%s" .Site.Title)
+    (printf "LOCATION:%s\\, %s\\, %s" .Site.Params.Venue .Site.Params.Location .Site.Params.Country)
+    (printf "DESCRIPTION:%s in %s\\n%s" .Site.Title .Site.Params.Location .Site.Home.Permalink)
+    (printf "URL:%s" .Site.Home.Permalink)
+    "TRANSP:TRANSPARENT"
+    "END:VEVENT"))
+-}}
+{{- range $page := .Site.RegularPages -}}
+{{- range $i, $e := $page.Params.events -}}
+{{- $entries = $entries | append (dict
+    "date" (time.AsTime $e.date)
+    "lines" (partial "event.ics" (dict "page" $page "index" $i "event" $e)))
+-}}
+{{- end -}}
+{{- end -}}
+{{- $lines := slice
+    "BEGIN:VCALENDAR"
+    "VERSION:2.0"
+    (printf "PRODID:-//FOSDEM//%s//EN" .Site.Title)
+    "CALSCALE:GREGORIAN"
+    "METHOD:PUBLISH"
+    (printf "NAME:%s key dates" .Site.Title)
+    (printf "DESCRIPTION:Every date announced for %s." .Site.Title)
+    (printf "URL;VALUE=URI:%s" .Site.Home.Permalink)
+    (printf "SOURCE;VALUE=URI:%s" (.OutputFormats.Get "calendar-all").Permalink)
+    "REFRESH-INTERVAL;VALUE=DURATION:PT12H"
+-}}
+{{- range sort $entries "date" -}}
+{{- $lines = $lines | append .lines -}}
+{{- end -}}
+{{- $lines = $lines | append "END:VCALENDAR" -}}
+{{- $folded := slice -}}
+{{- range $lines -}}
+{{- $folded = $folded | append (partial "fold.ics" .) -}}
+{{- end -}}
+{{- delimit $folded "\r\n" -}}
+{{- "\r\n" -}}

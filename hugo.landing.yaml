@@ -28,7 +28,7 @@ outputFormats:
   RSS:
     mediaType: application/rss+xml
     baseName: rss
-  calendar-conference:
+  calendar-weekend:
     mediaType: text/calendar
     baseName: fosdem
     isPlainText: true
@@ -40,6 +40,10 @@ outputFormats:
     mediaType: text/calendar
     baseName: fosdem-dates
     isPlainText: true
+  calendar-all:
+    mediaType: text/calendar
+    baseName: fosdem-all
+    isPlainText: true
   metrics:
     mediaType: text/prometheus
     baseName: metrics
@@ -50,7 +54,8 @@ outputs:
   home:
     - HTML
     - RSS
-    - calendar-conference
+    - calendar-weekend
+    - calendar-all
     - metrics
   section:
     - HTML

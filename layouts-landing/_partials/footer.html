@@ -4,6 +4,9 @@
             {{- with .Site.GetPage "/news" }}
             <li><a href="{{ .RelPermalink }}">News</a></li>
             {{- end }}
+            {{- with .Site.GetPage "/calendar" }}
+            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+            {{- end }}
             {{- with .Site.GetPage "/support" }}
             <li><a href="{{ .RelPermalink }}">Support</a></li>
             {{- end }}
