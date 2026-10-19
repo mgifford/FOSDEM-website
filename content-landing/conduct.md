@@ -32,7 +32,7 @@ Please bring any concerns to the immediate attention of our coordinating team
 Thank you for your help in making FOSDEM a success and pleasant for all the
 people involved.
 
-## Contact details
+## Contact Details
 
 - E-mail: [conduct@fosdem.org](mailto:conduct@fosdem.org)
 - Phone (during the event only): [+32 2 788 74 73](tel:+3227887473)

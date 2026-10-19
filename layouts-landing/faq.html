@@ -1,0 +1,33 @@
+{{ define "main" }}
+
+{{ $categories := .Sections.ByWeight }}
+
+<div class="landing-article">
+    <h1>{{ .Title }}</h1>
+
+    {{ .Content }}
+
+    <ul>
+        {{ range $cat := $categories }}
+        {{ with $cat.Pages }}
+        <li><a href="#{{ $cat.File.ContentBaseName }}">{{ $cat.Title }}</a></li>
+        {{ end }}
+        {{ end }}
+    </ul>
+
+    {{ range $cat := $categories }}
+    {{ with $cat.Pages.ByWeight }}
+    <h2 id="{{ $cat.File.ContentBaseName }}">{{ $cat.Title }}</h2>
+
+    {{ range . }}
+    <details class="faq-item" id="{{ .File.ContentBaseName }}">
+        <summary><h3>{{ .Title }}</h3></summary>
+
+        {{ .Content }}
+    </details>
+    {{ end }}
+    {{ end }}
+    {{ end }}
+</div>
+
+{{ end }}

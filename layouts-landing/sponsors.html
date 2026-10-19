@@ -1,0 +1,54 @@
+{{ define "main" }}
+
+{{ $tiers := slice
+    (dict "id" "cornerstone" "one" "Cornerstone Sponsor" "many" "Cornerstone Sponsors" "alpha" true)
+    (dict "id" "main" "one" "Main Sponsor" "many" "Main Sponsors" "alpha" true)
+    (dict "id" "thanks" "one" "Thanks" "many" "Thanks" "alpha" false)
+}}
+
+{{ $all := sort .Pages "Title" }}
+
+<div class="landing-article">
+    <h1>{{ partial "title.html" . }}</h1>
+
+    {{ .Content }}
+
+    {{ with where $all "Params.tier" "!=" "thanks" }}
+    <ul class="sponsor-index">
+        {{ range . }}
+        <li><a href="#{{ .File.ContentBaseName }}">{{ partial "title.html" . }}</a></li>
+        {{ end }}
+    </ul>
+    {{ end }}
+
+    {{ range $tier := $tiers }}
+    {{ with where $all "Params.tier" $tier.id }}
+    <section class="sponsor-tier">
+        <h2 id="{{ $tier.id }}">{{ cond (eq (len .) 1) $tier.one $tier.many }}</h2>
+        {{ if and $tier.alpha (gt (len .) 1) }}<p class="sponsor-note">(in alphabetical order)</p>{{ end }}
+
+        {{ range $sponsor := . }}
+        <article class="sponsor" id="{{ $sponsor.File.ContentBaseName }}">
+            <h3>
+                {{- with $sponsor.Params.link -}}
+                <a href="{{ . }}">{{ partial "title.html" $sponsor }}</a>
+                {{- else -}}
+                {{ partial "title.html" $sponsor }}
+                {{- end -}}
+            </h3>
+
+            {{ partial "sponsor-logo.html" $sponsor }}
+
+            {{ $sponsor.Content }}
+        </article>
+        {{ end }}
+    </section>
+    {{ end }}
+    {{ end }}
+
+    {{ if not $all }}
+    <p>Sponsors of FOSDEM {{ .Site.Params.Year }} will be listed here as they are confirmed.</p>
+    {{ end }}
+</div>
+
+{{ end }}

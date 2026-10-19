@@ -1,19 +1,36 @@
 <footer class="landing-footer">
+    <nav class="landing-nav">
+        <ul>
+            {{- with .Site.GetPage "/news" }}
+            <li><a href="{{ .RelPermalink }}">News</a></li>
+            {{- end }}
+            {{- with .Site.GetPage "/support" }}
+            <li><a href="{{ .RelPermalink }}">Support</a></li>
+            {{- end }}
+            {{- with .Site.GetPage "/support/sponsors" }}
+            <li><a href="{{ .RelPermalink }}">Sponsors</a></li>
+            {{- end }}
+            {{- with .Site.GetPage "/faq" }}
+            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+            {{- end }}
+            {{- with .Site.GetPage "/conduct" }}
+            <li><a href="{{ .RelPermalink }}">Code of Conduct</a></li>
+            {{- end }}
+            {{- with .Site.GetPage "/contact" }}
+            <li><a href="{{ .RelPermalink }}">Contact</a></li>
+            {{- end }}
+            {{- with .Site.Home.OutputFormats.Get "rss" }}
+            <li><a href="{{ .RelPermalink }}">RSS</a></li>
+            {{- end }}
+        </ul>
+    </nav>
+
     <address class="landing-legal">
         {{- with .Site.Params.legal -}}
         <strong>{{ .name }}</strong>
         <span class="sep">&middot;</span> {{ .address }}, {{ .postcode }} {{ .city }}, {{ .country }}
         <span class="sep">&middot;</span> {{ .enterpriseNumber }}
         <span class="sep">&middot;</span> <a href="mailto:{{ .email }}">{{ .email }}</a>
-        {{- end }}
-        {{- with .Site.GetPage "/news" }}
-        <span class="sep">&middot;</span> <a href="{{ .RelPermalink }}">News</a>
-        {{- end }}
-        {{- with .Site.GetPage "/conduct" }}
-        <span class="sep">&middot;</span> <a href="{{ .RelPermalink }}">Code of Conduct</a>
-        {{- end }}
-        {{- with .Site.Home.OutputFormats.Get "rss" }}
-        <span class="sep">&middot;</span> <a href="{{ .RelPermalink }}">RSS</a>
         {{- end }}
     </address>
 

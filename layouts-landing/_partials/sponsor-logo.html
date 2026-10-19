@@ -1,0 +1,25 @@
+{{- $logo := "" -}}
+{{- with .Params.logo -}}
+{{- $logo = $.Resources.GetMatch . -}}
+{{- if not $logo -}}
+{{- errorf "sponsor-logo: no resource %q found for %s" . $.File.Path -}}
+{{- end -}}
+{{- else -}}
+{{- $logo = .Resources.GetMatch "logo.*" -}}
+{{- end -}}
+
+{{- with $logo -}}
+{{- $scalable := and (eq .ResourceType "image") (ne .MediaType.SubType "svg") -}}
+
+<p class="sponsor-logo">
+    {{- with $.Params.link }}<a href="{{ . }}">{{ end -}}
+    {{- if $scalable -}}
+    {{- $img := .Fit "400x160" -}}
+    <img src="{{ $img.RelPermalink }}" srcset="{{ $img.RelPermalink }} 1x, {{ (.Fit "800x320").RelPermalink }} 2x"
+        width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $.Title }}" loading="lazy" decoding="async">
+    {{- else -}}
+    <img class="logo-vector" src="{{ .RelPermalink }}" alt="{{ $.Title }}" loading="lazy" decoding="async">
+    {{- end -}}
+    {{- with $.Params.link }}</a>{{ end -}}
+</p>
+{{- end -}}

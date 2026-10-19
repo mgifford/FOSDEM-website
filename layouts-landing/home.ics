@@ -18,7 +18,7 @@
     (printf "DTSTART;VALUE=DATE:%s" ($start.Format "20060102"))
     (printf "DTEND;VALUE=DATE:%s" ($end.Format "20060102"))
     (printf "SUMMARY:%s" .Site.Title)
-    (printf "LOCATION:ULB Campus Solbosch\\, %s\\, Belgium" .Site.Params.Location)
+    (printf "LOCATION:%s\\, %s\\, %s" .Site.Params.Venue .Site.Params.Location .Site.Params.Country)
     (printf "DESCRIPTION:%s in %s\\n%s" .Site.Title .Site.Params.Location .Site.Home.Permalink)
     (printf "URL:%s" .Site.Home.Permalink)
     "TRANSP:TRANSPARENT"

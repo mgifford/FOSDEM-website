@@ -12,9 +12,6 @@ disableKinds:
   - taxonomy
   - term
 
-pagination:
-  pagerSize: 3
-
 markup:
   goldmark:
     parser:
@@ -55,6 +52,8 @@ services:
 
 params:
   Location: Brussels
+  Country: Belgium
+  Venue: ULB Solbosch Campus
   DateFull: "30 & 31 January 2027"
   DateStart: "2027-01-30"
   DateEnd: "2027-01-31"

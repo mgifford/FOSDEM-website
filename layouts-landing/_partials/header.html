@@ -1,0 +1,16 @@
+{{ if not .IsHome }}
+<header class="landing-header">
+    <a class="landing-brand logo-text" href="{{ .Site.Home.RelPermalink }}">FOSDEM<span>'{{ .Site.Params.YearShort }}</span></a>
+
+    <nav class="landing-topnav">
+        <ul>
+            {{- with .Site.GetPage "/news" }}
+            <li><a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>News</a></li>
+            {{- end }}
+            {{- with .Site.GetPage "/support" }}
+            <li><a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>Support</a></li>
+            {{- end }}
+        </ul>
+    </nav>
+</header>
+{{ end }}

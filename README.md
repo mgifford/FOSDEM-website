@@ -11,7 +11,7 @@ All tools are provided by the Nix dev shell:
 nix develop
 ```
 
-This gives you `go`, `hugo` and `pagefind`.
+This gives you `go`, `hugo`, `pagefind`, `just`, `validate-ics` and `check-links`.
 
 Without Nix, install these manually: Go 1.25+, Hugo 0.155+, and Pagefind 1.4+.
 
@@ -127,9 +127,10 @@ Previews build the landing site only, with `-D`. `pr` must be a number.
 
 ## Landing Site
 
-`hugo.landing.yaml` is a separate site in this repo: one page announcing the next
-edition, plus the news feed. Own `contentDir`/`layoutDir`, so `hugo.yaml`, `content/`
-and `layouts/` are not involved and no `schedule.json` is needed.
+`hugo.landing.yaml` is a separate site in this repo: the edition announcement, news,
+and the standing pages (`/support/`, `/support/sponsors/`, `/support/donate/`, `/faq/`,
+`/contact/`, `/practical/conduct/`). Own `contentDir`/`layoutDir`, so `hugo.yaml`,
+`content/` and `layouts/` are not involved and no `schedule.json` is needed.
 
 ```sh
 hugo server --config hugo.landing.yaml --baseURL=http://127.0.0.1/2027 --disableFastRender
@@ -169,7 +170,8 @@ directory and overridable with `image:` in front matter.
 The draft `2026-08-31-example-post-with-image` exercises every element a post can
 contain, callouts included. Preview it with `-D` rather than documenting it here.
 
-`/news/` renders posts in full, newest first, `pagination.pagerSize` per page.
+`/news/` is an index of title and date, newest first, grouped by year once posts span
+more than one. Full text lives on the post page.
 
 ### Calendars
 
@@ -203,17 +205,42 @@ Validation runs in CI after the landing build:
 nix develop -c validate-ics public
 ```
 
+### Links
+
+`check-links` fetches every external link in a built site. Internal links are covered by
+Hugo: an unresolved `relref` fails the build.
+
+```sh
+nix develop -c check-links dist/staging --skip payment-links.mollie.com
+```
+
+Non-zero exit on failure. Not in CI. Mollie payment links 404 on every path, valid ones
+included.
+
 ### Standalone Pages
 
-Pages outside `news/` sit at the top of `content-landing/` with `url:` set to the path
-the main site uses, so links survive the switch to the full site:
+Paths come from the file tree. Use `url:` only when the main site's path has no section
+here yet:
 
 ```yaml
 title: "Code of Conduct"
 url: /practical/conduct/
 ```
 
-Dateless, so the layout omits the dateline. Link them from the footer.
+Dateless, so the layout omits the dateline. Link them from `_partials/footer.html`, or
+`_partials/header.html` for the few that belong in the top nav.
+
+Sponsors and FAQ entries are one file each, assembled into a single page with anchors and
+never rendered on their own:
+
+```
+content-landing/support/sponsors/<id>/index.md   tier: cornerstone|main|thanks
+content-landing/support/sponsors/<id>/logo.svg   optional, page resource
+content-landing/faq/<category>/_index.md         category title and weight
+content-landing/faq/<category>/<question>.md     weight orders within the category
+```
+
+The directory name is the anchor. `/support/` lists its own children.
 
 > Feed `<guid>`s are path-independent tag URIs derived from the **directory name**, so
 > changing a `slug` is free. Renaming the directory re-issues the guid and subscribers see

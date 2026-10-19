@@ -6,7 +6,7 @@
     <h1 class="logo-text no-spacing">FOSDEM<span>'{{ .Site.Params.YearShort }}</span></h1>
 
     <p class="landing-date">{{ .Site.Params.DateFull }}</p>
-    <p class="landing-location">{{ .Site.Params.Location }}, Belgium</p>
+    <p class="landing-location">{{ .Site.Params.Location }}, {{ .Site.Params.Country }}</p>
 </div>
 
 {{ $news := (where .Site.RegularPages "Section" "news").ByDate.Reverse }}

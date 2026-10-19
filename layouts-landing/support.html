@@ -1,0 +1,19 @@
+{{ define "main" }}
+
+<div class="landing-article">
+    <h1>{{ partial "title.html" . }}</h1>
+
+    {{ .Content }}
+
+    {{ with .Pages }}
+    <h2>Fund It</h2>
+
+    <ul class="news-list">
+        {{ range . }}
+        <li><a href="{{ .RelPermalink }}">{{ if .Draft }}[Draft] {{ end }}{{ .LinkTitle }}</a></li>
+        {{ end }}
+    </ul>
+    {{ end }}
+</div>
+
+{{ end }}

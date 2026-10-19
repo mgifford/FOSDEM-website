@@ -22,13 +22,27 @@
             python3 ${./scripts/validate-ics.py} "$@"
           '';
         };
+
+        check-links = pkgs.writeShellApplication {
+          name = "check-links";
+          runtimeInputs = [ pkgs.python3 ];
+          text = ''
+            python3 ${./scripts/check-links.py} "$@"
+          '';
+        };
       in
       {
         packages.validate-ics = validate-ics;
+        packages.check-links = check-links;
 
         apps.validate-ics = {
           type = "app";
           program = "${validate-ics}/bin/validate-ics";
+        };
+
+        apps.check-links = {
+          type = "app";
+          program = "${check-links}/bin/check-links";
         };
 
         devShells.default = pkgs.mkShell {
@@ -36,10 +50,11 @@
             pkgs.go
             pkgs.hugo
             pkgs.just
-            pkgs.openssh
+            pkgs.openssh_gssapi
             pkgs.pagefind
             pkgs.rsync
             pkgs.woff2
+            check-links
             validate-ics
           ];
         };
