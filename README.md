@@ -217,6 +217,23 @@ nix develop -c check-links dist/staging --skip payment-links.mollie.com
 Non-zero exit on failure. Not in CI. Mollie payment links 404 on every path, valid ones
 included.
 
+### Metrics
+
+The homepage emits `/2027/metrics` in Prometheus text exposition format, from the
+`metrics` output format and `home.metrics`:
+
+```
+# HELP website_last_build_time Starting time of the last website build
+# TYPE website_last_build_time gauge
+website_last_build_time 1792391980
+```
+
+`now.Unix` at build time, so a scrape that stops advancing means the build stopped. The
+scrape target carries the year prefix: `https://fosdem.org/2027/metrics`.
+
+The extensionless filename comes from the `text/prometheus` media type: empty `suffixes`
+and `delimiter`.
+
 ### Standalone Pages
 
 Paths come from the file tree. Use `url:` only when the main site's path has no section

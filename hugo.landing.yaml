@@ -19,6 +19,11 @@ markup:
   highlight:
     noClasses: false
 
+mediaTypes:
+  text/prometheus:
+    suffixes: []
+    delimiter: ""
+
 outputFormats:
   RSS:
     mediaType: application/rss+xml
@@ -35,12 +40,18 @@ outputFormats:
     mediaType: text/calendar
     baseName: fosdem-dates
     isPlainText: true
+  metrics:
+    mediaType: text/prometheus
+    baseName: metrics
+    isPlainText: true
+    notAlternative: true
 
 outputs:
   home:
     - HTML
     - RSS
     - calendar-conference
+    - metrics
   section:
     - HTML
   page:
