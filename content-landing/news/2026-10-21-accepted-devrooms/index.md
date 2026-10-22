@@ -89,4 +89,4 @@ Developer rooms are assigned to self-organising groups to work together on open 
 - Tool the Docs
 - Virtualization and Cloud Infrastructure
 
-We accepted 77 out of 128 proposals. This means unfortunately some good proposals were rejected (or asked to be merged with other rooms). These topics and projects are welcome to submit for a stand, main track and /dev/random talks or bird of a feather (bof) submissions (when their CFPs open).
+We accepted 77 out of 128 proposals. This means unfortunately some good proposals were rejected (or asked to be merged with other rooms). These topics and projects are welcome to submit for a [stand]({{< relref "news/2026-09-13-call-for-stands/" >}}), [main track]({{< relref "news/2026-10-05-call-for-main-track/" >}}). and /dev/random talks or bird of a feather (bof) submissions (when their CFPs open). 
