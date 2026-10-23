@@ -68,11 +68,11 @@ Developer rooms are assigned to self-organising groups to work together on open 
 - Open Source Healthcare
 - Open Source Science
 - Open Source Systems Languages
+- Operations
 - PHP
 - Package Management
 - Perl & Raku
 - PostgreSQL
-- Production Operations
 - RISC-V
 - Radio-Frequency Digital Signal Processing (RF DSP)
 - Railways and Open Transport
