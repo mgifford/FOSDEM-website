@@ -6,7 +6,7 @@ outputs:
   - html
 ---
 
-We are pleased to announce the developer rooms that will be organised at FOSDEM 2026.
+We are pleased to announce the developer rooms that will be organised at FOSDEM 2027.
 
 Developer rooms are assigned to self-organising groups to work together on open source projects, to discuss topics relevant to a broader subset of the community, etc. The individual developer room organisers will issue their calls for participation in the next few days. The list below will be updated accordingly. 
 
