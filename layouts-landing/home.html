@@ -31,4 +31,26 @@
 </section>
 {{ end }}
 
+{{ $sponsorPage := .Site.GetPage "/support/sponsors" }}
+{{ with $sponsorPage }}
+{{ $all := sort .Pages "Title" }}
+{{ $shown := where $all "Params.tier" "!=" "thanks" }}
+
+{{ with $shown }}
+<section class="landing-sponsors">
+    <h2><a href="{{ $sponsorPage.RelPermalink }}">Sponsors</a></h2>
+
+    {{ range $tier := slice "cornerstone" "main" }}
+    {{ with where $shown "Params.tier" $tier }}
+    <ul class="sponsor-logos sponsor-logos-{{ $tier }}">
+        {{ range . }}
+        <li>{{ partial "sponsor-logo.html" . }}</li>
+        {{ end }}
+    </ul>
+    {{ end }}
+    {{ end }}
+</section>
+{{ end }}
+{{ end }}
+
 {{ end }}
