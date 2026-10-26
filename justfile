@@ -1,6 +1,5 @@
 year         := "2027"
 host         := "www-public0.fosdem.org"
-config       := "hugo.landing.yaml"
 staging_root := "/var/www/staging.fosdem.org/public"
 live_root    := "/var/www/fosdem.org/public"
 
@@ -12,24 +11,24 @@ ticket id:
     kinit {{id}}@FOSDEM.ORG
     klist
 
-# Landing site, staging baseURL, drafts included
+# staging baseURL, drafts included
 build-staging:
-    hugo build --config {{config}} -b https://staging.fosdem.org/{{year}}/ -D \
+    hugo build -b https://staging.fosdem.org/{{year}}/ -D \
         -d dist/staging --cleanDestinationDir
     validate-ics dist/staging
 
-# Landing site, production baseURL, drafts excluded
+# production baseURL, drafts excluded
 build-live:
-    hugo build --config {{config}} -b https://fosdem.org/{{year}}/ \
+    hugo build -b https://fosdem.org/{{year}}/ \
         -d dist/live --cleanDestinationDir
     validate-ics dist/live
 
-# Landing site, per-PR preview baseURL, drafts included
+# per-PR preview baseURL, drafts included
 build-preview $pr:
     #!/usr/bin/env bash
     set -euo pipefail
     [[ "$pr" =~ ^[0-9]+$ ]] || { echo "pr must be a number, got '$pr'" >&2; exit 1; }
-    hugo build --config {{config}} -b "https://staging.fosdem.org/pr-$pr/" -D \
+    hugo build -b "https://staging.fosdem.org/pr-$pr/" -D \
         -d "dist/pr-$pr" --cleanDestinationDir
     validate-ics "dist/pr-$pr"
 

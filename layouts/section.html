@@ -1,13 +1,24 @@
 {{ define "main" }}
 
-{{ partial "bar.html" . }}
+{{ $posts := .Pages.ByDate.Reverse }}
+{{ $groups := $posts.GroupByDate "2006" }}
 
-<div class="container">
-    {{ partial "breadcrumbs.html" . }}
-
+<div class="landing-article">
     <h1>{{ .Title }}</h1>
 
-    {{ .Content }}
+    {{ range $groups }}
+    {{ if gt (len $groups) 1 }}<h2>{{ .Key }}</h2>{{ end }}
+    <ul class="news-list">
+        {{ range .Pages }}
+        <li>
+            <a href="{{ .RelPermalink }}">{{ partial "title.html" . }}</a>
+            <time class="landing-date-small" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+        </li>
+        {{ end }}
+    </ul>
+    {{ else }}
+    <p>No news yet.</p>
+    {{ end }}
 </div>
 
 {{ end }}

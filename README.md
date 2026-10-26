@@ -1,7 +1,10 @@
 # fosdem.org
 
-Hugo static site for fosdem.org. Schedule data is preprocessed with a Go program that
-reads the Pretalx JSON export and writes derived data files for Hugo to consume.
+Hugo static site for fosdem.org: the edition announcement, news, and the standing pages.
+
+> The conference site (schedule, speakers, tracks, rooms, and the Go program that turns the
+> Pretalx export into Hugo data files) lives on the `archive/conference-site` branch. It is
+> not built from `main`. Kept for reference, to copy from when the schedule goes up.
 
 ## Prerequisites
 
@@ -11,63 +14,27 @@ All tools are provided by the Nix dev shell:
 nix develop
 ```
 
-This gives you `go`, `hugo`, `pagefind`, `just`, `validate-ics` and `check-links`.
+This gives you `hugo`, `just`, `woff2`, `validate-ics` and `check-links`.
 
-Without Nix, install these manually: Go 1.25+, Hugo 0.155+, and Pagefind 1.4+.
-
-## Data Pipeline
-
-The schedule data flows like this:
-
-```
-schedule.json  -->  go run main.go  -->  data/*.json  -->  Hugo templates
-(Pretalx export)                         (derived data)
-```
-
-`schedule.json` is the raw Pretalx schedule export (~5 MB). It is gitignored. Download
-it from [Pretalx](https://pretalx.fosdem.org/fosdem-2026/schedule/export/schedule_fosdem.json)
-and place it in the project root. Note: you must be logged in, otherwise you will get a 404.
-
-`main.go` reads this file at startup and writes the following to `data/`:
-
-| File              | Contents                                    |
-|-------------------|---------------------------------------------|
-| `schedule.json`   | Full parsed conference data                 |
-| `events.json`     | Map of event slug to event(s)               |
-| `speakers.json`   | Map of speaker GUID to speaker + event list |
-| `tracks.json`     | Map of track name to events                 |
-| `tracklist.json`  | Tracks grouped by type (main/devroom/other) |
-| `keynotes.json`   | Keynote events (curated by slug)            |
-| `roominfo.json`   | Per-room day/time ranges and track listings |
-| `roomtracks.json` | Room x time grid for schedule overview      |
-
-`data/sponsors.json` is maintained **by hand**.
-
-All files under `data/` are gitignored.
+Without Nix, install Hugo 0.155+ manually.
 
 ## Build
 
 ```sh
-# 1. Generate data files from schedule.json
-go run main.go
-
-# 2. Build the site
-hugo build -D
-
-# 3. Index for search
-pagefind --site "public"
+hugo build -b https://fosdem.org/2027/
 ```
 
 ## Dev Server
 
 ```sh
-go run main.go
-hugo server --baseURL=http://127.0.0.1/2026 -D --disableFastRender
+hugo server --baseURL=http://127.0.0.1/2027 -D --disableFastRender
 ```
 
-Always test with a `baseURL`. The site will be deployed under a subpath, and all
-internal links use `relURL` (e.g. `{{ url | relURL }}`) to resolve paths correctly
-against it. Without a `baseURL`, broken links won't surface during development.
+Always test with a `baseURL`. The site is deployed under a subpath, and all internal links
+use `relURL` (e.g. `{{ url | relURL }}`) to resolve paths correctly against it. Without a
+`baseURL`, broken links won't surface during development.
+
+`-D` includes drafts. News posts start `draft: true`, so without it a new post is invisible.
 
 ## Deploy
 
@@ -96,7 +63,7 @@ just deploy-staging go=1     # writes
 just deploy-live go=1
 ```
 
-The landing site sits under `/2027/`, mirroring production, so the `relURL` paths
+Staging sits under `/2027/`, mirroring production, so the `relURL` paths
 exercised on staging are the ones that ship. Staging builds with `-D`, production
 without, so drafts are reviewable on staging and never reach production.
 
@@ -123,19 +90,9 @@ just deploy-preview 123 go=1   # writes
 just undeploy-preview 123 go=1 # removes the remote directory
 ```
 
-Previews build the landing site only, with `-D`. `pr` must be a number.
+Previews build with `-D`. `pr` must be a number.
 
-## Landing Site
-
-`hugo.landing.yaml` is a separate site in this repo: the edition announcement, news,
-and the standing pages (`/support/`, `/support/sponsors/`, `/support/donate/`, `/faq/`,
-`/contact/`, `/practical/conduct/`). Own `contentDir`/`layoutDir`, so `hugo.yaml`,
-`content/` and `layouts/` are not involved and no `schedule.json` is needed.
-
-```sh
-hugo server --config hugo.landing.yaml --baseURL=http://127.0.0.1/2027 --disableFastRender
-hugo build  --config hugo.landing.yaml -b https://fosdem.org/2027/
-```
+## Pages
 
 The feed is published at `/rss.xml`, not Hugo's default `/index.xml`. That is the URL
 subscribers use (`fosdem.org/rss.xml` redirects to the current edition). News items get
@@ -148,11 +105,11 @@ Posts are page bundles, created with the directory form. Passing `index.md` on t
 silently falls back to Hugo's built-in archetype and you lose the `slug`:
 
 ```sh
-nix develop -c hugo new content --config hugo.landing.yaml \
+nix develop -c hugo new content \
     --kind news news/2026-10-02-call-for-participation
 ```
 
-The directory keeps the date so `content-landing/news/` stays chronological, while the
+The directory keeps the date so `content/news/` stays chronological, while the
 generated `slug` drops it from the URL (`/2027/news/call-for-participation/`). Posts start
 `draft: true`; preview with `-D`.
 
@@ -198,7 +155,7 @@ events:
 ```
 
 The filename comes from the output format, so another name means another format in
-`hugo.landing.yaml` (`calendar-cfp` writes `fosdem-cfp.ics`). No template needed:
+`hugo.yaml` (`calendar-cfp` writes `fosdem-cfp.ics`). No template needed:
 `page.ics` carries no format name, so it serves them all.
 
 All-day `VEVENT`s, no timezone. Each carries the post link as `URL` and in
@@ -207,7 +164,7 @@ All-day `VEVENT`s, no timezone. Each carries the post link as `URL` and in
 > `UID`s derive from the post directory and the list position. Append to `events:`;
 > reordering re-issues them and subscribers see the entries again as new.
 
-Validation runs in CI after the landing build:
+Validation runs in CI after the build:
 
 ```sh
 nix develop -c validate-ics public
@@ -244,8 +201,8 @@ and `delimiter`.
 
 ### Standalone Pages
 
-Paths come from the file tree. Use `url:` only when the main site's path has no section
-here yet:
+Paths come from the file tree. Use `url:` only to pin a page to a path whose section does
+not exist here yet:
 
 ```yaml
 title: "Code of Conduct"
@@ -259,10 +216,10 @@ Sponsors and FAQ entries are one file each, assembled into a single page with an
 never rendered on their own:
 
 ```
-content-landing/support/sponsors/<id>/index.md   tier: cornerstone|main|thanks
-content-landing/support/sponsors/<id>/logo.svg   optional, page resource
-content-landing/faq/<category>/_index.md         category title and weight
-content-landing/faq/<category>/<question>.md     weight orders within the category
+content/support/sponsors/<id>/index.md   tier: cornerstone|main|thanks
+content/support/sponsors/<id>/logo.svg   optional, page resource
+content/faq/<category>/_index.md         category title and weight
+content/faq/<category>/<question>.md     weight orders within the category
 ```
 
 The directory name is the anchor. `/support/` lists its own children.
@@ -271,33 +228,6 @@ The directory name is the anchor. `/support/` lists its own children.
 > changing a `slug` is free. Renaming the directory re-issues the guid and subscribers see
 > the post again as new.
 
-> The `/rss.xml` -> `/<year>/rss.xml` redirect is server-side, not in this repo. It must be
-> repointed to `/2027/` or subscribers keep getting the 2026 feed.
-
-## Project Structure
-
-```
-content/
-  about.md, practical.md, ...   Static pages (Markdown)
-  news/                         News articles
-  schedule/
-    event/_content.gotmpl       Generates a page per event from data
-    speaker/_content.gotmpl     Generates a page per speaker from data
-    track/_content.gotmpl       Generates a page per track from data
-    room/_content.gotmpl        Generates a page per room from data
-
-layouts/
-  baseof.html                   Base template (nav, footer, dark mode)
-  home.html                     Homepage
-  event.html, speaker.html, ... Layout per page type
-  partials/                     Shared template fragments
-
-static/
-  css/style.css                 All styles (CSS custom properties, dark mode)
-  css/fonts/                    Bundled fonts (Signika, DejaVu Sans)
-  js/leaflet.js                 Map library
-```
-
-Pages under `content/schedule/` use Hugo content adapters (`_content.gotmpl`) to
-dynamically create pages from the data files, so no individual Markdown file is needed per
-event/speaker/track/room.
+> The `/rss.xml` -> `/<year>/rss.xml` redirect is server-side, not in this repo. It points
+> at the current edition and needs repointing when a new one opens, or subscribers keep
+> getting the previous feed.

@@ -1,4 +1,0 @@
----
-title: "Rooms"
-layout: "rooms"
----

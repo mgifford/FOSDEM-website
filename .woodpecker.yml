@@ -16,12 +16,7 @@ steps:
     environment:
       NIX_CONFIG: *nix_config
     commands:
-      - unformatted=$(nix develop -c gofmt -l .)
-      - test -z "$unformatted" || { echo "$unformatted"; exit 1; }
-      - nix develop -c go vet ./...
-      - nix develop -c go run . testdata/schedule.json
       - nix develop -c hugo build
-      - nix develop -c hugo build --config hugo.landing.yaml
       - nix develop -c validate-ics public
     when:
       - event: [push, pull_request]

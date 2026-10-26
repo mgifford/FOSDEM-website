@@ -15,7 +15,7 @@ events:
 ---
 
 This post is a draft, so it is excluded from `hugo build` and from the RSS feed.
-Preview it with `hugo server --config hugo.landing.yaml -D`. It exists to
+Preview it with `hugo server -D`. It exists to
 exercise every element a news post can contain.
 
 ## Images

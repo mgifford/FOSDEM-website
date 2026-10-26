@@ -47,11 +47,9 @@
 
         devShells.default = pkgs.mkShell {
           buildInputs = [
-            pkgs.go
             pkgs.hugo
             pkgs.just
             pkgs.openssh_gssapi
-            pkgs.pagefind
             pkgs.rsync
             pkgs.woff2
             check-links

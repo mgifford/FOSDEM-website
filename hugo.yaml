@@ -1,34 +1,84 @@
-baseURL: https://fosdem.org
+baseURL: https://fosdem.org/2027/
 languageCode: en
-title: FOSDEM 2026
+title: FOSDEM 2027
+timeZone: Europe/Brussels
+
 disableKinds:
   - taxonomy
   - term
 
-pagination:
-  pagerSize: 5
+markup:
+  goldmark:
+    parser:
+      wrapStandAloneImageWithinParagraph: false
+  highlight:
+    noClasses: false
+
+mediaTypes:
+  text/prometheus:
+    suffixes: []
+    delimiter: ""
+
+outputFormats:
+  RSS:
+    mediaType: application/rss+xml
+    baseName: rss
+  calendar-weekend:
+    mediaType: text/calendar
+    baseName: fosdem
+    isPlainText: true
+  calendar-cfp:
+    mediaType: text/calendar
+    baseName: fosdem-cfp
+    isPlainText: true
+  calendar-dates:
+    mediaType: text/calendar
+    baseName: fosdem-dates
+    isPlainText: true
+  calendar-all:
+    mediaType: text/calendar
+    baseName: fosdem-all
+    isPlainText: true
+  metrics:
+    mediaType: text/prometheus
+    baseName: metrics
+    isPlainText: true
+    notAlternative: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - calendar-weekend
+    - calendar-all
+    - metrics
+  section:
+    - HTML
+  page:
+    - HTML
+
+services:
+  rss:
+    limit: 10
 
 params:
   Location: Brussels
-  DateFull: 31 January & 1 February 2026
+  Country: Belgium
+  Venue: ULB Solbosch Campus
+  DateFull: "30 & 31 January 2027"
+  DateStart: "2027-01-30"
+  DateEnd: "2027-01-31"
+  Year: "2027"
+  YearShort: "27"
 
-menu:
-  main:
-    - name: About
-      url: /about/
-      weight: 1
-    - name: News
-      url: /news/
-      weight: 2
-    - name: Schedule
-      url: /schedule/
-      weight: 3
-    - name: Stands
-      url: /stands/
-      weight: 4
-    - name: Volunteer
-      url: /volunteer/
-      weight: 5
-    - name: Practical
-      url: /practical/
-      weight: 6
+  FeedHome: https://fosdem.org/
+  FeedDescription: FOSDEM 2027 News Feed
+
+  legal:
+    name: FOSDEM VZW
+    address: Guldendelle 9
+    postcode: "1930"
+    city: Zaventem
+    country: Belgium
+    enterpriseNumber: BE 0477.085.590
+    email: info@fosdem.org
