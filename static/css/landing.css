@@ -1,5 +1,14 @@
+@font-face {
+    font-family: "DejaVu Sans Mono";
+    src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSansMono.woff2) format("woff2"),
+         url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSansMono.ttf) format("truetype");
+    font-display: swap;
+}
+
 :root {
     --vh: 1vh;
+
+    --f-mono: "DejaVu Sans Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
     --c-code-bg: #f6f6f6;
     --c-code-text: #24292f;
@@ -110,7 +119,7 @@ main {
 }
 
 .landing-topnav a {
-    font-family: "DejaVu Sans", sans-serif;
+    font-family: var(--f-mono);
     font-size: .8rem;
     color: var(--c-footer);
     text-decoration: none;
@@ -193,7 +202,7 @@ main {
 }
 
 .landing-nav a {
-    font-family: "DejaVu Sans", sans-serif;
+    font-family: var(--f-mono);
     font-size: .8rem;
     line-height: 1.6;
     color: var(--c-footer);
@@ -207,7 +216,7 @@ main {
 }
 
 .landing-legal {
-    font-family: "DejaVu Sans", sans-serif;
+    font-family: var(--f-mono);
     font-style: normal;
     font-size: .75rem;
     line-height: 1.6;
@@ -221,7 +230,7 @@ main {
 }
 
 .landing-license {
-    font-family: "DejaVu Sans", sans-serif;
+    font-family: var(--f-mono);
     font-size: .75rem;
     line-height: 1.6;
     color: var(--c-footer);
@@ -281,8 +290,9 @@ main {
 }
 
 .landing-date-small {
+    font-family: var(--f-mono);
     color: var(--c-footer);
-    font-size: .9em;
+    font-size: .85em;
 }
 
 .landing-article img {
@@ -360,8 +370,9 @@ main {
 
 .date-list time {
     flex: none;
-    width: 9.5em;
-    font-family: "Signika", sans-serif;
+    width: 11.5em;
+    font-family: var(--f-mono);
+    font-size: .9em;
 }
 
 .date-list span {
@@ -370,7 +381,8 @@ main {
 
 .date-list a {
     margin-left: auto;
-    font-size: .85em;
+    font-family: var(--f-mono);
+    font-size: .8em;
     white-space: nowrap;
 }
 
@@ -402,7 +414,8 @@ main {
 
 .landing-article .sponsor-note {
     margin: -.2em 0 1.4em;
-    font-size: .85em;
+    font-family: var(--f-mono);
+    font-size: .8em;
     color: var(--c-footer);
 }
 
@@ -444,7 +457,7 @@ main {
 
 .landing-article code,
 .landing-article pre {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--f-mono);
     font-size: .9em;
 }
 
@@ -635,17 +648,21 @@ main {
     box-sizing: border-box;
 }
 
-.landing-news h2 {
-    font-size: 1.1rem;
+.landing-news h2,
+.landing-sponsors h2 {
+    font-family: var(--f-mono);
+    font-size: .8rem;
     font-weight: bold;
+    letter-spacing: .08em;
+    text-transform: uppercase;
     color: var(--c-footer);
     margin: 0;
 }
 
 .landing-news-more {
     margin: 1em 0 0;
-    font-family: "DejaVu Sans", sans-serif;
-    font-size: .85rem;
+    font-family: var(--f-mono);
+    font-size: .8rem;
 }
 
 .landing-sponsors {
@@ -654,13 +671,6 @@ main {
     margin: 0 auto;
     padding: 1rem 1rem clamp(1.5rem, calc(4 * var(--vh)), 3rem);
     box-sizing: border-box;
-}
-
-.landing-sponsors h2 {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: var(--c-footer);
-    margin: 0;
 }
 
 .landing-sponsors h2 a {
@@ -740,8 +750,9 @@ main {
 }
 
 .calendar-widget-meta {
+    font-family: var(--f-mono);
     color: var(--c-footer);
-    font-size: .85em;
+    font-size: .8em;
 }
 
 .calendar-widget-actions {
@@ -784,6 +795,9 @@ main {
 
 .news-list time {
     margin-left: auto;
+    font-family: var(--f-mono);
+    font-size: .85em;
+    color: var(--c-footer);
     white-space: nowrap;
 }
 
