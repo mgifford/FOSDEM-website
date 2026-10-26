@@ -1,0 +1,262 @@
+.date-list {
+    list-style: none;
+    margin: 1.2em 0 2.2em;
+    padding: 0;
+}
+
+.article .date-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .2em 1.2em;
+    margin: 0;
+    padding: .6em 0;
+    border-bottom: 1px solid var(--c-line-footer);
+}
+
+.date-list time {
+    flex: none;
+    width: 11.5em;
+    font-family: var(--f-mono);
+    font-size: .9em;
+}
+
+.date-list span {
+    flex: 1 1 14em;
+}
+
+.date-list a {
+    margin-left: auto;
+    font-family: var(--f-mono);
+    font-size: .8em;
+    white-space: nowrap;
+}
+
+.article .date-list li.is-passed {
+    color: var(--c-footer);
+}
+
+.date-list li.is-passed time {
+    text-decoration: line-through;
+}
+
+.sponsor-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3em 1.2em;
+    margin: 1.6em 0;
+    padding: 0;
+    list-style: none;
+}
+
+.article .sponsor-index li {
+    margin: 0;
+}
+
+.sponsor-tier h2 {
+    padding-bottom: .2em;
+    border-bottom: 1px solid var(--c-line-footer);
+}
+
+.article .sponsor-note {
+    margin: -.2em 0 1.4em;
+    font-family: var(--f-mono);
+    font-size: .8em;
+    color: var(--c-footer);
+}
+
+.sponsor {
+    margin-bottom: 2em;
+}
+
+.sponsor-logo {
+    display: inline-block;
+    margin: 0 0 1em;
+}
+
+.article .sponsor-logo img {
+    max-width: 100%;
+    max-height: 80px;
+    width: auto;
+    border-radius: 0;
+}
+
+.article .sponsor-logo .logo-vector {
+    height: 80px;
+    max-height: none;
+}
+
+.faq-item {
+    border-bottom: 1px solid var(--c-line-footer);
+    padding: .5em 0;
+}
+
+.faq-item summary {
+    cursor: pointer;
+}
+
+.article .faq-item h3 {
+    display: inline;
+    margin: 0;
+    font-size: 1.05em;
+}
+.news {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 1rem 1rem clamp(1.5rem, calc(4 * var(--vh)), 3rem);
+    box-sizing: border-box;
+}
+
+.news h2,
+.sponsors h2 {
+    font-family: var(--f-mono);
+    font-size: .8rem;
+    font-weight: bold;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--c-footer);
+    margin: 0;
+}
+
+.news-more {
+    margin: 1em 0 0;
+    font-family: var(--f-mono);
+    font-size: .8rem;
+}
+
+.sponsors {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 1rem 1rem clamp(1.5rem, calc(4 * var(--vh)), 3rem);
+    box-sizing: border-box;
+}
+
+.sponsors h2 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.sponsors h2 a:hover,
+.sponsors h2 a:focus-visible {
+    color: var(--c-main);
+    text-decoration: underline;
+}
+
+.sponsor-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25em 2.5em;
+    margin: clamp(.75em, calc(2 * var(--vh)), 1.5em) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sponsors .sponsor-logo {
+    display: block;
+    margin: 0;
+}
+
+.sponsors .sponsor-logo img {
+    display: block;
+    max-width: 100%;
+    max-height: 44px;
+    width: auto;
+}
+
+.sponsors .sponsor-logo .logo-vector {
+    height: 44px;
+    max-height: none;
+}
+
+.sponsor-logos-cornerstone .sponsor-logo img {
+    max-height: 64px;
+}
+
+.sponsor-logos-cornerstone .sponsor-logo .logo-vector {
+    height: 64px;
+    max-height: none;
+}
+
+.calendar-widget {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75em 1.25em;
+    margin: 2.5em 0 0;
+    padding: 1em 1.25em;
+    border: 1px solid var(--c-line-footer);
+    border-radius: .4em;
+    font-family: "DejaVu Sans", sans-serif;
+}
+
+.calendar-widget-icon {
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--c-main);
+}
+
+.calendar-widget-text {
+    flex: 1 1 14em;
+    line-height: 1.4;
+}
+
+.calendar-widget-text strong {
+    display: block;
+    font-family: "Signika", sans-serif;
+}
+
+.calendar-widget-meta {
+    font-family: var(--f-mono);
+    color: var(--c-footer);
+    font-size: .8em;
+}
+
+.calendar-widget-actions {
+    flex: none;
+    display: flex;
+    gap: 1em;
+    font-size: .9em;
+    white-space: nowrap;
+}
+
+.calendar-widget-actions a {
+    color: var(--c-main);
+    text-decoration: none;
+}
+
+.calendar-widget-actions a:hover {
+    text-decoration: underline;
+}
+
+.news-list {
+    list-style: none;
+    padding: 0;
+    margin: clamp(.75em, calc(2 * var(--vh)), 1.5em) 0 0;
+}
+
+.news-list li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.5em;
+    align-items: baseline;
+    padding: clamp(.5em, calc(1.2 * var(--vh)), .75em) 0;
+    border-bottom: 1px solid var(--c-line-footer);
+    font-family: "DejaVu Sans", sans-serif;
+}
+
+.news-list a {
+    font-family: "Signika", sans-serif;
+    font-size: 1.05em;
+}
+
+.news-list time {
+    margin-left: auto;
+    font-family: var(--f-mono);
+    font-size: .85em;
+    color: var(--c-footer);
+    white-space: nowrap;
+}

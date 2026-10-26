@@ -1,0 +1,86 @@
+:root {
+    --vh: 1vh;
+
+    --f-mono: "DejaVu Sans Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --c-white: #fff;
+    --c-bg: var(--c-white);
+    --c-text: #000;
+    --c-main: #ac1d94;
+    --c-footer: #5f5f5f;
+    --c-line-footer: #ccc;
+    --c-link: #3479c4;
+
+    --c-code-bg: #f6f6f6;
+    --c-code-text: #24292f;
+    --c-code-comment: #6a737d;
+    --c-code-keyword: #ac1d94;
+    --c-code-string: #0a7a45;
+    --c-code-number: #b35900;
+    --c-code-name: #3479c4;
+    --c-code-type: #6f42c1;
+    --c-code-punct: #57606a;
+
+    --c-callout-note: #3479c4;
+    --c-callout-tip: #0a7a45;
+    --c-callout-warning: #b35900;
+    --c-callout-caution: #c62828;
+}
+
+[data-theme='dark'] {
+    --c-white: #eee;
+    --c-bg: #222;
+    --c-text: var(--c-white);
+    --c-main: #ac1d94;
+    --c-footer: #eee;
+    --c-line-footer: #555;
+    --c-link: #69a1ff;
+
+    --c-code-bg: #2a2a2a;
+    --c-code-text: #e6e6e6;
+    --c-code-comment: #9aa0a6;
+    --c-code-keyword: #e879d0;
+    --c-code-string: #7ddc9a;
+    --c-code-number: #ffb86c;
+    --c-code-name: #69a1ff;
+    --c-code-type: #c8a2ff;
+    --c-code-punct: #b0b6bd;
+
+    --c-callout-note: #69a1ff;
+    --c-callout-tip: #7ddc9a;
+    --c-callout-warning: #ffb86c;
+    --c-callout-caution: #ff8a80;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+        --c-white: #eee;
+        --c-bg: #222;
+        --c-text: var(--c-white);
+        --c-main: #ac1d94;
+        --c-footer: #eee;
+        --c-line-footer: #555;
+        --c-link: #69a1ff;
+
+        --c-code-bg: #2a2a2a;
+        --c-code-text: #e6e6e6;
+        --c-code-comment: #9aa0a6;
+        --c-code-keyword: #e879d0;
+        --c-code-string: #7ddc9a;
+        --c-code-number: #ffb86c;
+        --c-code-name: #69a1ff;
+        --c-code-type: #c8a2ff;
+        --c-code-punct: #b0b6bd;
+
+        --c-callout-note: #69a1ff;
+        --c-callout-tip: #7ddc9a;
+        --c-callout-warning: #ffb86c;
+        --c-callout-caution: #ff8a80;
+    }
+}
+
+@supports (height: 1dvh) {
+    :root {
+        --vh: 1dvh;
+    }
+}

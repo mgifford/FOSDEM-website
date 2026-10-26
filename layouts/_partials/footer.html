@@ -1,5 +1,5 @@
-<footer class="landing-footer">
-    <nav class="landing-nav">
+<footer class="site-footer">
+    <nav class="footer-nav">
         <ul>
             {{- with .Site.GetPage "/news" }}
             <li><a href="{{ .RelPermalink }}">News</a></li>
@@ -28,7 +28,7 @@
         </ul>
     </nav>
 
-    <address class="landing-legal">
+    <address class="legal">
         {{- with .Site.Params.legal -}}
         <strong>{{ .name }}</strong>
         <span class="sep">&middot;</span> {{ .address }}, {{ .postcode }} {{ .city }}, {{ .country }}
@@ -37,7 +37,7 @@
         {{- end }}
     </address>
 
-    <p class="landing-license">
+    <p class="license">
         Content licensed <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>, except the FOSDEM
         name and gear logo.
     </p>

@@ -1,0 +1,273 @@
+.article {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    box-sizing: border-box;
+    line-height: 1.6;
+}
+
+.article h1 {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    line-height: 1.2;
+}
+
+.date-small {
+    font-family: var(--f-mono);
+    color: var(--c-footer);
+    font-size: .85em;
+}
+
+.article img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.article p,
+.article li,
+.article blockquote,
+.article th,
+.article td {
+    font-family: "DejaVu Sans", sans-serif;
+}
+
+.article h2,
+.article h3,
+.article h4,
+.article h5,
+.article h6 {
+    font-weight: bold;
+    line-height: 1.25;
+    margin: 1.6em 0 .4em;
+}
+
+.article h2 {
+    font-size: 1.45em;
+}
+
+.article h3 {
+    font-size: 1.2em;
+}
+
+.article h4,
+.article h5,
+.article h6 {
+    font-size: 1em;
+}
+
+.article strong,
+.article th {
+    font-weight: bold;
+}
+
+.article em {
+    font-style: italic;
+}
+
+.article ul,
+.article ol {
+    padding-left: 1.4em;
+}
+
+.article li {
+    margin: .35em 0;
+}
+
+.article code,
+.article pre {
+    font-family: var(--f-mono);
+    font-size: .9em;
+}
+
+.article :not(pre) > code {
+    padding: .1em .35em;
+    border-radius: .25em;
+    background: var(--c-code-bg);
+}
+
+.article pre {
+    margin: 1.5em 0;
+    padding: 1em;
+    border-radius: .3em;
+    background: var(--c-code-bg);
+    color: var(--c-code-text);
+    overflow-x: auto;
+}
+
+.article .highlight {
+    margin: 1.5em 0;
+}
+
+.article .highlight pre {
+    margin: 0;
+}
+
+.article .c,
+.article .ch,
+.article .cm,
+.article .c1,
+.article .cs,
+.article .cp,
+.article .cpf {
+    color: var(--c-code-comment);
+    font-style: italic;
+}
+
+.article .k,
+.article .kc,
+.article .kd,
+.article .kn,
+.article .kp,
+.article .kr,
+.article .ow {
+    color: var(--c-code-keyword);
+}
+
+.article .s,
+.article .s1,
+.article .s2,
+.article .sb,
+.article .sc,
+.article .sd,
+.article .se,
+.article .sh,
+.article .si,
+.article .sx,
+.article .sr,
+.article .ss,
+.article .sa,
+.article .dl,
+.article .l,
+.article .ld {
+    color: var(--c-code-string);
+}
+
+.article .m,
+.article .mb,
+.article .mf,
+.article .mh,
+.article .mi,
+.article .mo,
+.article .il {
+    color: var(--c-code-number);
+}
+
+.article .na,
+.article .nb,
+.article .bp,
+.article .nf,
+.article .fm,
+.article .nt,
+.article .nv,
+.article .vc,
+.article .vg,
+.article .vi {
+    color: var(--c-code-name);
+}
+
+.article .kt,
+.article .nc,
+.article .nn,
+.article .ne,
+.article .no,
+.article .nd {
+    color: var(--c-code-type);
+}
+
+.article .o,
+.article .p {
+    color: var(--c-code-punct);
+}
+
+.article .gd {
+    color: var(--c-code-number);
+}
+
+.article .gi {
+    color: var(--c-code-string);
+}
+
+.article .gh,
+.article .gu,
+.article .gs {
+    font-weight: bold;
+}
+
+.article .ge {
+    font-style: italic;
+}
+
+.article pre code {
+    padding: 0;
+    background: none;
+}
+
+.article blockquote {
+    margin: 1.5em 0;
+    padding: .25em 0 .25em 1em;
+    border-left: 3px solid var(--c-main);
+    color: var(--c-footer);
+}
+
+.article .callout {
+    padding: 1em 1.25em;
+    border-left-color: var(--c-callout, var(--c-main));
+    border-radius: 0 .3em .3em 0;
+    background: var(--c-code-bg);
+    color: inherit;
+}
+
+.article .callout-note {
+    --c-callout: var(--c-callout-note);
+}
+
+.article .callout-tip {
+    --c-callout: var(--c-callout-tip);
+}
+
+.article .callout-warning {
+    --c-callout: var(--c-callout-warning);
+}
+
+.article .callout-caution {
+    --c-callout: var(--c-callout-caution);
+}
+
+.article .callout > :first-child {
+    margin-top: 0;
+}
+
+.article .callout > :last-child {
+    margin-bottom: 0;
+}
+
+.article .callout ul,
+.article .callout ol {
+    margin: .5em 0;
+}
+
+.article .callout-title {
+    font-family: "Signika", sans-serif;
+    font-weight: bold;
+    color: var(--c-callout, var(--c-main));
+    margin: 0 0 .5em;
+}
+
+.article th {
+    padding: .2em;
+    text-align: left;
+}
+.figure {
+    margin: 1.75em 0;
+}
+
+.figure figcaption {
+    margin-top: .5em;
+    font-size: .85em;
+    line-height: 1.5;
+    color: var(--c-footer);
+    text-align: center;
+    text-wrap: balance;
+}

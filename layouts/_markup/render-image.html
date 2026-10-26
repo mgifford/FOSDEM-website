@@ -42,7 +42,7 @@
 {{- $tag := printf `<img src="%s" alt="%s"%s loading="lazy" decoding="async">` $url (.PlainText | htmlEscape) $attrs -}}
 
 {{- if and .IsBlock (ne .Title "") -}}
-<figure class="landing-figure">{{ $tag | safeHTML }}
+<figure class="figure">{{ $tag | safeHTML }}
 <figcaption>{{ .Title }}</figcaption>
 </figure>
 {{- else -}}

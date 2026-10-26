@@ -1,0 +1,127 @@
+@font-face {
+    font-family: "DejaVu Sans";
+    src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.woff2) format("woff2"),
+         url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSans.ttf) format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "DejaVu Sans Mono";
+    src: url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSansMono.woff2) format("woff2"),
+         url(fonts/dejavu-sans-ttf-2.37/ttf/DejaVuSansMono.ttf) format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Signika";
+    src: url("fonts/Signika/Signika-VariableFont_GRAD,wght.woff2") format("woff2"),
+         url("fonts/Signika/Signika-VariableFont_GRAD,wght.ttf") format("truetype");
+    font-display: swap;
+}
+
+* {
+    font-family: "Signika", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+    font-variation-settings: "GRAD" 0;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--c-bg);
+    color: var(--c-text);
+}
+
+body,
+.no-spacing {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: bold;
+    margin: .2em 0;
+}
+
+p,
+a {
+    font-family: "DejaVu Sans", sans-serif;
+}
+
+span,
+b {
+    font-family: inherit;
+}
+
+b {
+    font-weight: bold;
+}
+
+p {
+    padding: 0;
+    margin-top: 0;
+}
+
+a {
+    text-decoration: none;
+    color: var(--c-link);
+}
+
+a.button {
+    padding: .4em 1em;
+    border-radius: .2em;
+    background-color: var(--c-main);
+    color: var(--c-white);
+}
+
+hr {
+    border: none;
+    border-bottom: 1px solid var(--c-line-footer);
+}
+
+table {
+    width: 100%;
+    border: 1px solid var(--c-line-footer);
+    border-radius: .3em;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-right: 1px solid var(--c-line-footer);
+}
+
+td {
+    padding: .2em;
+    border-top: 1px solid var(--c-line-footer);
+}
+
+th:last-of-type,
+td:last-of-type {
+    border-right: none;
+}
+
+.logo-text {
+    font-weight: bold;
+}
+
+.logo-text span {
+    color: var(--c-main);
+    font-size: 0.6em;
+    font-weight: bold;
+
+    position: relative;
+    top: -0.4em;
+}
