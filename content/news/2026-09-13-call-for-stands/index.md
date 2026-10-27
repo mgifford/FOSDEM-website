@@ -12,7 +12,7 @@ events:
     summary: "FOSDEM 2027: accepted stands will be announced"
 ---
 
-# 🚀 FOSDEM 2027: Showcase Your Open-Source Project to the World
+## 🚀 FOSDEM 2027: Showcase Your Open-Source Project to the World
 
 FOSDEM 2027 is happening on **January 30–31, 2027**, at **ULB Brussels**—and
 your project could be part of it! As always, we’re offering **free stands** to
