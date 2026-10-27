@@ -1,0 +1,12 @@
+{{- with .Site.Params.legal -}}
+<dl class="legal-details">
+    <dt>Legal entity</dt>
+    <dd>{{ .name }}, not-for-profit under Belgian law</dd>
+    <dt>Address</dt>
+    <dd>{{ .address }}, {{ .postcode }} {{ .city }}, {{ .country }}</dd>
+    <dt>Registration no.</dt>
+    <dd>{{ .enterpriseNumber }}</dd>
+    <dt>Email</dt>
+    <dd><a href="mailto:{{ .email }}">{{ .email }}</a></dd>
+</dl>
+{{- end -}}

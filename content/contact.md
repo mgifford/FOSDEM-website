@@ -27,3 +27,7 @@ For press inquiries **only**, please contact Mark Van den Borre, [+32 486 96 17 
 ## Sponsor
 
 For sponsorship inquiries **only**, please contact [sponsors@fosdem.org](mailto:sponsors@fosdem.org).
+
+## Legal
+
+{{< legal >}}
