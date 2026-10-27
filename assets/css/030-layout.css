@@ -12,6 +12,18 @@
     border-bottom: 1px solid var(--c-line-footer);
 }
 
+.site-header.is-home {
+    justify-content: center;
+    padding-inline: 1rem;
+    border-bottom: none;
+}
+
+@media (max-width: 23em) {
+    .site-header.is-home {
+        padding-inline: 1rem 2.5rem;
+    }
+}
+
 .brand {
     font-family: "Signika", sans-serif;
     font-size: clamp(1.6rem, 6vw, 2.25rem);

@@ -1,6 +1,7 @@
-{{ if not .IsHome }}
-<header class="site-header">
+<header class="site-header{{ if .IsHome }} is-home{{ end }}">
+    {{ if not .IsHome }}
     <a class="brand logo-text" href="{{ .Site.Home.RelPermalink }}">FOSDEM<span>'{{ .Site.Params.YearShort }}</span></a>
+    {{ end }}
 
     <nav class="topnav">
         <ul>
@@ -19,4 +20,3 @@
         </ul>
     </nav>
 </header>
-{{ end }}
