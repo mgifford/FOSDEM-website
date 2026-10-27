@@ -14,8 +14,15 @@ Committed under `static/` and served to every visitor.
 
 | Component | Version | Licence | Licence text |
 |-----------|---------|---------|--------------|
+| Leaflet | 1.9.4 | BSD-2-Clause | `static/css/leaflet/LICENSE` |
 | Signika | 2018 | SIL OFL 1.1 | `static/css/fonts/Signika/OFL.txt` |
 | DejaVu Sans, DejaVu Sans Mono | 2.37 | Bitstream Vera and Arev licences, plus public domain changes | `static/css/fonts/dejavu-sans-ttf-2.37/LICENSE` |
+
+## Map data
+
+The homepage map loads tiles from OpenStreetMap. Map data is
+© OpenStreetMap contributors, available under the Open Database License. The
+attribution is rendered on the map itself in `layouts/home.html`.
 
 ## Build tools
 

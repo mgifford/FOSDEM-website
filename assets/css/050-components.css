@@ -144,7 +144,8 @@
     color: var(--c-main);
 }
 
-.news {
+.news,
+.location {
     width: 100%;
     max-width: 920px;
     margin: 0 auto;
@@ -153,7 +154,8 @@
 }
 
 .news h2,
-.sponsors h2 {
+.sponsors h2,
+.location h2 {
     font-family: var(--f-mono);
     font-size: .8rem;
     font-weight: bold;
@@ -161,6 +163,10 @@
     text-transform: uppercase;
     color: var(--c-footer);
     margin: 0;
+}
+
+.location h2 {
+    margin-bottom: .75em;
 }
 
 .news-more {
@@ -177,13 +183,21 @@
     box-sizing: border-box;
 }
 
-.sponsors h2 a {
+.news h2 a,
+.sponsors h2 a,
+.location h2 a {
+    font-family: inherit;
+    font-weight: inherit;
     color: inherit;
     text-decoration: none;
 }
 
+.news h2 a:hover,
+.news h2 a:focus-visible,
 .sponsors h2 a:hover,
-.sponsors h2 a:focus-visible {
+.sponsors h2 a:focus-visible,
+.location h2 a:hover,
+.location h2 a:focus-visible {
     color: var(--c-main);
     text-decoration: underline;
 }
@@ -280,4 +294,24 @@
     font-size: .85em;
     color: var(--c-footer);
     white-space: nowrap;
+}
+
+.map {
+    width: 100%;
+    height: 350px;
+    border: 1px solid var(--c-line-footer);
+    border-radius: .3em;
+}
+
+.leaflet-tooltip.map-label {
+    background: none;
+    border: none;
+    box-shadow: none;
+    font-weight: bold;
+    font-size: .75em;
+    color: var(--c-main);
+}
+
+.leaflet-tooltip.map-label::before {
+    display: none;
 }

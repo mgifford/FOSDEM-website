@@ -12,7 +12,7 @@
 {{ $news := (where .Site.RegularPages "Section" "news").ByDate.Reverse }}
 {{ with $news }}
 <section class="news">
-    <h2>Latest news</h2>
+    <h2>{{ with $.Site.GetPage "/news" }}<a href="{{ .RelPermalink }}">Latest news</a>{{ else }}Latest news{{ end }}</h2>
 
     <ul class="news-list">
         {{ range first 3 . }}
@@ -51,5 +51,18 @@
 </section>
 {{ end }}
 {{ end }}
+
+<section class="location">
+    <h2 id="location">{{ with .Site.GetPage "/practical/transportation" }}<a href="{{ .RelPermalink }}">Location</a>{{ else }}Location{{ end }}</h2>
+
+    <p>
+        FOSDEM takes place at the {{ .Site.Params.Venue }}, <a href="https://www.openstreetmap.org/?mlat=50.8138&amp;mlon=4.3817#map=16/50.8138/4.3817">Av. F. D. Roosevelt 50, 1050 <b>Brussels, Belgium</b></a>.
+    </p>
+
+    <link rel="stylesheet" href="{{ `css/leaflet/leaflet.css` | absURL }}">
+    <div id="map" class="map"></div>
+    <script src="{{ `js/leaflet.js` | absURL }}"></script>
+    <script src="{{ `js/map.js` | absURL }}"></script>
+</section>
 
 {{ end }}
