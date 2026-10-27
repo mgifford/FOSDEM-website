@@ -12,11 +12,14 @@ ways to help, and most of them cost nothing.
 The calls for participation are open. Each one has its own deadline, listed in the
 announcement:
 
-- [Organise a devroom]({{< relref "/news/2026-09-07-call-for-devrooms" >}})
+- [Organise a devroom]({{< relref "/news/2026-09-07-call-for-devrooms" >}}), see the
+  [devroom managers manual](https://doc.volunteers.fosdem.org/devrooms/devroom-managers/)
 - [Run a stand]({{< relref "/news/2026-09-13-call-for-stands" >}})
 
 Volunteers keep the event running over the weekend. Registration opens closer to
-the event at [volunteers.fosdem.org](https://volunteers.fosdem.org/).
+the event at [volunteers.fosdem.org](https://volunteers.fosdem.org/), and the
+[volunteer documentation](https://doc.volunteers.fosdem.org/) covers the roles,
+logistics and emergency procedures.
 
 ## Spread the Word
 
