@@ -124,6 +124,10 @@
     padding: .5em 0;
 }
 
+.faq-item:not(:has(+ .faq-item)) {
+    border-bottom: none;
+}
+
 .faq-item summary {
     cursor: pointer;
 }
