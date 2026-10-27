@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="80" viewBox="0 0 320 80" role="img"
+    aria-label="Example Organisation logo placeholder">
+    <rect x="1.5" y="1.5" width="317" height="77" rx="6" fill="none" stroke="#b0b6bd" stroke-width="1.5"
+        stroke-dasharray="7 5" />
+    <circle cx="44" cy="40" r="19" fill="none" stroke="#e879d0" stroke-width="5" />
+    <circle cx="44" cy="40" r="6" fill="#e879d0" />
+    <text x="80" y="37" font-family="DejaVu Sans, sans-serif" font-size="23" font-weight="bold" fill="#e879d0">
+        EXAMPLE
+    </text>
+    <text x="81" y="58" font-family="DejaVu Sans, sans-serif" font-size="13" fill="#b0b6bd" letter-spacing="0.5">
+        logo placeholder
+    </text>
+</svg>

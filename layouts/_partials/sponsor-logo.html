@@ -3,14 +3,14 @@
 {{- $href := .href | default $page.Params.link -}}
 
 {{- if not $area -}}
-{{- errorf "sponsor-logo: no logo area for %s; pass one from params.sponsors in hugo.yaml" $page.File.Path -}}
+{{- errorf "sponsor-logo: no logo area for %s, pass one from params.sponsors in hugo.yaml" $page.File.Path -}}
 {{- end -}}
 
 {{- $logo := $page.Resources.GetMatch "logo.*" -}}
 {{- $dark := $page.Resources.GetMatch "logo-dark.*" -}}
 
 {{- if and $logo (not $dark) (ne $page.Params.plate false) -}}
-{{- warnf "sponsor-logo: %s has no logo-dark.*, falling back to a light plate in dark mode; add a dark variant, or set plate: false if the logo reads on both" $page.Title -}}
+{{- warnf "sponsor-logo: %s has no logo-dark.*, falling back to a light plate in dark mode. Add a dark variant, or set plate: false if the logo reads on both" $page.Title -}}
 {{- end -}}
 
 {{- with $logo -}}
