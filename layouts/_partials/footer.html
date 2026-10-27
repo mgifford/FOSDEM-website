@@ -34,18 +34,13 @@
         </ul>
     </nav>
 
-    <address class="legal">
-        {{- with .Site.Params.legal -}}
-        <strong>{{ .name }}</strong>
-        <span class="sep">&middot;</span> {{ .address }}, {{ .postcode }} {{ .city }}, {{ .country }}
-        <span class="sep">&middot;</span> {{ .enterpriseNumber }}
-        <span class="sep">&middot;</span> <a href="mailto:{{ .email }}">{{ .email }}</a>
-        {{- end }}
-    </address>
-
     <p class="license">
         Content licensed <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>, except the FOSDEM
         name and gear logo.
+    </p>
+
+    <p class="license">
+        All content such as talks and biographies is the sole responsibility of the speaker.
     </p>
 
     <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" aria-pressed="false">

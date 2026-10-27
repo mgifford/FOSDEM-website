@@ -136,20 +136,6 @@
     text-decoration: underline;
 }
 
-.legal {
-    font-family: var(--f-mono);
-    font-style: normal;
-    font-size: .75rem;
-    line-height: 1.6;
-    color: var(--c-footer);
-    text-wrap: balance;
-}
-
-.legal .sep {
-    opacity: .5;
-    padding: 0 .15em;
-}
-
 .license {
     font-family: var(--f-mono);
     font-size: .75rem;
