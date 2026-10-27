@@ -34,6 +34,12 @@ Since its inception now more than 25 years ago, the event has grown into a commu
 
 The team has drafted and signed into effect a charter, which outlines the core values and rules by which the organisation operates, and has been published in full [here]({{< relref "about/charter.md" >}}).
 
+## The Team
+
+in alphabetical order
+
+{{< staff >}}
+
 ## FOSDEM vzw
 
 FOSDEM vzw is a Belgian non-profit. Its goal is to support the team organising the yearly FOSDEM conference. 

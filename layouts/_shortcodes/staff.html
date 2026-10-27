@@ -1,0 +1,14 @@
+{{- /* data/staff.yaml, sorted by surname, spaces ignored */ -}}
+{{- $people := slice -}}
+{{- range site.Data.staff.people -}}
+{{- $surname := delimit (after 1 (split .name " ")) " " -}}
+{{- $people = $people | append (dict "name" .name "key" (printf "%s|%s" (lower (replace $surname " " "")) (lower .name))) -}}
+{{- end -}}
+<ul>
+{{- range sort $people "key" }}
+<li>{{ .name }}</li>
+{{- end }}
+{{- range site.Data.staff.also }}
+<li>{{ . }}</li>
+{{- end }}
+</ul>
