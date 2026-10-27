@@ -78,6 +78,12 @@
     display: none;
 }
 
+.sponsor-text-link {
+    font-family: "Signika", sans-serif;
+    font-weight: bold;
+    color: var(--c-main);
+}
+
 [data-theme='dark'] .sponsor-logo.has-dark,
 [data-theme='dark'] .sponsor-logo.no-plate {
     --c-logo-bg: transparent;
