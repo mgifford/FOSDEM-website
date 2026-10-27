@@ -40,7 +40,7 @@ open-source projects to connect with the community.
 
 ## 📅 Key Dates
 
-- **Submission deadline:** **October 31, 2026** (23:59 UTC)
+- **Submission deadline:** **October 31, 2026** (23:59 Brussels time, CET)
 - **Accepted stands announced:** **November 8, 2026**
 
 ## 🔗 How to Apply
