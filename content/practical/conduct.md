@@ -1,6 +1,5 @@
 ---
 title: "Code of Conduct"
-url: /practical/conduct/
 ---
 
 In order to keep FOSDEM a fun, interesting and positive experience for

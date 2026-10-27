@@ -7,6 +7,9 @@
             {{- with .Site.GetPage "/news" }}
             <li><a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>News</a></li>
             {{- end }}
+            {{- with .Site.GetPage "/practical" }}
+            <li><a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>
+            {{- end }}
             {{- with .Site.GetPage "/support" }}
             <li><a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>Support</a></li>
             {{- end }}

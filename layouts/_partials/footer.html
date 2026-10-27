@@ -7,6 +7,9 @@
             {{- with .Site.GetPage "/calendar" }}
             <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
             {{- end }}
+            {{- with .Site.GetPage "/practical" }}
+            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+            {{- end }}
             {{- with .Site.GetPage "/support" }}
             <li><a href="{{ .RelPermalink }}">Support</a></li>
             {{- end }}
@@ -16,7 +19,7 @@
             {{- with .Site.GetPage "/faq" }}
             <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
             {{- end }}
-            {{- with .Site.GetPage "/conduct" }}
+            {{- with .Site.GetPage "/practical/conduct" }}
             <li><a href="{{ .RelPermalink }}">Code of Conduct</a></li>
             {{- end }}
             {{- with .Site.GetPage "/contact" }}
