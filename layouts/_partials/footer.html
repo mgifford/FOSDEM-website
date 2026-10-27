@@ -7,6 +7,9 @@
             {{- with .Site.GetPage "/calendar" }}
             <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
             {{- end }}
+            {{- with .Site.GetPage "/about" }}
+            <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+            {{- end }}
             {{- with .Site.GetPage "/practical" }}
             <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
             {{- end }}

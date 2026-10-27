@@ -1,7 +1,7 @@
 ---
 title: "Practical Information"
 linkTitle: "Practical"
-layout: practical
+layout: article
 ---
 
 ## Registration and Cost
