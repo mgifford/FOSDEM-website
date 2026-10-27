@@ -13,12 +13,13 @@
 
     {{ .Content }}
 
-    {{ with where $all "Params.tier" "!=" "thanks" }}
-    <ul class="sponsor-index">
-        {{ range . }}
-        <li><a href="#{{ .File.ContentBaseName }}">{{ partial "title.html" . }}</a></li>
-        {{ end }}
-    </ul>
+    {{ range $tier := slice "cornerstone" "main" }}
+    {{ $area := cond (eq $tier "cornerstone") site.Params.sponsors.logoareahomecornerstone site.Params.sponsors.logoareahome }}
+    {{ with where $all "Params.tier" $tier }}
+    <div class="sponsor-logos">
+        {{ range . }}{{ partial "sponsor-logo.html" (dict "page" . "area" $area "href" (printf "#%s" .File.ContentBaseName)) }}{{ end }}
+    </div>
+    {{ end }}
     {{ end }}
 
     {{ range $tier := $tiers }}
@@ -37,7 +38,7 @@
                 {{- end -}}
             </h3>
 
-            {{ partial "sponsor-logo.html" $sponsor }}
+            {{ partial "sponsor-logo.html" (dict "page" $sponsor "area" site.Params.sponsors.logoarea) }}
 
             {{ $sponsor.Content }}
         </article>

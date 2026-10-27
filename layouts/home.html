@@ -41,12 +41,11 @@
     <h2><a href="{{ $sponsorPage.RelPermalink }}">Sponsors</a></h2>
 
     {{ range $tier := slice "cornerstone" "main" }}
+    {{ $area := cond (eq $tier "cornerstone") site.Params.sponsors.logoareahomecornerstone site.Params.sponsors.logoareahome }}
     {{ with where $shown "Params.tier" $tier }}
-    <ul class="sponsor-logos sponsor-logos-{{ $tier }}">
-        {{ range . }}
-        <li>{{ partial "sponsor-logo.html" . }}</li>
-        {{ end }}
-    </ul>
+    <div class="sponsor-logos">
+        {{ range . }}{{ partial "sponsor-logo.html" (dict "page" . "area" $area) }}{{ end }}
+    </div>
     {{ end }}
     {{ end }}
 </section>

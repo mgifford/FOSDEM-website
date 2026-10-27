@@ -71,6 +71,11 @@ params:
   Year: "2027"
   YearShort: "27"
 
+  sponsors:
+    logoarea: 12000
+    logoareahome: 2500
+    logoareahomecornerstone: 7500
+
   FeedHome: https://fosdem.org/
   FeedDescription: FOSDEM 2027 News Feed
 

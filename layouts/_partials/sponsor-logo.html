@@ -1,25 +1,43 @@
-{{- $logo := "" -}}
-{{- with .Params.logo -}}
-{{- $logo = $.Resources.GetMatch . -}}
-{{- if not $logo -}}
-{{- errorf "sponsor-logo: no resource %q found for %s" . $.File.Path -}}
+{{- $page := .page -}}
+{{- $area := .area -}}
+{{- $href := .href | default $page.Params.link -}}
+
+{{- if not $area -}}
+{{- errorf "sponsor-logo: no logo area for %s; pass one from params.sponsors in hugo.yaml" $page.File.Path -}}
 {{- end -}}
-{{- else -}}
-{{- $logo = .Resources.GetMatch "logo.*" -}}
+
+{{- $logo := $page.Resources.GetMatch "logo.*" -}}
+{{- $dark := $page.Resources.GetMatch "logo-dark.*" -}}
+
+{{- if and $logo (not $dark) (ne $page.Params.plate false) -}}
+{{- warnf "sponsor-logo: %s has no logo-dark.*, falling back to a light plate in dark mode; add a dark variant, or set plate: false if the logo reads on both" $page.Title -}}
 {{- end -}}
 
 {{- with $logo -}}
-{{- $scalable := and (eq .ResourceType "image") (ne .MediaType.SubType "svg") -}}
-
-<p class="sponsor-logo">
-    {{- with $.Params.link }}<a href="{{ . }}">{{ end -}}
-    {{- if $scalable -}}
-    {{- $img := .Fit "400x160" -}}
-    <img src="{{ $img.RelPermalink }}" srcset="{{ $img.RelPermalink }} 1x, {{ (.Fit "800x320").RelPermalink }} 2x"
-        width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $.Title }}" loading="lazy" decoding="async">
-    {{- else -}}
-    <img class="logo-vector" src="{{ .RelPermalink }}" alt="{{ $.Title }}" loading="lazy" decoding="async">
+<p class="sponsor-logo{{ if $dark }} has-dark{{ end }}{{ if eq $page.Params.plate false }} no-plate{{ end }}">
+    {{- with $href }}<a href="{{ . }}">{{ end -}}
+    {{- range $i, $res := slice $logo $dark -}}
+    {{- with $res -}}
+    {{- $svg := eq .MediaType.SubType "svg" -}}
+    {{- $ratio := 1.0 -}}
+    {{- if $svg -}}
+    {{- with findRESubmatch `viewBox\s*=\s*"\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([\d.]+)[\s,]+([\d.]+)\s*"` (printf "%s" .Content) 1 -}}
+    {{- $ratio = div (float (index (index . 0) 1)) (float (index (index . 0) 2)) -}}
     {{- end -}}
-    {{- with $.Params.link }}</a>{{ end -}}
+    {{- else -}}
+    {{- $ratio = div (float .Width) (float .Height) -}}
+    {{- end -}}
+    {{- $w := int (math.Round (math.Sqrt (mul $area $ratio))) -}}
+    {{- $h := int (math.Round (math.Sqrt (div $area $ratio))) -}}
+    {{- $src := .RelPermalink -}}
+    {{- if not $svg -}}
+    {{- $src = (.Resize (printf "%dx" (int (math.Min .Width (mul 2 $w))))).RelPermalink -}}
+    {{- end -}}
+    <img class="{{ cond (eq $i 0) "logo-light" "logo-dark" }}" src="{{ $src }}" width="{{ $w }}" height="{{ $h }}" alt="{{ $page.Title }}" loading="lazy" decoding="async">
+    {{- end -}}
+    {{- end -}}
+    {{- with $href }}</a>{{ end -}}
 </p>
+{{- else -}}
+{{- with $href }}<a class="sponsor-text-link" href="{{ . }}">{{ $page.Title }}</a>{{ end -}}
 {{- end -}}

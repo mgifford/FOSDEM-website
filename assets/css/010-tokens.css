@@ -11,6 +11,9 @@
     --c-line-footer: #ccc;
     --c-link: #3479c4;
 
+    --c-logo-bg: transparent;
+    --c-logo-pad: .5em .8em;
+
     --c-code-bg: #f6f6f6;
     --c-code-text: #24292f;
     --c-code-comment: #6a737d;
@@ -35,6 +38,8 @@
     --c-footer: #eee;
     --c-line-footer: #555;
     --c-link: #69a1ff;
+
+    --c-logo-bg: #eee;
 
     --c-code-bg: #2a2a2a;
     --c-code-text: #e6e6e6;
@@ -61,6 +66,8 @@
         --c-footer: #eee;
         --c-line-footer: #555;
         --c-link: #69a1ff;
+
+        --c-logo-bg: #eee;
 
         --c-code-bg: #2a2a2a;
         --c-code-text: #e6e6e6;
