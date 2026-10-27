@@ -125,7 +125,17 @@
 .article .faq-item h3 {
     display: inline;
     margin: 0;
-    font-size: 1.05em;
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.faq-item[open] summary {
+    margin-bottom: .6em;
+}
+
+.faq-item[open] summary h3 {
+    color: var(--c-main);
 }
 
 .news {
