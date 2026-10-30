@@ -30,10 +30,19 @@
             python3 ${./scripts/check-links.py} "$@"
           '';
         };
+
+        fetch-pretalx = pkgs.writeShellApplication {
+          name = "fetch-pretalx";
+          runtimeInputs = [ pkgs.python3 ];
+          text = ''
+            python3 ${./scripts/fetch-pretalx.py} "$@"
+          '';
+        };
       in
       {
         packages.validate-ics = validate-ics;
         packages.check-links = check-links;
+        packages.fetch-pretalx = fetch-pretalx;
 
         apps.validate-ics = {
           type = "app";
@@ -45,6 +54,11 @@
           program = "${check-links}/bin/check-links";
         };
 
+        apps.fetch-pretalx = {
+          type = "app";
+          program = "${fetch-pretalx}/bin/fetch-pretalx";
+        };
+
         devShells.default = pkgs.mkShell {
           buildInputs = [
             pkgs.hugo
@@ -53,6 +67,7 @@
             pkgs.rsync
             pkgs.woff2
             check-links
+            fetch-pretalx
             validate-ics
           ];
         };

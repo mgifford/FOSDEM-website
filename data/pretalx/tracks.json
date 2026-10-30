@@ -1,0 +1,555 @@
+[
+  {
+    "cfp_url": "https://lists.fosdem.org/hyperkitty/list/fosdem@lists.fosdem.org/thread/JFFRW3GDJ2EVX2GGQLCJICLJAAMHLGIB/",
+    "color": "#6F42C1",
+    "name": "Accessibility",
+    "slug": "accessibility",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "AI Plumbers",
+    "slug": "ai-plumbers",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://www.iaru-r1.org/2026/fosdem-2027-amateur-radio-devroom/",
+    "color": "#6f42c1",
+    "name": "Amateur Radio",
+    "slug": "amateur-radio",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://aldm-devroom.github.io/cfp/",
+    "color": "#6F42C1",
+    "name": "Archives, Libraries, and Digital Memory",
+    "slug": "archives-libraries-digital-memory",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://discourse.atmosphere.community/t/call-for-participation-at-protocol-devroom-at-fosdem-2027/1381",
+    "color": "#6F42C1",
+    "name": "AT Protocol",
+    "slug": "at-protocol",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Audio, Video, Graphics and Podcast",
+    "slug": "audio-video-graphics-and-podcast",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Beyond the CRA - Building Secure and Resilient Open Source",
+    "slug": "beyond-the-cra",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Bioinformatics & Computational Biology",
+    "slug": "bcb",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Browser and web platform",
+    "slug": "browser-and-web-platform",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://people.freebsd.org/~rodrigo/fosdem27/",
+    "color": "#6F42C1",
+    "name": "BSD, illumos, bhyve, OpenZFS",
+    "slug": "bsd-illumos-bhyve-openzfs",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "C evolution",
+    "slug": "c-evolution",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://www.xwiki.org/xwiki/bin/view/Main/Events/fosdem-2027/Call%20for%20Participation/",
+    "color": "#6F42C1",
+    "name": "Collaboration and content management",
+    "slug": "collaboration-and-content-management",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Community",
+    "slug": "community",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Containers",
+    "slug": "containers",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "decentralised-messaging",
+    "color": "#6F42C1",
+    "name": "Decentralised Messaging",
+    "slug": "decentralised-messaging",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Decentralized Internet and Privacy",
+    "slug": "decentralized-internet-and-privacy",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "/dev/random",
+    "slug": "devrandom",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://digitaldissident.tech/",
+    "color": "#6F42C1",
+    "name": "Digital Dissident",
+    "slug": "digital-dissident",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://lists.fosdem.org/hyperkitty/list/fosdem@lists.fosdem.org/thread/HW5GYZP64RNX7PPBKHVARSMIK6C42MNQ/",
+    "color": "#6f42c1",
+    "name": "Distributions",
+    "slug": "distros",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "DNS",
+    "slug": "dns",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://ebpf.io/fosdem-2027.html",
+    "color": "#6F42C1",
+    "name": "eBPF",
+    "slug": "ebpf",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Educational",
+    "slug": "educational",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Embedded, Mobile and Automotive",
+    "slug": "embedded-mobile-and-automotive",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Embedded & Resource-Constrained OS",
+    "slug": "embedded-resource-constrained-os",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://fosdem-emudev-room.github.io/fosdem27-emulator-devroom-cfp/",
+    "color": "#6F42C1",
+    "name": "Emulator Development",
+    "slug": "emulator-development",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Erlang, Elixir, Gleam and Friends",
+    "slug": "beam",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "FOSS Office",
+    "slug": "foss-office",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "FOSS on Mobile",
+    "slug": "state_of_foss_on_mobile",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Free Java",
+    "slug": "free-java",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://lists.fosdem.org/hyperkitty/list/fosdem@lists.fosdem.org/thread/MKQRMQN2DZNJQQK5HPPB3PSVVHL6D3FA/",
+    "color": "#6f42c1",
+    "name": "Gaming and VR",
+    "slug": "gaming-and-vr",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "GCC (GNU Toolchain)",
+    "slug": "gcc-gnu-toolchain",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Geospatial",
+    "slug": "geospatial",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Go",
+    "slug": "go",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Graphics",
+    "slug": "graphics",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Green & Ethical Tech",
+    "slug": "green-ethical-tech",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "HPC, Big Data, and Data Science",
+    "slug": "hpc-big-data-and-data-science",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Identity and Access Management Devroom",
+    "slug": "identity-and-access-management",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://uapi-group.org/conferences/conferences/2027-01-30__fosdem-devroom/",
+    "color": "#6F42C1",
+    "name": "Image-Based Linux and Boot Integrity",
+    "slug": "uapi",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Junior",
+    "slug": "junior",
+    "type": "junior"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Kernel",
+    "slug": "kernel",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Legal & Policy",
+    "slug": "legal-policy",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Linux Apps",
+    "slug": "linux-apps",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://discourse.llvm.org/t/fosdem-2027-llvm-devroom-call-for-presentations/92597",
+    "color": "#6F42C1",
+    "name": "LLVM",
+    "slug": "llvm",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://openlocalfirst.org/fosdem/2027/CfP/",
+    "color": "#6F42C1",
+    "name": "Local-First, Sync engines, CRDTs",
+    "slug": "local-first",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Mainline Linux on mobile",
+    "slug": "mainline-linux-on-mobile",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Microkernel and Component-based OS",
+    "slug": "microkernel",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "MLIR",
+    "slug": "mlir",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Modern Email",
+    "slug": "modern-email",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Monitoring and Observability",
+    "slug": "monitoring-and-observability",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Network",
+    "slug": "network-devroom",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Nix and NixOS Devroom",
+    "slug": "nix-and-nixos",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://openhardwaredevroom.github.io/FOSDEM2027/",
+    "color": "#6F42C1",
+    "name": "Open Hardware and CAD/CAM",
+    "slug": "open-hardware",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://lists.fosdem.org/hyperkitty/list/fosdem@lists.fosdem.org/thread/YL4XALBFEOCE2PLQHH3NHALWBIDVAXBN/",
+    "color": "#6F42C1",
+    "name": "Open Media",
+    "slug": "open-media",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Open Research",
+    "slug": "open-research",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Open Source Design & Open User Research",
+    "slug": "open-source-design-open-user-research",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Open Source & EU Policy Devroom",
+    "slug": "eu-policy",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Open Source Healthcare",
+    "slug": "open-source-healthcare",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://mikeshah.github.io/fosdem27-ossl-devroom/",
+    "color": "#6F42C1",
+    "name": "Open Source Systems Languages",
+    "slug": "open-source-systems-languages",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://github.com/OperationsDevroom/2027/blob/main/CfP.md",
+    "color": "#6F42C1",
+    "name": "Operations",
+    "slug": "operations",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://stewardshiplab.org/ideas/cfp-package-management-devroom-at-fosdem-27/",
+    "color": "#6F42C1",
+    "name": "Package Management",
+    "slug": "package-management",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Perl & Raku --- Battle Tested & Future Proof",
+    "slug": "perl-raku-battle",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "PHP",
+    "slug": "php",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "PostgreSQL",
+    "slug": "postgresql",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "http://jmfriedt.free.fr/fosdem.html",
+    "color": "#6f42c1",
+    "name": "Radio-Frequency Digital Signal Processing (RF DSP)",
+    "slug": "radio-frequency-digital-signal-processing",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Railways and Open Transport",
+    "slug": "railways-and-open-transport",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Retrocomputing",
+    "slug": "retrocomputing",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "RISCV",
+    "slug": "riscv",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://robotics-devroom.github.io/cfp/fosdem27.html",
+    "color": "#6F42C1",
+    "name": "Robotics and Simulation",
+    "slug": "robotics",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Ruby",
+    "slug": "ruby",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Rust",
+    "slug": "rust",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Security Devroom",
+    "slug": "security",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://raeymeister.github.io/FOSDEM_2027_SmartHomes_Devroom_cfp/",
+    "color": "#6F42C1",
+    "name": "Smart Homes",
+    "slug": "smart-homes",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6f42c1",
+    "name": "Social Web",
+    "slug": "social-web",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Software Defined Storage",
+    "slug": "software-defined-storage",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "https://lists.fosdem.org/hyperkitty/list/fosdem@lists.fosdem.org/thread/Q7ASYI2PMOXKYZEOOBABNYP7WS2CDYTG/",
+    "color": "#6F42C1",
+    "name": "Testing and Continuous Delivery",
+    "slug": "testing-and-continuous-delivery",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "The M-ecosystem",
+    "slug": "m-ecosystem",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Tool the Docs",
+    "slug": "tool-the-docs",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#6F42C1",
+    "name": "Virtualization and Cloud Infrastructure",
+    "slug": "virt-and-cloud",
+    "type": "devroom"
+  },
+  {
+    "cfp_url": "",
+    "color": "#00ccff",
+    "name": "Open Source for Science",
+    "slug": "science",
+    "type": "devroom"
+  }
+]

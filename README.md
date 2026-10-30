@@ -14,7 +14,7 @@ All tools are provided by the Nix dev shell:
 nix develop
 ```
 
-This gives you `hugo`, `just`, `woff2`, `validate-ics` and `check-links`.
+This gives you `hugo`, `just`, `woff2`, `validate-ics`, `check-links` and `fetch-pretalx`.
 
 Without Nix, install Hugo 0.155+ manually.
 
@@ -27,7 +27,7 @@ hugo build -b https://fosdem.org/2027/
 ## Dev Server
 
 ```sh
-hugo server --baseURL=http://127.0.0.1/2027 -D --disableFastRender
+just serve
 ```
 
 Always test with a `baseURL`. The site is deployed under a subpath, and all internal links
@@ -35,6 +35,24 @@ use `relURL` (e.g. `{{ url | relURL }}`) to resolve paths correctly against it. 
 `baseURL`, broken links won't surface during development.
 
 `-D` includes drafts. News posts start `draft: true`, so without it a new post is invisible.
+
+## Data
+
+`data/pretalx/` is generated and committed. The build never reaches the network, so an
+archived edition rebuilds from the repo alone.
+
+```sh
+just fetch
+```
+
+Source is `https://pretalx.fosdem.org/fosdem-{year}/p/fosdem.json`, slug built from `year`
+in the `justfile`. Output is sorted and indented, so an unchanged export is an empty diff.
+Review the diff before committing.
+
+`tracks.json` holds every track that has tracksettings, whatever its type. `cfp_url` is
+empty until a devroom fills it in, so templates must treat that as the normal case.
+
+`data/staff.yaml` is hand-maintained and carries over between editions.
 
 ## Deploy
 

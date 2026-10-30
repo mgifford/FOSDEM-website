@@ -6,10 +6,18 @@ live_root    := "/var/www/fosdem.org/public"
 default:
     @just --list
 
+# Refresh data/pretalx from Pretalx. Review the diff, then commit it.
+fetch:
+    fetch-pretalx fosdem-{{year}}
+
 # Kerberos ticket for www-public0, lasts a few hours
 ticket id:
     kinit {{id}}@FOSDEM.ORG
     klist
+
+# Local dev server, drafts included
+serve:
+    hugo server --baseURL=http://127.0.0.1/{{year}} -D --disableFastRender
 
 # staging baseURL, drafts included
 build-staging:

@@ -1,0 +1,15 @@
+{{- /* data/pretalx/tracks.json, devrooms only, sorted by name, case ignored */ -}}
+{{- $devrooms := slice -}}
+{{- range where site.Data.pretalx.tracks "type" "devroom" -}}
+{{- $cfp := .cfp_url -}}
+{{- if and $cfp (not (hasPrefix $cfp "http")) -}}
+{{- warnf "devrooms: %q cfp_url is not a link, dropping it: %q" .name $cfp -}}
+{{- $cfp = "" -}}
+{{- end -}}
+{{- $devrooms = $devrooms | append (dict "name" .name "cfp" $cfp "key" (lower .name)) -}}
+{{- end -}}
+<ul>
+{{- range sort $devrooms "key" }}
+<li>{{ if .cfp }}<a href="{{ .cfp }}">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}</li>
+{{- end }}
+</ul>
