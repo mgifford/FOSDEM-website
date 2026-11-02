@@ -238,7 +238,7 @@
     "type": "devroom"
   },
   {
-    "cfp_url": "",
+    "cfp_url": "https://lists.fosdem.org/hyperkitty/list/fosdem@lists.fosdem.org/thread/QJMCC7KAXD66REMW427UR4V4AHEXJWOP/",
     "color": "#6F42C1",
     "name": "Green & Ethical Tech",
     "slug": "green-ethical-tech",
@@ -253,8 +253,8 @@
   },
   {
     "cfp_url": "",
-    "color": "#6F42C1",
-    "name": "Identity and Access Management Devroom",
+    "color": "#6f42c1",
+    "name": "Identity and Access Management",
     "slug": "identity-and-access-management",
     "type": "devroom"
   },
@@ -351,8 +351,8 @@
   },
   {
     "cfp_url": "",
-    "color": "#6F42C1",
-    "name": "Nix and NixOS Devroom",
+    "color": "#6f42c1",
+    "name": "Nix and NixOS",
     "slug": "nix-and-nixos",
     "type": "devroom"
   },
