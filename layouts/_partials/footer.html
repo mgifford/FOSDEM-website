@@ -28,6 +28,9 @@
             {{- with .Site.GetPage "/contact" }}
             <li><a href="{{ .RelPermalink }}">Contact</a></li>
             {{- end }}
+            {{- with .Site.GetPage "/archives" }}
+            <li><a href="{{ .RelPermalink }}">Archives</a></li>
+            {{- end }}
             {{- with .Site.Home.OutputFormats.Get "rss" }}
             <li><a href="{{ .RelPermalink }}">RSS</a></li>
             {{- end }}

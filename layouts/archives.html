@@ -1,0 +1,16 @@
+{{ define "main" }}
+
+<article class="article">
+    <h1>{{ partial "title.html" . }}</h1>
+
+    {{ .Content }}
+
+    <ul>
+        {{ range $i := seq 0 (sub now.Year 2001) }}
+        {{ $y := sub now.Year $i }}
+        <li><a href="https://archive.fosdem.org/{{ $y }}/">{{ $y }}</a></li>
+        {{ end }}
+    </ul>
+</article>
+
+{{ end }}
