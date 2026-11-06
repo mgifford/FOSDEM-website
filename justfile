@@ -6,7 +6,7 @@ live_root    := "/var/www/fosdem.org/public"
 default:
     @just --list
 
-# Refresh data/pretalx from Pretalx. Review the diff, then commit it.
+# Refresh data/pretalx from Pretalx. Not committed, every build fetches first.
 fetch:
     fetch-pretalx fosdem-{{year}}
 
@@ -16,28 +16,31 @@ ticket id:
     klist
 
 # Local dev server, drafts included
-serve:
+serve: fetch
     hugo server --baseURL=http://127.0.0.1/{{year}} -D --disableFastRender
 
 # staging baseURL, drafts included
-build-staging:
+build-staging: fetch
     hugo build -b https://staging.fosdem.org/{{year}}/ -D \
         -d dist/staging --cleanDestinationDir
+    cp -r data/pretalx dist/staging/pretalx
     validate-ics dist/staging
 
 # production baseURL, drafts excluded
-build-live:
+build-live: fetch
     hugo build -b https://fosdem.org/{{year}}/ \
         -d dist/live --cleanDestinationDir
+    cp -r data/pretalx dist/live/pretalx
     validate-ics dist/live
 
 # per-PR preview baseURL, drafts included
-build-preview $pr:
+build-preview $pr: fetch
     #!/usr/bin/env bash
     set -euo pipefail
     [[ "$pr" =~ ^[0-9]+$ ]] || { echo "pr must be a number, got '$pr'" >&2; exit 1; }
     hugo build -b "https://staging.fosdem.org/pr-$pr/" -D \
         -d "dist/pr-$pr" --cleanDestinationDir
+    cp -r data/pretalx "dist/pr-$pr/pretalx"
     validate-ics "dist/pr-$pr"
 
 # Sync to staging. Dry run unless go=1

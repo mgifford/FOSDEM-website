@@ -2,9 +2,10 @@
 
 Usage: fetch-pretalx <event-slug> [-o <directory>]
 
-The site build never reaches the network, so what this writes is committed.
-An archived edition then rebuilds from the repo alone, years after Pretalx
-has moved on to the next conference.
+What this writes is not committed. Every build fetches first and copies the
+result into its output, so the deployed site carries the data it was built
+from and an archived edition keeps it, years after Pretalx has moved on to
+the next conference.
 """
 
 import argparse

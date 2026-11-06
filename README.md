@@ -38,16 +38,16 @@ use `relURL` (e.g. `{{ url | relURL }}`) to resolve paths correctly against it. 
 
 ## Data
 
-`data/pretalx/` is generated and committed. The build never reaches the network, so an
-archived edition rebuilds from the repo alone.
+`data/pretalx/` is generated and gitignored. Every build recipe depends on `fetch`, and
+copies the result to `<output>/pretalx/`, so the deployed site and its archive carry the
+data they were built from.
 
 ```sh
 just fetch
 ```
 
 Source is `https://pretalx.fosdem.org/fosdem-{year}/p/fosdem.json`, slug built from `year`
-in the `justfile`. Output is sorted and indented, so an unchanged export is an empty diff.
-Review the diff before committing.
+in the `justfile`. Output is sorted and indented.
 
 `tracks.json` holds every track that has tracksettings, whatever its type. `cfp_url` is
 empty until a devroom fills it in, so templates must treat that as the normal case.
