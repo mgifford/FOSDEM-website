@@ -56,11 +56,8 @@ empty until a devroom fills it in, so templates must treat that as the normal ca
 
 ## Deploy
 
-`main` is live. Every push to `main`, and every `pretalx` cron run, builds with
-`just build-live` and rsyncs `dist/live/` to `/var/www/fosdem.org/public/2027/`. Merging
-publishes. Staging is not in that path, so review happens on the PR preview.
-
-The recipes below cover staging and deploying by hand.
+`main` is live. Every push to `main` and every `pretalx` cron run builds with
+`just build-live` and rsyncs `dist/live/` to `/var/www/fosdem.org/public/2027/`.
 
 Both targets are served from `www-public0.fosdem.org` and authenticate with Kerberos, so
 get a ticket first. It prompts for a password and lasts a few hours:
@@ -215,10 +212,18 @@ The homepage emits `/2027/metrics` in Prometheus text exposition format, from th
 # HELP website_last_build_time Starting time of the last website build
 # TYPE website_last_build_time gauge
 website_last_build_time 1792391980
+
+# HELP website_build_info Commit the last website build came from
+# TYPE website_build_info gauge
+website_build_info{commit="2f165e3",dirty="false"} 1
 ```
 
 `now.Unix` at build time, so a scrape that stops advancing means the build stopped. The
 scrape target carries the year prefix: `https://fosdem.org/2027/metrics`.
+
+`commit` and `dirty` come from the `justfile` as `HUGO_PARAMS_COMMIT` and
+`HUGO_PARAMS_DIRTY`, both `unknown` under a bare `hugo build`. `dirty` is
+`git status --porcelain`, so it flags a hand deploy from a modified tree.
 
 The extensionless filename comes from the `text/prometheus` media type: empty `suffixes`
 and `delimiter`.

@@ -3,6 +3,10 @@ host         := "www-public0.fosdem.org"
 staging_root := "/var/www/staging.fosdem.org/public"
 live_root    := "/var/www/fosdem.org/public"
 
+# Reaches hugo as site.Params.commit and site.Params.dirty, for home.metrics
+export HUGO_PARAMS_COMMIT := `git rev-parse --short HEAD 2>/dev/null || echo unknown`
+export HUGO_PARAMS_DIRTY := `test -z "$(git status --porcelain 2>/dev/null)" && echo false || echo true`
+
 default:
     @just --list
 

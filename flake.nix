@@ -61,6 +61,7 @@
 
         devShells.default = pkgs.mkShell {
           buildInputs = [
+            pkgs.git
             pkgs.hugo
             pkgs.just
             pkgs.openssh_gssapi
