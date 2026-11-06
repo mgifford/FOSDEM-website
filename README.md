@@ -56,6 +56,12 @@ empty until a devroom fills it in, so templates must treat that as the normal ca
 
 ## Deploy
 
+`main` is live. Every push to `main`, and every `pretalx` cron run, builds with
+`just build-live` and rsyncs `dist/live/` to `/var/www/fosdem.org/public/2027/`. Merging
+publishes. Staging is not in that path, so review happens on the PR preview.
+
+The recipes below cover staging and deploying by hand.
+
 Both targets are served from `www-public0.fosdem.org` and authenticate with Kerberos, so
 get a ticket first. It prompts for a password and lasts a few hours:
 

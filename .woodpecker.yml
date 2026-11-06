@@ -22,7 +22,7 @@ steps:
       - nix develop -c hugo build
       - nix develop -c validate-ics public
     when:
-      - event: [push, pull_request]
+      - event: pull_request
 
   - name: build-preview
     image: *nix_image
@@ -59,17 +59,19 @@ steps:
     when:
       - event: pull_request
 
-  - name: build-pretalx
+  - name: build-live
     image: *nix_image
     environment:
       NIX_CONFIG: *nix_config
     commands:
       - nix develop -c just build-live
     when:
+      - event: push
+        branch: main
       - event: cron
         cron: pretalx
 
-  - name: deploy-pretalx
+  - name: deploy-live
     image: *rsync_image
     settings:
       hosts:
@@ -82,6 +84,8 @@ steps:
       recursive: true
       delete: true
     when:
+      - event: push
+        branch: main
       - event: cron
         cron: pretalx
 
