@@ -1,13 +1,13 @@
 ---
-title: "FOSDEM 2027 Junior Call for Participation"
-date: 2026-11-08
+title: "FOSDEM Junior Call for Participation"
+date: 2026-11-07
 slug: junior-call-for-participation
 outputs:
   - html
   - calendar-cfp
 events:
   - date: 2026-12-07
-    summary: "FOSDEM 2027: deadline for junior call for participation"
+    summary: "FOSDEM Junior 2027: deadline for submitting your proposal"
 ---
 
 Proposals for FOSDEM JUNIOR can now be submitted!
@@ -30,6 +30,7 @@ When submitting your proposal, select ‘Junior’ from the track drop-down menu
 
 ## Requirements
 
-The conference language is English. All content must relate to Free and Open Source Software. By participating in the event you agree to the publication of your slides and other content provided under the same licence as all FOSDEM content (CC-BY). By participating in FOSDEM you are required to adhere the Code of Conduct.
+The conference language is English. All content must relate to Free and Open Source Software. By participating in the event you agree to the publication of your slides and other content provided under the same licence as all FOSDEM content (CC-BY).
+By participating in FOSDEM you are required to adhere the [Code of Conduct](https://fosdem.org/2027/practical/conduct/).
 
 The FOSDEM junior track is not recorded.
