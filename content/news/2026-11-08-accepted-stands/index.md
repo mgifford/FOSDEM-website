@@ -20,6 +20,7 @@ A few more booths will be added in the coming days; another post will follow reg
 - BeWelcome: The Open-Source, Non-Profit Hospitality Network
 - Bor & Kiwi TCMS (Sunday)
 - CEPH
+- Checkmk
 - ClickHouse
 - Cloud Native Computing Foundation (CNCF)
 - Codeberg and Forgejo
@@ -69,7 +70,7 @@ A few more booths will be added in the coming days; another post will follow reg
 - MIT App Inventor
 - Nerdearla
 - Nextcloud: A self-hosted, open file sync & communication platform
-- Nitrokey at FOSDEM 2027
+- Nitrokey
 - Nura (formely known as postmarketOS)
 - Open Culture Foundation + Taiwan Open Source Community
 - Open-Source Firmware Foundation
@@ -125,5 +126,4 @@ A few more booths will be added in the coming days; another post will follow reg
 - Xen Project
 - XMPP & Realtime Lounge
 - XWiki & CryptPad
-- You own it - Checkmk monitors it!
 - Zabbix
