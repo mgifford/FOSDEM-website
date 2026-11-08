@@ -6,7 +6,7 @@ outputs:
   - html
 ---
 
-This year, we’ve received 256 submissions, and the number of high-quality projects is steadily increasing.
+This year, we've received 256 submissions, and the number of high-quality projects is steadily increasing.
 Attached is the first batch of booths that have been accepted.
 
 A few more booths will be added in the coming days; another post will follow regarding this.
@@ -125,5 +125,5 @@ A few more booths will be added in the coming days; another post will follow reg
 - Xen Project
 - XMPP & Realtime Lounge
 - XWiki & CryptPad
-- You own it – Checkmk monitors it!
+- You own it - Checkmk monitors it!
 - Zabbix
