@@ -1,0 +1,129 @@
+---
+title: "FOSDEM Accepted Stands"
+date: 2026-11-08
+slug: accepted-stands
+outputs:
+  - html
+---
+
+This year, we’ve received 256 submissions, and the number of high-quality projects is steadily increasing.
+Attached is the first batch of booths that have been accepted.
+
+A few more booths will be added in the coming days; another post will follow regarding this.
+
+- 0 A.D.
+- AlmaLinux OS Foundation
+- Apache Software Foundation
+- Ariel OS
+- Automotive Grade Linux, OpenEmbedded, & The Yocto Project
+- Bareos
+- BeWelcome: The Open-Source, Non-Profit Hospitality Network
+- Bor & Kiwi TCMS (Sunday)
+- CEPH
+- ClickHouse
+- Cloud Native Computing Foundation (CNCF)
+- Codeberg and Forgejo
+- conda-forge, conda, Pixi and friends
+- Delta Chat - Decentralized & Secure Messaging
+- Digital Public Goods
+- Drupal CMS: the open-source CMS, built by a global community
+- Eclipse Foundation
+- Ente Technologies Inc
+- F-Droid
+- Fedora Project
+- FLOSSK - Free Libre Open Source Software Kosova (Sunday)
+- Foreman
+- FOSS for All
+- FOSSASIA
+- Framasoft & PeerTube
+- Free Android World: From Hardware to Apps: An Open, Sustainable Ecosystem
+- Free Software Foundation Europe
+- FreeBSD
+- Gentoo Linux
+- GitLab
+- GNOME
+- GNU Radio
+- Grafana
+- Grist (Saturday)
+- grommunio: The enterprise open source project for E-Mail, Groupware and Collaboration
+- Hex sticker booth by NLnet Foundation
+- Homebrew
+- Infostand on amateur radio and open source radio technology
+- Internet Archive Europe (Sunday)
+- Jenkins (Saturday)
+- Joplin
+- KDE
+- KiCAD + FreeCAD
+- Kotlin Community Stand
+- Let's Encrypt
+- Libre Space Foundation (LSF)
+- Linaro - Open Source Embedded Testing
+- LineageOS, CalyxOS, /e/OS
+- Linphone
+- Linux on Mobile
+- Luanti
+- MariaDB Server
+- Mastodon
+- metal-stack
+- Minodu Local Community Network
+- MIT App Inventor
+- Nerdearla
+- Nextcloud: A self-hosted, open file sync & communication platform
+- Nitrokey at FOSDEM 2027
+- Nura (formely known as postmarketOS)
+- Open Culture Foundation + Taiwan Open Source Community
+- Open-Source Firmware Foundation
+- OpenBao & OpenTofu
+- OpenFlexure Microscope
+- openHAB
+- OpenInfra Foundation
+- OpenNebula
+- OpenRemote
+- OpenScan - 3D Scanner
+- OpenSearch + Valkey
+- OpenSearch Project
+- OpenSSL Foundation
+- openSUSE Project
+- OurSQL Foundation
+- Passbolt
+- Percona
+- PINE64 Community (Sunday)
+- PostgreSQL
+- Proxmox VE - PBS - PDM
+- Python & Django
+- Qubes OS + Genode OS
+- QuestDB + OpenC3 COSMOS: Open Mission Control for Satellites (Saturday)
+- ReactOS
+- RIAT & decentral.community stand
+- RiceWM - Complete Linux Desktop in the Browser
+- RISC-V International
+- Rust
+- Samba and Himmelblau
+- Software Freedom Conservancy
+- SOGo Webmail
+- Stalwart Mail and Collaboration Server (Saturday)
+- Star Labs
+- T2 Linux
+- The Debian Project
+- The Matrix.org Foundation
+- Thunderbird
+- TidesDB
+- TinyGo, Yzma & GoEducation
+- Tor / Tails / NoScript
+- Trifecta Tech Foundation
+- Two ways to see a network
+- Ubuntu & Ubports
+- Unicode Consortium
+- VictoriaMetrics
+- VideoLAN
+- Weblate
+- Wikidata
+- Wireshark
+- wolfSSL
+- Women of Open Source
+- XCP-ng
+- Xen Project
+- XMPP & Realtime Lounge
+- XWiki & CryptPad
+- You own it – Checkmk monitors it!
+- Zabbix
