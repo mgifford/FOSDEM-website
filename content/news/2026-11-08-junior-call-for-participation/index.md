@@ -1,6 +1,6 @@
 ---
 title: "FOSDEM Junior Call for Participation"
-date: 2026-11-07
+date: 2026-11-08
 slug: junior-call-for-participation
 outputs:
   - html
