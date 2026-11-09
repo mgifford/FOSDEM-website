@@ -6,17 +6,24 @@
 {{- $events := sort . "date" -}}
 {{- $first := time.AsTime (index $events 0).date -}}
 {{- $last := time.AsTime (index $events (sub (len $events) 1)).date -}}
+{{- $single := eq (len $events) 1 -}}
 <aside class="calendar-widget">
     {{ partial "icons/calendar.html" "calendar-widget-icon" }}
 
     <div class="calendar-widget-text">
-        <strong>Add these dates to your calendar</strong>
+        <strong>Add {{ if $single }}this date{{ else }}these dates{{ end }} to your calendar</strong>
         <span class="calendar-widget-meta">
-            {{ len $events }} dates,
-            {{ if eq ($first.Format "2006-01") ($last.Format "2006-01") -}}
+            {{ if $single -}}
             {{ $first.Format "2 January 2006" }}
             {{- else -}}
+            {{ len $events }} dates,
+            {{ if eq ($first.Format "2006-01") ($last.Format "2006-01") -}}
+            {{ $first.Format "2" }} to {{ $last.Format "2 January 2006" }}
+            {{- else if eq ($first.Format "2006") ($last.Format "2006") -}}
             {{ $first.Format "2 January" }} to {{ $last.Format "2 January 2006" }}
+            {{- else -}}
+            {{ $first.Format "2 January 2006" }} to {{ $last.Format "2 January 2006" }}
+            {{- end }}
             {{- end }}
         </span>
     </div>
