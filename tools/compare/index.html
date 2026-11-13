@@ -25,6 +25,12 @@
   .status { font-size:.85rem; color:var(--muted); min-height:1.3em; padding:0 16px }
   .diff pre { background:var(--panel); border:1px solid var(--line); padding:8px; overflow:auto; max-height:50vh; margin:4px 0 0; font-size:.8rem }
   footer { font-size:.85rem; color:var(--muted) }
+  .panehead { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:4px 12px; margin-bottom:4px }
+  .panehead h2 { margin:0 } .open { font-size:.9rem }
+  .info h2 { font-size:1.05rem; margin:0 0 4px } .info h3 { font-size:.95rem; margin:.9rem 0 .2rem } .info ol { margin:.2rem 0; padding-left:1.4rem } .info li { margin:.2rem 0 }
+  .info table { border-collapse:collapse; width:100%; font-size:.9rem } .info th, .info td { border:1px solid var(--line); padding:4px 8px; text-align:left; vertical-align:top }
+  .info details { margin:.2rem 0 } .info summary { cursor:pointer }
+  .pass { font-weight:bold } .note { color:var(--muted); font-size:.85rem }
   .changes { padding:8px 16px }
   .changes ul { list-style:none; margin:4px 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:8px }
   .changes li { border:1px solid var(--line); border-radius:6px; padding:8px 12px; background:var(--panel) }
@@ -71,12 +77,18 @@
   <label title="Rewrites the prefers-color-scheme: dark media query in both frames so it matches, as on a dark-mode OS. CSS only; the pages' scripts still see your real OS setting."><input type="checkbox" id="darkos"> Simulate a dark-mode OS (CSS only)</label>
 </section>
 
-<section class="info" aria-live="polite" id="info"></section>
+<section class="info" aria-labelledby="info-h" id="info"></section>
 <p class="status" id="status" role="status"></p>
 
 <div class="panes">
-  <section class="pane" aria-labelledby="hb"><h2 id="hb">Before (upstream)</h2><iframe id="before" title="Before: upstream"></iframe></section>
-  <section class="pane" aria-labelledby="ha"><h2 id="ha">After</h2><iframe id="after" title="After: with the changes"></iframe></section>
+  <section class="pane" aria-labelledby="hb">
+    <div class="panehead"><h2 id="hb">Before (upstream)</h2><a id="open-before" class="open" target="_blank" rel="noopener" href="before/">Open before in a new window</a></div>
+    <iframe id="before" title="Before: upstream"></iframe>
+  </section>
+  <section class="pane" aria-labelledby="ha">
+    <div class="panehead"><h2 id="ha">After</h2><a id="open-after" class="open" target="_blank" rel="noopener" href="after/">Open after in a new window</a></div>
+    <iframe id="after" title="After: with the changes"></iframe>
+  </section>
 </div>
 
 <section class="diff" aria-labelledby="dh">
@@ -87,7 +99,7 @@
 
 <footer>
   <p id="provenance"></p>
-  <p>Built by <code>tools/compare/build.sh</code>. Frames share one origin, so navigation, scrolling and the theme setting stay in step. Tab and Enter are not mirrored: test the keyboard in each frame separately.</p>
+  <p>Built by <code>tools/compare/build.sh</code>. Frames share one origin, so navigation, scrolling and the theme setting stay in step. Tab and Enter are not mirrored: test the keyboard in each frame separately, or open a side in its own window. The dark-OS simulation applies only inside the frames.</p>
   <p>This compares built HTML, CSS and JavaScript. It is not a conformance claim and does not replace testing with a keyboard and assistive technology.</p>
 </footer>
 
@@ -156,11 +168,43 @@
     });
   }
 
+  // Each side can also be opened on its own, without the frame, at the page currently shown.
+  function updateOpenLinks() {
+    for (const side of ['before', 'after']) {
+      const a = $('open-' + side);
+      a.href = baseOf(side) + currentPath;
+      a.setAttribute('aria-label', `Open ${side} in a new window: /${currentPath}`);
+    }
+  }
+
+  let results = null;
+  fetch('results.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).then((j) => { results = j; describe(); }).catch(() => {});
+
+  function resultCell(r) {
+    if (r.errored) return `<strong>Unknown</strong>: ${esc(r.summary)}`;
+    const detail = r.details && r.details.length
+      ? `<details><summary>${r.details.length} finding${r.details.length === 1 ? '' : 's'}</summary><ul>${r.details.slice(0, 12).map((d) => `<li>${esc(d)}</li>`).join('')}${r.details.length > 12 ? `<li>and ${r.details.length - 12} more</li>` : ''}</ul></details>` : '';
+    return `<span class="pass">${r.pass ? 'Passes' : 'Fails'}</span>: ${esc(r.summary)}${detail}`;
+  }
+  function checksHtml(v) {
+    const rec = results && results.results && results.results[v.slug];
+    if (!rec) return `<h3>Automated checks</h3><p class="note">No automated results were recorded for this build.</p>`;
+    const rows = rec.checks.map((c) => `<tr><td>${esc(c.title || c.id)}</td><td>${c.before ? resultCell(c.before) : ''}</td><td>${c.after ? resultCell(c.after) : ''}</td></tr>`).join('');
+    return `<h3>Automated checks</h3>
+      <p class="note">Recorded at build time in ${esc(results.browser)} on ${esc(results.generated.slice(0, 10))}, on exactly these two builds. Each check should fail on Before (it can see the problem) and pass on After. These are narrow mechanical checks, not a WCAG conformance test.</p>
+      <table><caption class="note">Results for ${esc(v.label)}</caption><thead><tr><th scope="col">Check</th><th scope="col">Before</th><th scope="col">After</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
   function describe() {
     const v = current();
     $('intro').innerHTML = `Left: upstream <code>${v.before_sha}</code>. Right: <strong>${esc(v.label)}</strong> <code>${v.sha}</code>. Navigate in either frame; the other follows. Pick a change below, or use the controls.`;
     const deps = v.depends.length ? `<p>Depends on: ${v.depends.map(esc).join('; ')}.</p>` : '';
-    $('info').innerHTML = `<p>${esc(v.description)}</p><p><span class="badge">${v.files_changed} file${v.files_changed === 1 ? '' : 's'} differ in the built site</span></p>${deps}`;
+    const steps = (v.steps || []).length ? `<h3>Steps to replicate</h3><ol>${v.steps.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>` : '';
+    const expected = v.expectedBefore || v.expectedAfter
+      ? `<p><strong>Expect on Before:</strong> ${esc(v.expectedBefore || '')}</p><p><strong>Expect on After:</strong> ${esc(v.expectedAfter || '')}</p>` : '';
+    $('info').innerHTML = `<h2 id="info-h">${esc(v.label)}</h2><p>${esc(v.description)}</p>
+      ${v.problem ? `<h3>The problem</h3><p>${esc(v.problem)}</p>` : ''}${steps}${expected}${checksHtml(v)}
+      <p><span class="badge">${v.files_changed} file${v.files_changed === 1 ? '' : 's'} differ in the built site</span></p>${deps}`;
     fetch(`diffs/${v.slug}.txt`, { cache: 'no-store' }).then((r) => r.text()).then((t) => { $('diff').textContent = t; });
     markCurrent();
   }
@@ -168,6 +212,7 @@
     frames.before.src = baseOf('before') + currentPath;
     frames.after.src = baseOf('after') + currentPath;
     describe();
+    updateOpenLinks();
     history.replaceState(null, '', hash());
   }
   pageSel.addEventListener('change', () => { currentPath = pageSel.value; load(); });
@@ -198,6 +243,7 @@
       if (op !== path && !syncing) { syncing = true; other.src = baseOf(otherSide) + path; setTimeout(() => (syncing = false), 400); }
       if (darkos.checked) simulateDarkOs(f.contentWindow);
       $('status').textContent = `Showing /${path}`;
+      updateOpenLinks();
       history.replaceState(null, '', hash(path));
       try {
         f.contentWindow.addEventListener('scroll', () => {

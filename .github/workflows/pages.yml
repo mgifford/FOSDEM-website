@@ -29,6 +29,14 @@ jobs:
           extended: true
       - name: Build every comparison (any variant that cannot be built fails this step)
         run: PUBLIC_BASE="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/compare" tools/compare/build.sh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Automated checks (each must fail on upstream and pass after the change)
+        run: node tools/compare/test.mjs
       - name: Add the Pages landing page
         run: cp tools/compare/pages-index.html _site/index.html
       - name: Check the output is complete

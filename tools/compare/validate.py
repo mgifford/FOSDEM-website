@@ -34,6 +34,14 @@ if need(compare / "index.html") and need(compare / "variants.json"):
         need(compare / "after" / slug / "index.html")
         need(compare / "before" / v["before_sha"] / "index.html")
         need(compare / "diffs" / f"{slug}.txt")
+results = compare / "results.json"
+if need(results):
+    r = json.loads(results.read_text())
+    if not r.get("ok"):
+        errors.append("results.json: automated checks did not behave as expected")
+    for v in data.get("variants", []):
+        if v["slug"] not in r.get("results", {}):
+            errors.append(f"results.json has no results for {v['slug']}")
 if not (root / "index.html").exists():
     errors.append(f"missing {root / 'index.html'}")
 

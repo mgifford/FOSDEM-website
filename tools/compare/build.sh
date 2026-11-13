@@ -60,18 +60,21 @@ build_site() { # srcdir base outdir
     || { echo "hugo failed in $1:" >&2; tail -20 "$work/hugo.log" >&2; return 1; }
 }
 
-mkdir -p "$OUT/before" "$OUT/after" "$OUT/diffs" "$work/neutral" "$work/stats"
+# OUT is rebuilt from scratch: a leftover tree from an earlier run must never end up in a published site.
+rm -rf "$OUT"
+mkdir -p "$OUT/before" "$OUT/after" "$OUT/diffs" "$work/neutral" "$work/stats" "$work/built"
 
 # Before trees are keyed by commit: variants forked from the same upstream commit share one.
 ensure_before() { # full sha -> builds before/<sha7> (and its neutral twin) once
   local sha="$1" b7="${1:0:7}"
-  [ -d "$OUT/before/$b7" ] && return 0
+  [ -e "$work/built/$b7" ] && return 0
   local src="$work/src-before-$b7"
   git -C "$repo" worktree add -q --detach "$src" "$sha"
   echo "before: $b7"
   build_site "$src" "$PUBLIC_BASE/before/$b7/" "$OUT/before/$b7"
   build_site "$src" "$NEUTRAL" "$work/neutral/before-$b7"
   git -C "$repo" worktree remove --force "$src"
+  touch "$work/built/$b7"
 }
 
 python3 - "$VARIANTS" > "$work/variants.tsv" <<'PY'

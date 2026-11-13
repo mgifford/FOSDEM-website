@@ -4,7 +4,18 @@
     "aliases": ["pr01-contrast-links"],
     "ref": "2027/01-contrast-and-link-fixes",
     "label": "Colour contrast and link distinction",
-    "description": "Darker light-theme link blue, a text-only accent colour that stays readable on the dark background, no opacity on the footer licence text, and underlined in-text links. Check the light theme links and the dark theme nav, date and footer.",
+    "description": "Darker light-theme link blue, a text-only accent colour that stays readable on the dark background, no opacity on the footer licence text, and underlined in-text links.",
+    "problem": "In the light theme links (#3479c4 on white) and the footer licence text are just under 4.5:1. In the dark theme the purple accent (#ac1d94 on #222) is about 2.5:1 for the active nav item, the date and the logo suffix, and in-text links are told apart from surrounding text by colour alone.",
+    "steps": [
+      "Open the home page in both frames (use the Home page in the Page menu).",
+      "Light theme: look at the footer licence text and the \"CC BY 4.0\" link. Before is pale grey with a lighter blue link; after is darker.",
+      "Press the Dark theme button. Look at the date line under the logo, the \"FOSDEM'27\" suffix and the current item in the top navigation. Before is a dim purple; after is a lighter pink.",
+      "Open News or FAQ. In-text links are underlined after the change, plain coloured text before.",
+      "Optional, to measure it: run axe DevTools (or the browser's built-in contrast checker) on the same page in each frame, or open a side in its own window first."
+    ],
+    "expectedBefore": "axe reports colour-contrast on every page in both themes and link-in-text-block in the dark theme.",
+    "expectedAfter": "axe reports neither rule on any of the 7 pages checked, in light or dark.",
+    "checks": ["contrast-links"],
     "depends": []
   },
   {
@@ -12,7 +23,18 @@
     "aliases": ["pr03-focus-visible"],
     "ref": "2027/03-focus-visible",
     "label": "Visible keyboard focus",
-    "description": "A 3px focus ring in both themes (blue in light, yellow in dark). Press Tab in each frame and compare the indicator.",
+    "description": "An explicit 3px focus ring in both themes (blue in light, yellow in dark) instead of the browser's default 1px ring.",
+    "problem": "The site never sets a focus style, so keyboard users get the browser default: a 1px ring in a fixed blue (#005FCC). On the dark background that is about 2.6:1, under the 3:1 needed for a focus indicator.",
+    "steps": [
+      "Open the FAQ page. Click once on empty page space inside the Before frame (not on a link) so it has focus.",
+      "Press Tab several times and watch the ring around each link and button. Note how thin and dim it is.",
+      "Do the same in the After frame. Click on empty space first, then Tab.",
+      "Press the Dark theme button and repeat in both frames. The Before ring nearly disappears on the dark background; the After ring is yellow.",
+      "The keyboard is not mirrored between frames, so test each one yourself, or use Open in a new window."
+    ],
+    "expectedBefore": "A thin default ring that is under 3:1 against the dark background.",
+    "expectedAfter": "A 3px ring on every focusable element, at least 3:1 in both themes.",
+    "checks": ["focus-visible"],
     "depends": []
   },
   {
@@ -20,7 +42,18 @@
     "aliases": ["pr04-skipto"],
     "ref": "2027/04-skipto",
     "label": "SkipTo skip-link menu",
-    "description": "Vendored paypal/skipto 4.1.7. Press Tab once on any page, then Enter, in each frame.",
+    "description": "Vendored paypal/skipto 4.1.7. The first Tab stop on every page is a menu of the page's landmarks and headings.",
+    "problem": "The site has no skip link, so keyboard and screen reader users must tab through the whole header navigation on every page to reach the content.",
+    "steps": [
+      "Open the FAQ page. Click on empty page space inside the Before frame, then press Tab once. Focus lands on the \"FOSDEM'27\" logo link; there is no way to jump past the navigation.",
+      "Click on empty space in the After frame, then press Tab once. A \"Skip To Content\" button appears at the top.",
+      "Press Enter to open the menu. It lists landmarks (main, navigation, contentinfo) and the page headings.",
+      "Choose \"main\" with the arrow keys and Enter. Focus moves to the main content. Press Escape to close the menu without choosing.",
+      "The keyboard is not mirrored between frames, so test each one yourself, or use Open in a new window."
+    ],
+    "expectedBefore": "The first Tab stop is the logo link. No skip mechanism exists.",
+    "expectedAfter": "The first Tab stop is a \"Skip To Content\" button; Enter opens a menu of at least 3 destinations; Escape closes it.",
+    "checks": ["skipto"],
     "depends": []
   },
   {
@@ -28,7 +61,17 @@
     "aliases": ["pr09-link-states"],
     "ref": "2027/09-link-states",
     "label": "Link hover and visited colours",
-    "description": "Visited and hover colours for text links (4.5:1 or better in both themes); hover also thickens the underline. Hover a link in body text or the footer; visited needs a link you have opened.",
+    "description": "Visited and hover colours for text links (4.5:1 or better in both themes); hover also thickens the underline.",
+    "problem": "Text links look the same whether or not you have visited them, and hovering the footer links changes nothing, so there is no feedback that a link is interactive or already read.",
+    "steps": [
+      "Open the FAQ page and scroll to the footer. Hover the \"CC BY 4.0\" link in the Before frame: nothing changes.",
+      "Hover it in the After frame: the colour changes and the underline gets thicker.",
+      "Visited colours: click a text link in the After frame (for example one inside an FAQ answer), then come back. The link is now a different colour from an unvisited one. A browser only shows visited colours for pages in its own history, so this cannot be shown in a fresh profile or by screenshot.",
+      "Press the Dark theme button and repeat. Both states must stay readable."
+    ],
+    "expectedBefore": "No hover change on footer links and no visited colour is defined.",
+    "expectedAfter": "Hover changes colour and uses a 2px underline; the visited colour is at least 4.5:1, in light and dark. (The automated check reads the defined visited colour, because browsers hide :visited from scripts.)",
+    "checks": ["link-states"],
     "depends": []
   },
   {
@@ -42,6 +85,14 @@
     ],
     "label": "Everything together",
     "description": "Upstream with all of the changes above merged. A merge conflict here fails the build, so it also shows whether the changes still fit together.",
+    "problem": "The changes are separate branches. This checks they work when applied together, not only one at a time.",
+    "steps": [
+      "Open the Home page and work through the steps of each change above in the After frame.",
+      "Press Tab: the first stop should be the Skip To Content button, and it and every later stop should show the focus ring."
+    ],
+    "expectedBefore": "Every problem described above is present.",
+    "expectedAfter": "All four automated checks pass on the merged result.",
+    "checks": ["contrast-links", "focus-visible", "skipto", "link-states"],
     "depends": []
   }
 ]

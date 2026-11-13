@@ -5,3 +5,4 @@ resources/
 data/pretalx/
 _site/
 .DS_Store
+node_modules/
