@@ -35,5 +35,6 @@ fi
 
 if [ "$arg" = "--sync-only" ]; then git switch -q "$start"; exit 0; fi
 case "$arg" in *[!a-zA-Z0-9._-]*|"") echo "Use letters, digits, dot, dash or underscore in the name." >&2; exit 1 ;; esac
-git switch -c "2027/$arg" upstream/main
+# --no-track: a plain `git push` must never point at the upstream FOSDEM repository
+git switch --no-track -c "2027/$arg" upstream/main
 echo "On 2027/$arg at upstream $(git rev-parse --short upstream/main). Make the change, commit, and add it to tools/compare/variants.json on $MAIN."
