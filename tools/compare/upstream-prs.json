@@ -2,21 +2,45 @@
   "forgeRepo": "https://git.fosdem.org/FOSDEM/website",
   "forgeUser": "mgifford",
   "githubRepo": "mgifford/FOSDEM-website",
-  "note": "Each forge pull request (FOSDEM/website) is mirrored by a GitHub pull request on the fork. The GitHub one is closed only after the forge one is closed or merged, never before. scripts/check-upstream-prs.py reports the state of each pair and never closes anything.",
+  "note": "Each forge pull request (FOSDEM/website) is mirrored by one or more GitHub pull requests on the fork, current one first. A GitHub pull request is closed only after the forge one is closed or merged, never before. GitHub and forge numbers are unrelated: GitHub #11 is not forge #11. scripts/check-upstream-prs.py reports the state of each pair and never closes anything.",
   "pairs": [
     {
       "forge": 12,
-      "github": 1,
-      "githubBranch": "a11y/01-contrast-and-link-fixes",
+      "github": 9,
+      "githubBranch": "2027/01-contrast-and-link-fixes (stale mirror #1: a11y/01-contrast-and-link-fixes)",
       "currentBranch": "2027/01-contrast-and-link-fixes",
-      "summary": "Colour contrast and link distinction"
+      "summary": "Colour contrast and link distinction",
+      "githubPrs": [
+        9,
+        1
+      ]
     },
     {
       "forge": 11,
       "github": 2,
       "githubBranch": "a11y/02-dark-media-query-respects-light",
       "currentBranch": null,
-      "summary": "An explicit light choice overrides the OS dark preference (upstream main already has this fix since 16a47a6)"
+      "summary": "An explicit light choice overrides the OS dark preference (upstream main already has this fix since 16a47a6)",
+      "githubPrs": [
+        2
+      ]
+    }
+  ],
+  "notYetOnForge": [
+    {
+      "github": 10,
+      "branch": "2027/09-link-states",
+      "summary": "Link hover and visited colours"
+    },
+    {
+      "github": 11,
+      "branch": "2027/03-focus-visible",
+      "summary": "Visible keyboard focus"
+    },
+    {
+      "github": 12,
+      "branch": "2027/04-skipto",
+      "summary": "SkipTo skip-link menu"
     }
   ]
 }

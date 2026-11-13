@@ -73,8 +73,9 @@ def main():
     mapped = set()
     for pair in CONFIG["pairs"]:
         mapped.add(pair["forge"])
-        forge_no, gh_no = pair["forge"], pair["github"]
-        print(f"forge #{forge_no}  <->  GitHub #{gh_no}: {pair['summary']}")
+        forge_no = pair["forge"]
+        gh_nos = pair.get("githubPrs") or [pair["github"]]
+        print(f"forge #{forge_no}  <->  GitHub {', '.join('#' + str(n) for n in gh_nos)}: {pair['summary']}")
         try:
             pr = forge_json(f"pulls/{forge_no}")
         except Exception as error:
@@ -82,8 +83,9 @@ def main():
             continue
         forge_open = pr["state"] == "open" and not pr.get("merged")
         forge_state = "merged" if pr.get("merged") else pr["state"]
-        gh = github_state(gh_no)
-        print(f"    forge: {forge_state}   GitHub: {gh.lower() if gh else 'unknown (gh not available?)'}")
+        gh_states = {n: github_state(n) for n in gh_nos}
+        shown = ", ".join(f"#{n} {(st or 'unknown').lower()}" for n, st in gh_states.items())
+        print(f"    forge: {forge_state}   GitHub: {shown}")
         if forge_open:
             files, behind = conflicts(forge_no)
             if files is None:
@@ -97,18 +99,24 @@ def main():
                     print("    no updated version: check whether upstream main already has the change, then close it on the forge")
             else:
                 print(f"    merges cleanly ({behind} commits behind upstream)")
-            if gh and gh != "OPEN":
+            closed_early = [n for n, st in gh_states.items() if st and st != "OPEN"]
+            if closed_early:
                 problems += 1
-                print(f"    OUT OF STEP: GitHub #{gh_no} is {gh.lower()} but forge #{forge_no} is still open; reopen it")
+                print(f"    OUT OF STEP: GitHub {', '.join('#' + str(n) for n in closed_early)} closed but forge #{forge_no} is still open; reopen")
             else:
-                print(f"    keep GitHub #{gh_no} open until forge #{forge_no} is closed")
+                print(f"    keep GitHub {', '.join('#' + str(n) for n in gh_nos)} open until forge #{forge_no} is closed")
         else:
-            if gh == "OPEN":
-                print(f"    forge #{forge_no} is {forge_state}: GitHub #{gh_no} can now be closed (not done by this script)")
+            still_open = [n for n, st in gh_states.items() if st == "OPEN"]
+            if still_open:
+                print(f"    forge #{forge_no} is {forge_state}: GitHub {', '.join('#' + str(n) for n in still_open)} can now be closed (not done by this script)")
             else:
-                print("    both closed: in step")
+                print("    all closed: in step")
         print()
 
+    for item in CONFIG.get("notYetOnForge", []):
+        st = github_state(item["github"])
+        print(f"GitHub #{item['github']} ({item['branch']}) is not on the forge yet: {item['summary']} [{(st or 'unknown').lower()}]")
+    print()
     try:
         mine = [p for p in forge_json("pulls?state=open&limit=50") if p["user"]["login"].lower() == CONFIG["forgeUser"].lower()]
     except Exception:
