@@ -57,7 +57,7 @@ which the viewer shows under the steps. A check **must fail on upstream** (other
 problem) **and pass after the change**; anything else, or an error, fails the run and blocks publishing.
 
 ```sh
-npm ci && npx playwright install chromium
+npm ci --prefix tools/compare && npx --prefix tools/compare playwright install chromium
 node tools/compare/test.mjs                       # serves _site/compare itself
 BASE_URL=https://user.github.io/repo/compare/ node tools/compare/test.mjs   # test a deployment
 ONLY=skipto node tools/compare/test.mjs

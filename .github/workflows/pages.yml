@@ -36,8 +36,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
+          cache-dependency-path: tools/compare/package-lock.json
+      - run: npm ci --prefix tools/compare
+      - run: npx --prefix tools/compare playwright install --with-deps chromium
       - name: Automated checks (each must fail on upstream and pass after the change)
         run: node tools/compare/test.mjs
       - name: Add the Pages landing page
