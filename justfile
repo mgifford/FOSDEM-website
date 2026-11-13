@@ -23,6 +23,13 @@ ticket id:
 serve: fetch
     hugo server --baseURL=http://127.0.0.1/{{year}} -D --disableFastRender
 
+# Build the site and scan it with axe in Chromium (light and dark, four widths). See tests/a11y/README.md
+a11y: fetch
+    hugo build
+    npm ci
+    npx playwright install chromium
+    npm run test:a11y
+
 # staging baseURL, drafts included
 build-staging: fetch
     hugo build -b https://staging.fosdem.org/{{year}}/ -D \

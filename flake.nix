@@ -64,6 +64,7 @@
             pkgs.git
             pkgs.hugo
             pkgs.just
+            pkgs.nodejs
             pkgs.openssh_gssapi
             pkgs.rsync
             pkgs.woff2
