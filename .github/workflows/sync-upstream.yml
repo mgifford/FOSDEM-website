@@ -1,0 +1,48 @@
+name: Sync with upstream FOSDEM
+
+# Opens a pull request that merges FOSDEM/website main into this repository's main. A merge that
+# conflicts opens an issue instead. Needs Settings > Actions > General > "Allow GitHub Actions to
+# create and approve pull requests". PRs opened with the default token do not trigger the Pages
+# workflow, so close and reopen the PR to run it.
+
+on:
+  schedule:
+    - cron: '41 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      UPSTREAM_URL: https://git.fosdem.org/FOSDEM/website.git
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Merge upstream main
+        run: |
+          git remote add upstream "$UPSTREAM_URL"
+          git fetch -q upstream main
+          if git merge-base --is-ancestor upstream/main HEAD; then echo "Already up to date."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="sync/upstream-$(git rev-parse --short upstream/main)"
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then echo "$branch already exists."; exit 0; fi
+          git switch -c "$branch"
+          if git merge --no-edit upstream/main; then
+            git push origin "$branch"
+            gh pr create --base main --head "$branch" \
+              --title "Merge upstream FOSDEM/website $(git rev-parse --short upstream/main)" \
+              --body "Automatic merge of \`upstream/main\`. Check that the comparison still builds."
+          else
+            git merge --abort
+            gh issue create --title "Upstream FOSDEM/website $(git rev-parse --short upstream/main) conflicts with main" \
+              --body "The scheduled sync could not merge cleanly. Run \`scripts/start-work.sh --sync-only\` locally and resolve the conflicts."
+            exit 1
+          fi

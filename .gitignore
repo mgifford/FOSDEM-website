@@ -3,3 +3,5 @@ dist/
 public/
 resources/
 data/pretalx/
+_site/
+.DS_Store

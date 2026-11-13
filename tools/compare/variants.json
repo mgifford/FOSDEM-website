@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "contrast-links",
+    "aliases": ["pr01-contrast-links"],
+    "ref": "2027/01-contrast-and-link-fixes",
+    "label": "Colour contrast and link distinction",
+    "description": "Darker light-theme link blue, a text-only accent colour that stays readable on the dark background, no opacity on the footer licence text, and underlined in-text links. Check the light theme links and the dark theme nav, date and footer.",
+    "depends": []
+  },
+  {
+    "slug": "focus-visible",
+    "aliases": ["pr03-focus-visible"],
+    "ref": "2027/03-focus-visible",
+    "label": "Visible keyboard focus",
+    "description": "A 3px focus ring in both themes (blue in light, yellow in dark). Press Tab in each frame and compare the indicator.",
+    "depends": []
+  },
+  {
+    "slug": "skipto",
+    "aliases": ["pr04-skipto"],
+    "ref": "2027/04-skipto",
+    "label": "SkipTo skip-link menu",
+    "description": "Vendored paypal/skipto 4.1.7. Press Tab once on any page, then Enter, in each frame.",
+    "depends": []
+  },
+  {
+    "slug": "link-states",
+    "aliases": ["pr09-link-states"],
+    "ref": "2027/09-link-states",
+    "label": "Link hover and visited colours",
+    "description": "Visited and hover colours for text links (4.5:1 or better in both themes); hover also thickens the underline. Hover a link in body text or the footer; visited needs a link you have opened.",
+    "depends": []
+  },
+  {
+    "slug": "all",
+    "ref": "-",
+    "merge": [
+      "2027/01-contrast-and-link-fixes",
+      "2027/03-focus-visible",
+      "2027/04-skipto",
+      "2027/09-link-states"
+    ],
+    "label": "Everything together",
+    "description": "Upstream with all of the changes above merged. A merge conflict here fails the build, so it also shows whether the changes still fit together.",
+    "depends": []
+  }
+]

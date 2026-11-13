@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FOSDEM 2027 accessibility changes: before and after</title>
+<style>
+  :root { --bg:#fff; --fg:#111; --muted:#444; --line:#bbb; --panel:#f3f3f3; --accent:#0b5cad; --focus:#0b5cad }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#161616; --fg:#eee; --muted:#bbb; --line:#555; --panel:#242424; --accent:#8ab4ff; --focus:#ffd54f }
+  }
+  * { box-sizing: border-box }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.5 system-ui,sans-serif }
+  header, .controls, .info, .diff, footer { padding: 8px 16px }
+  h1 { font-size:1.25rem; margin:8px 0 } h2 { font-size:1rem; margin:0 0 4px }
+  a { color:var(--accent) } :focus-visible { outline:3px solid var(--focus); outline-offset:2px }
+  .controls { display:flex; flex-wrap:wrap; gap:12px 24px; align-items:end; background:var(--panel); border-block:1px solid var(--line) }
+  fieldset { border:1px solid var(--line); margin:0; padding:4px 10px 6px } legend { font-size:.85rem; color:var(--muted); padding:0 4px }
+  label { margin-right:8px } select, button { font:inherit; padding:3px 8px; color:var(--fg); background:var(--bg); border:1px solid var(--fg); border-radius:4px }
+  select { max-width:100% } button { cursor:pointer }
+  .info { font-size:.95rem } .info p { margin:.25rem 0 } .badge { display:inline-block; padding:0 8px; border:1px solid var(--fg); border-radius:99px; font-size:.85rem }
+  .panes { display:flex; gap:12px; padding:0 16px 12px; justify-content:center }
+  .pane { flex:0 0 auto; width:var(--w, 50%); max-width:100% }
+  iframe { width:100%; height:70vh; border:1px solid var(--line); background:#fff; display:block }
+  .status { font-size:.85rem; color:var(--muted); min-height:1.3em; padding:0 16px }
+  .diff pre { background:var(--panel); border:1px solid var(--line); padding:8px; overflow:auto; max-height:50vh; margin:4px 0 0; font-size:.8rem }
+  footer { font-size:.85rem; color:var(--muted) }
+  .changes { padding:8px 16px }
+  .changes ul { list-style:none; margin:4px 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:8px }
+  .changes li { border:1px solid var(--line); border-radius:6px; padding:8px 12px; background:var(--panel) }
+  .changes li[aria-current=true] { border:2px solid var(--accent) }
+  .changes a.main { font-weight:bold } .changes p { margin:.25rem 0; font-size:.9rem }
+  .changes .meta { color:var(--muted); font-size:.8rem }
+  @media (max-width: 800px) { .panes { flex-direction:column } .pane { width:100% } }
+</style>
+</head>
+<body>
+<header>
+  <h1>FOSDEM 2027 website: accessibility changes, before and after</h1>
+  <p id="intro">Loading…</p>
+  <noscript><p>This comparison needs JavaScript. Each side is a plain static site under <code>before/</code> and <code>after/</code> in this folder.</p></noscript>
+</header>
+
+<nav class="changes" aria-labelledby="changes-h">
+  <h2 id="changes-h">Changes you can compare</h2>
+  <ul id="changes"></ul>
+</nav>
+
+<section class="controls" aria-label="Controls">
+  <div>
+    <label for="variant">Compare upstream with</label><br>
+    <select id="variant"></select>
+  </div>
+  <div>
+    <label for="page">Page</label><br>
+    <select id="page"></select>
+  </div>
+  <fieldset>
+    <legend>Site theme (the sites' own toggle, stored in localStorage)</legend>
+    <button type="button" data-theme="light">Light</button>
+    <button type="button" data-theme="dark">Dark</button>
+    <button type="button" data-theme="">Follow OS</button>
+  </fieldset>
+  <fieldset>
+    <legend>Frame width</legend>
+    <label><input type="radio" name="w" value="50%" checked> Half</label>
+    <label><input type="radio" name="w" value="390px"> Phone</label>
+    <label><input type="radio" name="w" value="820px"> Tablet</label>
+  </fieldset>
+  <label><input type="checkbox" id="syncscroll" checked> Sync scrolling</label>
+  <label title="Rewrites the prefers-color-scheme: dark media query in both frames so it matches, as on a dark-mode OS. CSS only; the pages' scripts still see your real OS setting."><input type="checkbox" id="darkos"> Simulate a dark-mode OS (CSS only)</label>
+</section>
+
+<section class="info" aria-live="polite" id="info"></section>
+<p class="status" id="status" role="status"></p>
+
+<div class="panes">
+  <section class="pane" aria-labelledby="hb"><h2 id="hb">Before (upstream)</h2><iframe id="before" title="Before: upstream"></iframe></section>
+  <section class="pane" aria-labelledby="ha"><h2 id="ha">After</h2><iframe id="after" title="After: with the changes"></iframe></section>
+</div>
+
+<section class="diff" aria-labelledby="dh">
+  <h2 id="dh">What differs in the built site</h2>
+  <p>Both sides are built from the same Pretalx data. Base URLs are normalised before comparing, so only real differences appear. Pages link to a fingerprinted stylesheet, so any CSS change also touches every page's <code>&lt;link&gt;</code>.</p>
+  <pre id="diff" tabindex="0">loading…</pre>
+</section>
+
+<footer>
+  <p id="provenance"></p>
+  <p>Built by <code>tools/compare/build.sh</code>. Frames share one origin, so navigation, scrolling and the theme setting stay in step. Tab and Enter are not mirrored: test the keyboard in each frame separately.</p>
+  <p>This compares built HTML, CSS and JavaScript. It is not a conformance claim and does not replace testing with a keyboard and assistive technology.</p>
+</footer>
+
+<script>
+(async () => {
+  const PAGES = [
+    ['', 'Home'], ['news/', 'News'], ['calendar/', 'Calendar'], ['about/', 'About'], ['faq/', 'FAQ'],
+    ['practical/', 'Practical'], ['practical/conduct/', 'Code of Conduct'], ['support/', 'Support'],
+    ['contact/', 'Contact'], ['archives/', 'Archives'],
+  ];
+  const $ = (id) => document.getElementById(id);
+  let data;
+  try { data = await (await fetch('variants.json', { cache: 'no-store' })).json(); }
+  catch { $('intro').textContent = 'Could not load variants.json. This comparison was not built correctly.'; return; }
+  const variants = data.variants;
+  const pageSel = $('page'), varSel = $('variant'), darkos = $('darkos');
+  const frames = { before: $('before'), after: $('after') };
+  const here = new URL('.', location.href);
+  const current = () => variants.find((x) => x.slug === varSel.value);
+  const baseOf = (side) => new URL(side === 'before' ? `before/${current().before_sha}/` : `after/${varSel.value}/`, here).pathname;
+  const bySlug = (s) => variants.find((v) => v.slug === s || (v.aliases || []).includes(s));
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  PAGES.forEach(([p, l]) => pageSel.append(new Option(`${l} (/${p})`, p)));
+  variants.forEach((v) => varSel.append(new Option(v.label, v.slug)));
+
+  const params = new URLSearchParams(location.hash.slice(1));
+  const requested = bySlug(params.get('variant') || '');
+  if (requested) varSel.value = requested.slug;
+  let currentPath = params.get('page') || '';
+  const ensureOption = (p) => { if (![...pageSel.options].some((o) => o.value === p)) pageSel.add(new Option(`(current) /${p}`, p), 0); };
+  ensureOption(currentPath);
+  pageSel.value = currentPath;
+
+  const hashFor = (slug, path = currentPath) => `#variant=${slug}&page=${encodeURIComponent(path)}${darkos.checked ? '&os=dark' : ''}`;
+  const hash = (path = currentPath) => hashFor(varSel.value, path);
+  const rel = (side, win) => win.location.pathname.startsWith(baseOf(side)) ? win.location.pathname.slice(baseOf(side).length) : null;
+  let syncing = false;
+
+  // Make the OS-dark media query match inside a frame (same origin, so its stylesheets are readable).
+  function simulateDarkOs(win) {
+    try {
+      for (const sheet of win.document.styleSheets) {
+        let rules; try { rules = sheet.cssRules; } catch { continue; }
+        for (const r of rules) {
+          if (r instanceof win.CSSMediaRule && /prefers-color-scheme:\s*dark/.test(r.media.mediaText)) r.media.mediaText = 'all';
+        }
+      }
+    } catch {}
+  }
+  if (params.get('os') === 'dark') darkos.checked = true;
+
+  function renderList() {
+    $('changes').innerHTML = variants.map((v) => {
+      const pr = v.pr ? ` · <a href="${esc(v.pr)}">Pull request</a>` : '';
+      const branch = v.ref && v.ref !== '-' ? ` · <a href="${esc(data.repo || '')}/tree/${esc(v.ref)}">Branch <code>${esc(v.ref)}</code></a>` : '';
+      return `<li data-slug="${esc(v.slug)}"><a class="main" href="${hashFor(v.slug, '')}">${esc(v.label)}</a>
+        <p>${esc(v.description)}</p>
+        <p class="meta">${v.files_changed} file${v.files_changed === 1 ? '' : 's'} differ${pr}${data.repo ? branch : ''}</p></li>`;
+    }).join('');
+    markCurrent();
+  }
+  function markCurrent() {
+    document.querySelectorAll('#changes li').forEach((li) => {
+      if (li.dataset.slug === varSel.value) li.setAttribute('aria-current', 'true'); else li.removeAttribute('aria-current');
+    });
+  }
+
+  function describe() {
+    const v = current();
+    $('intro').innerHTML = `Left: upstream <code>${v.before_sha}</code>. Right: <strong>${esc(v.label)}</strong> <code>${v.sha}</code>. Navigate in either frame; the other follows. Pick a change below, or use the controls.`;
+    const deps = v.depends.length ? `<p>Depends on: ${v.depends.map(esc).join('; ')}.</p>` : '';
+    $('info').innerHTML = `<p>${esc(v.description)}</p><p><span class="badge">${v.files_changed} file${v.files_changed === 1 ? '' : 's'} differ in the built site</span></p>${deps}`;
+    fetch(`diffs/${v.slug}.txt`, { cache: 'no-store' }).then((r) => r.text()).then((t) => { $('diff').textContent = t; });
+    markCurrent();
+  }
+  function load() {
+    frames.before.src = baseOf('before') + currentPath;
+    frames.after.src = baseOf('after') + currentPath;
+    describe();
+    history.replaceState(null, '', hash());
+  }
+  pageSel.addEventListener('change', () => { currentPath = pageSel.value; load(); });
+  varSel.addEventListener('change', () => load());
+  darkos.addEventListener('change', () => { for (const f of Object.values(frames)) f.contentWindow.location.reload(); history.replaceState(null, '', hash()); });
+
+  // Links in the change list (and pasted deep links) change only the hash, so apply it here.
+  window.addEventListener('hashchange', () => {
+    const p = new URLSearchParams(location.hash.slice(1));
+    const v = bySlug(p.get('variant') || '');
+    if (!v) return;
+    varSel.value = v.slug;
+    currentPath = p.get('page') || '';
+    ensureOption(currentPath); pageSel.value = currentPath;
+    darkos.checked = p.get('os') === 'dark';
+    load();
+    $('status').textContent = `Showing: ${v.label}`;
+  });
+
+  for (const [side, f] of Object.entries(frames)) {
+    f.addEventListener('load', () => {
+      let path; try { path = rel(side, f.contentWindow); } catch { return; }
+      if (path === null) return;
+      currentPath = path;
+      ensureOption(path); pageSel.value = path;
+      const otherSide = side === 'before' ? 'after' : 'before', other = frames[otherSide];
+      let op = null; try { op = rel(otherSide, other.contentWindow); } catch {}
+      if (op !== path && !syncing) { syncing = true; other.src = baseOf(otherSide) + path; setTimeout(() => (syncing = false), 400); }
+      if (darkos.checked) simulateDarkOs(f.contentWindow);
+      $('status').textContent = `Showing /${path}`;
+      history.replaceState(null, '', hash(path));
+      try {
+        f.contentWindow.addEventListener('scroll', () => {
+          if (!$('syncscroll').checked) return;
+          const o = frames[otherSide].contentWindow;
+          if (o && !o.__mirroring) {
+            f.contentWindow.__mirroring = true;
+            o.scrollTo(f.contentWindow.scrollX, f.contentWindow.scrollY);
+            setTimeout(() => (f.contentWindow.__mirroring = false), 60);
+          }
+        }, { passive: true });
+      } catch {}
+    });
+  }
+
+  document.querySelectorAll('button[data-theme]').forEach((b) => b.addEventListener('click', () => {
+    const t = b.dataset.theme;
+    try { t ? localStorage.setItem('theme', t) : localStorage.removeItem('theme'); } catch {}
+    for (const f of Object.values(frames)) f.contentWindow.location.reload();
+    $('status').textContent = t ? `Theme set to ${t} in both frames` : 'Theme follows the OS in both frames';
+  }));
+  document.querySelectorAll('input[name=w]').forEach((r) => r.addEventListener('change', () => {
+    document.querySelectorAll('.pane').forEach((p) => p.style.setProperty('--w', r.value));
+  }));
+
+  $('provenance').innerHTML = `Upstream <a href="${esc(data.upstream.url.replace(/\.git$/, ''))}/commit/${esc(data.upstream.full_sha)}"><code>${data.upstream.sha}</code></a> (${data.upstream.date}). Pretalx data <code>${esc(data.data.event)}</code> fetched ${esc(data.data.fetched)}, sha256 <code>${data.data.sha256.slice(0, 12)}</code>. ${esc(data.hugo)}.`;
+  renderList();
+  load();
+})();
+</script>
+</body>
+</html>
