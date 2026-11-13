@@ -11,6 +11,8 @@
     --c-line-footer: #ccc;
     --c-link: #3479c4;
 
+    --c-focus: #0b5cad;
+
     --c-logo-bg: transparent;
     --c-logo-pad: .5em .8em;
 
@@ -39,6 +41,8 @@
     --c-line-footer: #555;
     --c-link: #69a1ff;
 
+    --c-focus: #ffd54f;
+
     --c-logo-bg: #eee;
 
     --c-code-bg: #2a2a2a;
@@ -66,6 +70,8 @@
         --c-footer: #eee;
         --c-line-footer: #555;
         --c-link: #69a1ff;
+
+        --c-focus: #ffd54f;
 
         --c-logo-bg: #eee;
 
