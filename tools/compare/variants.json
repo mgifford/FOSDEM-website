@@ -6,7 +6,7 @@
     ],
     "ref": "2027/01-contrast-and-link-fixes",
     "label": "Colour contrast and link distinction",
-    "description": "Darker light-theme link blue, a text-only accent colour that stays readable on the dark background, no opacity on the footer licence text, and underlined in-text links. Branch 2027/01 is this pull request rebased onto the current main, because the original no longer merged.",
+    "description": "Darker light-theme link blue, a text-only accent colour that stays readable on the dark background, no opacity on the footer licence text, and underlined in-text links.",
     "problem": "In the light theme links (#3479c4 on white) and the footer licence text are just under 4.5:1. In the dark theme the purple accent (#ac1d94 on #222) is about 2.5:1 for the active nav item, the date and the logo suffix, and in-text links are told apart from surrounding text by colour alone.",
     "steps": [
       "Open the home page in both frames (use the Home page in the Page menu).",
@@ -22,7 +22,8 @@
     ],
     "depends": [],
     "pr": "https://git.fosdem.org/FOSDEM/website/pulls/12",
-    "githubPr": "https://github.com/mgifford/FOSDEM-website/pull/9"
+    "githubPr": "https://github.com/mgifford/FOSDEM-website/pull/9",
+    "forgePr": 12
   },
   {
     "slug": "focus-visible",
@@ -45,7 +46,10 @@
     "checks": [
       "focus-visible"
     ],
-    "depends": []
+    "depends": [],
+    "forgePr": 29,
+    "pr": "https://git.fosdem.org/FOSDEM/website/pulls/29",
+    "githubPr": "https://github.com/mgifford/FOSDEM-website/pull/11"
   },
   {
     "slug": "skipto",
@@ -68,7 +72,10 @@
     "checks": [
       "skipto"
     ],
-    "depends": []
+    "depends": [],
+    "forgePr": 30,
+    "pr": "https://git.fosdem.org/FOSDEM/website/pulls/30",
+    "githubPr": "https://github.com/mgifford/FOSDEM-website/pull/12"
   },
   {
     "slug": "link-states",
@@ -90,7 +97,10 @@
     "checks": [
       "link-states"
     ],
-    "depends": []
+    "depends": [],
+    "forgePr": 31,
+    "pr": "https://git.fosdem.org/FOSDEM/website/pulls/31",
+    "githubPr": "https://github.com/mgifford/FOSDEM-website/pull/10"
   },
   {
     "slug": "light-choice",

@@ -24,23 +24,36 @@
       "githubPrs": [
         2
       ]
-    }
-  ],
-  "notYetOnForge": [
-    {
-      "github": 10,
-      "branch": "2027/09-link-states",
-      "summary": "Link hover and visited colours"
     },
     {
+      "forge": 29,
       "github": 11,
-      "branch": "2027/03-focus-visible",
+      "githubPrs": [
+        11
+      ],
+      "githubBranch": "2027/03-focus-visible",
+      "currentBranch": "submit/03-focus-visible",
       "summary": "Visible keyboard focus"
     },
     {
+      "forge": 30,
       "github": 12,
-      "branch": "2027/04-skipto",
+      "githubPrs": [
+        12
+      ],
+      "githubBranch": "2027/04-skipto",
+      "currentBranch": "submit/04-skipto",
       "summary": "SkipTo skip-link menu"
+    },
+    {
+      "forge": 31,
+      "github": 10,
+      "githubPrs": [
+        10
+      ],
+      "githubBranch": "2027/09-link-states",
+      "currentBranch": "submit/09-link-states",
+      "summary": "Link hover and visited colours"
     }
   ]
 }
