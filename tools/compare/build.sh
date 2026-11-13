@@ -123,12 +123,12 @@ while IFS=$'\t' read -r slug ref merge; do
   git -C "$repo" worktree remove --force "$src"
 done < "$work/variants.tsv"
 
-python3 - "$VARIANTS" "$work/stats" "$OUT/variants.json" "$UPSTREAM_URL" "$up_full" "$up_date" "$EVENT" "$data_hash" "$data_time" "$hugo_version" "$repo_url" <<'PY'
+python3 - "$VARIANTS" "$work/stats" "$OUT/variants.json" "$UPSTREAM_URL" "$up_full" "$up_date" "$EVENT" "$data_hash" "$data_time" "$hugo_version" "$repo_url" "$PUBLIC_BASE" <<'PY'
 import json,sys,os
 variants=json.load(open(sys.argv[1])); stats=sys.argv[2]
 out={"upstream":{"url":sys.argv[4],"sha":sys.argv[5][:7],"full_sha":sys.argv[5],"date":sys.argv[6]},
      "data":{"event":sys.argv[7],"sha256":sys.argv[8],"fetched":sys.argv[9]},
-     "hugo":sys.argv[10],"repo":sys.argv[11],"variants":[],"failed":[]}
+     "hugo":sys.argv[10],"repo":sys.argv[11],"public_base":sys.argv[12],"variants":[],"failed":[]}
 for v in variants:
     s=open(os.path.join(stats,v["slug"])).read().split()
     if s[0]=="failed": out["failed"].append(v["slug"]); continue

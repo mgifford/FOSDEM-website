@@ -35,6 +35,38 @@ Guidepup screen reader checks) is a separate item.
 
 ## Comparison lab
 
+- [ ] Run Guidepup (https://www.guidepup.dev/) against every change's before and after, and compare
+      what a screen reader says for the same pages.
+      - Start with `@guidepup/virtual-screen-reader` in Playwright, which runs anywhere (the
+        2026 fork's suite used version 0.32.1). Walk each page from the top, record the spoken
+        phrase log (role, name, state) for the Before and After builds, and store it as JSON next to
+        `results.json`.
+      - Diff the two logs per page and show the differences in the viewer next to the steps:
+        phrases added, removed or changed (for example the SkipTo button and its menu appearing
+        as the first stop, or a link gaining a different name). Run it on the same pages and the
+        same viewports for both sides.
+      - Say clearly in the viewer that this is a virtual screen reader, a simulation of the
+        accessibility tree and not what VoiceOver, NVDA or JAWS actually say. Real screen readers
+        can differ and must be tested separately (manual attestations, kept apart from the
+        automated results).
+      - Later, optional: real VoiceOver (macOS) and NVDA (Windows) runs through Guidepup's native
+        drivers on macOS and Windows CI runners. They need a prepared runner and are slower and
+        less stable, so treat them as an extra job that may be allowed to fail, not as a gate.
+- [ ] Run the lab's automated checks across the full matrix: light and dark, and desktop (1280px),
+      tablet (820px) and mobile (390px, plus 320px for reflow). Today `tools/compare/checks.mjs` runs
+      light and dark but only at one 1280x800 viewport, in Chromium, once per build.
+      - Add a viewport dimension to each check and record every condition separately in
+        `results.json`, so the viewer's results table can show light/dark by device. Run the
+        conditions as a GitHub Actions matrix, or as one job if the time allows.
+      - Keep three things apart: viewport width, device emulation (touch, device pixel ratio, mobile
+        user agent: Playwright `devices` such as iPad, iPhone and Pixel) and the browser engine
+        (Chromium now; add WebKit and Firefox). A narrow frame in the viewer is not device
+        emulation.
+      - Decide which checks make sense on touch: hover (`link-states`) does not, and the Tab key
+        checks (`focus-visible`, `skipto`) need a hardware keyboard, so mark them not applicable
+        there instead of passing them.
+      - Add touch-target size (WCAG 2.5.8, 24x24px) and no-horizontal-scroll at 320px as checks.
+      - Apply the same matrix to the proposed `FOSDEM/website` pipeline above.
 - [ ] Run axe on every variant's before and after in `tools/compare/build.sh` and show the rule IDs
       and affected elements per change in the viewer (a lower score does not prove the intended fix).
 - [ ] Forced-colours support in the viewer, as in Drupal Core Lab (`tools/compare/media-preferences.mjs`

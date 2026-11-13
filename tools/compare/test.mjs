@@ -20,10 +20,13 @@ const only = process.env.ONLY;
 let base = process.env.BASE_URL && process.env.BASE_URL.replace(/\/?$/, '/');
 let server;
 
-async function startServer() {
+// The pages were built for PUBLIC_BASE (for example /FOSDEM-website/compare/ on Pages) and use
+// root-relative URLs, so the local server must mount the build at that same path.
+async function startServer(publicBase) {
   const port = 8095 + Math.floor(Math.random() * 500);
-  server = spawn(process.execPath, [path.join(here, 'serve.mjs'), outDir, String(port)], { stdio: 'ignore' });
-  base = `http://127.0.0.1:${port}/`;
+  const prefix = new URL(publicBase).pathname.replace(/\/+$/, '');
+  server = spawn(process.execPath, [path.join(here, 'serve.mjs'), outDir, String(port)], { stdio: 'ignore', env: { ...process.env, PREFIX: prefix } });
+  base = `http://127.0.0.1:${port}${prefix}/`;
   for (let i = 0; i < 50; i++) {
     try { if ((await fetch(base + 'variants.json')).ok) return; } catch {}
     await new Promise((r) => setTimeout(r, 100));
@@ -38,7 +41,7 @@ async function run(browser, id, url) {
 
 try {
   const data = JSON.parse(fs.readFileSync(path.join(outDir, 'variants.json'), 'utf8'));
-  if (!base) await startServer();
+  if (!base) await startServer(data.public_base || 'http://127.0.0.1/');
   const browser = await chromium.launch();
   const beforeCache = new Map();
   const results = {};
