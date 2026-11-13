@@ -77,7 +77,6 @@
   <label title="Rewrites the prefers-color-scheme: dark media query in both frames so it matches, as on a dark-mode OS. CSS only; the pages' scripts still see your real OS setting."><input type="checkbox" id="darkos"> Simulate a dark-mode OS (CSS only)</label>
 </section>
 
-<section class="info" aria-labelledby="info-h" id="info"></section>
 <p class="status" id="status" role="status"></p>
 
 <div class="panes">
@@ -90,6 +89,8 @@
     <iframe id="after" title="After: with the changes"></iframe>
   </section>
 </div>
+
+<section class="info" aria-labelledby="info-h" id="info"></section>
 
 <section class="diff" aria-labelledby="dh">
   <h2 id="dh">What differs in the built site</h2>
@@ -197,7 +198,7 @@
 
   function describe() {
     const v = current();
-    $('intro').innerHTML = `Left: upstream <code>${v.before_sha}</code>. Right: <strong>${esc(v.label)}</strong> <code>${v.sha}</code>. Navigate in either frame; the other follows. Pick a change below, or use the controls.`;
+    $('intro').innerHTML = `Left: upstream <code>${v.before_sha}</code>. Right: <strong>${esc(v.label)}</strong> <code>${v.sha}</code>. Navigate in either frame; the other follows. The problem, steps to replicate and automated results are below the frames.`;
     const deps = v.depends.length ? `<p>Depends on: ${v.depends.map(esc).join('; ')}.</p>` : '';
     const steps = (v.steps || []).length ? `<h3>Steps to replicate</h3><ol>${v.steps.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>` : '';
     const expected = v.expectedBefore || v.expectedAfter
