@@ -30,6 +30,22 @@ scripts/start-work.sh <short-name>      # fetch upstream, merge it into main, br
 If the merge into `main` conflicts the script stops cleanly. Resolve that before doing anything else.
 Never base a change branch on `main` (it would carry the lab files).
 
+## Pull requests live in two places: the forge is the source of truth
+
+Changes are offered to FOSDEM at `https://git.fosdem.org/FOSDEM/website/pulls` and mirrored by pull requests
+on this GitHub fork (`https://github.com/mgifford/FOSDEM-website/pulls`). The pairs are listed in
+`tools/compare/upstream-prs.json`.
+
+- **Never close, merge or delete a GitHub pull request while its forge counterpart is open.** Close the
+  GitHub one only after the forge one is closed or merged. Do not offer to close GitHub PRs "to tidy up".
+- Keep each pair in step: when a forge PR is rebased or updated, update the GitHub PR branch the same way.
+- `scripts/check-upstream-prs.py` (also run by `scripts/start-work.sh`) reports, read-only, whether each
+  forge PR still merges into upstream main (with the conflicting files) and whether GitHub and the forge agree.
+- Open pull requests go stale when upstream moves (the CSS moved to `assets/css/` on 2026-10-26 and both
+  open PRs stopped merging). Rebase onto `upstream/main` rather than merging upstream into the PR branch.
+- Pushing to the forge or force-pushing a pull request branch needs the owner's explicit go-ahead.
+- Keep the AI-use disclosure in a PR description when it is updated.
+
 ## Commands
 
 ```sh

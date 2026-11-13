@@ -1,0 +1,22 @@
+{
+  "forgeRepo": "https://git.fosdem.org/FOSDEM/website",
+  "forgeUser": "mgifford",
+  "githubRepo": "mgifford/FOSDEM-website",
+  "note": "Each forge pull request (FOSDEM/website) is mirrored by a GitHub pull request on the fork. The GitHub one is closed only after the forge one is closed or merged, never before. scripts/check-upstream-prs.py reports the state of each pair and never closes anything.",
+  "pairs": [
+    {
+      "forge": 12,
+      "github": 1,
+      "githubBranch": "a11y/01-contrast-and-link-fixes",
+      "currentBranch": "2027/01-contrast-and-link-fixes",
+      "summary": "Colour contrast and link distinction"
+    },
+    {
+      "forge": 11,
+      "github": 2,
+      "githubBranch": "a11y/02-dark-media-query-respects-light",
+      "currentBranch": null,
+      "summary": "An explicit light choice overrides the OS dark preference (upstream main already has this fix since 16a47a6)"
+    }
+  ]
+}

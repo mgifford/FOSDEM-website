@@ -6,7 +6,8 @@
 #
 # 1. fetches FOSDEM/website (git.fosdem.org) as the `upstream` remote;
 # 2. merges upstream/main into main (the comparison lab), stopping cleanly on conflicts;
-# 3. creates the change branch from upstream/main itself, not from main, so the branch holds only
+# 3. reports whether your open pull requests on the forge still merge (scripts/check-upstream-prs.py);
+# 4. creates the change branch from upstream/main itself, not from main, so the branch holds only
 #    the change and can be offered upstream without the lab tooling.
 # Then add an entry for the branch to tools/compare/variants.json.
 set -euo pipefail
@@ -32,6 +33,10 @@ else
   echo "Merging upstream/main into $MAIN conflicts. Resolve it on $MAIN first, then run this again." >&2
   exit 1
 fi
+
+# Informational: do my open pull requests on the FOSDEM forge still merge into upstream main?
+# Never changes anything and never fails this script.
+python3 scripts/check-upstream-prs.py || echo "(see above: fix conflicting pull requests before or alongside new work)" >&2
 
 if [ "$arg" = "--sync-only" ]; then git switch -q "$start"; exit 0; fi
 case "$arg" in *[!a-zA-Z0-9._-]*|"") echo "Use letters, digits, dot, dash or underscore in the name." >&2; exit 1 ;; esac
