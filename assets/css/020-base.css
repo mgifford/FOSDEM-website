@@ -74,6 +74,19 @@ p {
     margin-top: 0;
 }
 
+/* Link states for text links. Placed before the base `a` and `a.button` rules so those keep their
+   colours where they apply; hover also changes the underline, so it is not colour-only. The focus
+   ring is separate. */
+:where(main :is(p, li), .article, footer) a:visited {
+    color: var(--c-link-visited);
+}
+
+:where(main :is(p, li), .article, footer) a:hover {
+    color: var(--c-link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+
 a {
     text-decoration: none;
     color: var(--c-link);
