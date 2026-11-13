@@ -1,0 +1,14 @@
+{
+  "name": "fosdem-website-a11y",
+  "private": true,
+  "type": "module",
+  "description": "Accessibility checks (Playwright and axe-core) for the built fosdem.org site",
+  "scripts": {
+    "test:a11y": "playwright test",
+    "a11y:baseline": "A11Y_UPDATE_BASELINE=1 playwright test && node tests/a11y/update-baseline.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.11.3",
+    "@playwright/test": "1.65.0"
+  }
+}

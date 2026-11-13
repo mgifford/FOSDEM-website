@@ -36,6 +36,18 @@ use `relURL` (e.g. `{{ url | relURL }}`) to resolve paths correctly against it. 
 
 `-D` includes drafts. News posts start `draft: true`, so without it a new post is invisible.
 
+## Accessibility Checks
+
+```sh
+just a11y
+```
+
+Builds the site and scans every page with axe-core in Chromium, in light and dark at four widths. The same
+check runs on every pull request. It fails on findings that are not in `tests/a11y/baseline.json`. A clean run
+means axe found no violations in that scope. It does not mean the site conforms to WCAG, and it does not replace
+testing with a keyboard and a screen reader. What is and is not covered, and how to handle a finding, is in
+[tests/a11y/README.md](tests/a11y/README.md).
+
 ## Data
 
 `data/pretalx/` is generated and gitignored. Every build recipe depends on `fetch`, and

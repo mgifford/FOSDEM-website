@@ -1,5 +1,8 @@
 .hugo_build.lock
 dist/
 public/
+node_modules/
+test-results/
+a11y-report/
 resources/
 data/pretalx/
