@@ -265,7 +265,7 @@
 .article .callout-title {
     font-family: "Signika", sans-serif;
     font-weight: bold;
-    color: var(--c-callout, var(--c-main));
+    color: var(--c-callout, var(--c-accent-text));
     margin: 0 0 .5em;
 }
 
