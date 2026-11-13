@@ -12,8 +12,9 @@ problems only get found by hand, after they ship. Proposal for `FOSDEM/website`:
       `deploy-preview` has finished.
 - [ ] Crawl internal links from the home page rather than a fixed URL list, so new news posts and
       pages are covered automatically. Fail the step on any violation; do not whitelist silently.
-- [ ] Run each page in light and dark theme and at 1280px and 320px. The theme has two inputs
-      (OS preference and the site's own toggle), and 320px catches reflow problems.
+- [ ] Run each page in light and dark theme at desktop (1280px), tablet (820px) and mobile (390px,
+      plus 320px for reflow). The theme has two inputs (OS preference and the site's own toggle), and
+      the narrow widths catch reflow and touch-target problems that desktop never shows.
 - [ ] Use the WCAG 2.2 A and AA axe tags and keep the report as a CI artifact (JSON, with rule,
       page, selector and colours for contrast failures).
 - [ ] Provide Node and the Playwright browser through `flake.nix` (`nix develop`), so the step runs
