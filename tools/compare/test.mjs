@@ -57,11 +57,20 @@ try {
       if (!beforeCache.has(key)) beforeCache.set(key, await run(browser, id, beforeUrl));
       const before = beforeCache.get(key);
       const after = await run(browser, id, `${base}after/${v.slug}/`);
+      // Optionally also run the check on current upstream main, to show whether upstream already has the change.
+      let current;
+      if (v.alsoOnCurrentUpstream) {
+        const ckey = `current:${data.upstream.sha}:${id}`;
+        if (!beforeCache.has(ckey)) beforeCache.set(ckey, await run(browser, id, `${base}before/${data.upstream.sha}/`));
+        current = beforeCache.get(ckey);
+      }
       // An errored run is never a pass or a fail: it is reported as UNKNOWN and fails the build.
-      const good = !before.errored && !after.errored && before.pass === false && after.pass === true;
-      entries.push({ id, title: checks[id].title, before, after, ok: good });
+      const good = !before.errored && !after.errored && before.pass === false && after.pass === true
+        && (!current || !current.errored);
+      entries.push({ id, title: checks[id].title, before, after, ...(current ? { current } : {}), ok: good });
       const mark = good ? 'ok  ' : 'FAIL';
       console.log(`${mark} ${v.slug} / ${id}: before ${before.pass ? 'passes' : 'fails'} (${before.summary}); after ${after.pass ? 'passes' : 'fails'} (${after.summary})`);
+      if (current) console.log(`     current upstream main ${data.upstream.sha}: ${current.pass ? 'passes' : 'fails'} (${current.summary})`);
       if (!good) {
         ok = false;
         if (before.pass) console.log('     the check passes on upstream, so it cannot detect the problem');

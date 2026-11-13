@@ -23,6 +23,9 @@ jobs:
         with:
           fetch-depth: 0   # every change branch and the upstream history are needed
       - run: git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable   # only for pull requests written against the old layout (see build.sh)
       - uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: latest

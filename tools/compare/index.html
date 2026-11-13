@@ -124,13 +124,20 @@
   const bySlug = (s) => variants.find((v) => v.slug === s || (v.aliases || []).includes(s));
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-  PAGES.forEach(([p, l]) => pageSel.append(new Option(`${l} (/${p})`, p)));
+  // Some variants (pull requests written for the old layout) have their own pages.
+  const pagesFor = (v) => (v && v.pages) || PAGES;
+  function fillPages() {
+    pageSel.innerHTML = '';
+    pagesFor(current()).forEach(([p, l]) => pageSel.append(new Option(`${l} (/${p})`, p)));
+  }
   variants.forEach((v) => varSel.append(new Option(v.label, v.slug)));
 
   const params = new URLSearchParams(location.hash.slice(1));
   const requested = bySlug(params.get('variant') || '');
   if (requested) varSel.value = requested.slug;
-  let currentPath = params.get('page') || '';
+  fillPages();
+  let currentPath = params.get('page');
+  if (currentPath === null) currentPath = current().startPage || '';
   const ensureOption = (p) => { if (![...pageSel.options].some((o) => o.value === p)) pageSel.add(new Option(`(current) /${p}`, p), 0); };
   ensureOption(currentPath);
   pageSel.value = currentPath;
@@ -155,7 +162,7 @@
 
   function renderList() {
     $('changes').innerHTML = variants.map((v) => {
-      const pr = v.pr ? ` · <a href="${esc(v.pr)}">Pull request</a>` : '';
+      const pr = v.pr ? ` · <a href="${esc(v.pr)}">Forge pull request</a>` : '';
       const branch = v.ref && v.ref !== '-' ? ` · <a href="${esc(data.repo || '')}/tree/${esc(v.ref)}">Branch <code>${esc(v.ref)}</code></a>` : '';
       return `<li data-slug="${esc(v.slug)}"><a class="main" href="${hashFor(v.slug, '')}">${esc(v.label)}</a>
         <p>${esc(v.description)}</p>
@@ -190,10 +197,11 @@
   function checksHtml(v) {
     const rec = results && results.results && results.results[v.slug];
     if (!rec) return `<h3>Automated checks</h3><p class="note">No automated results were recorded for this build.</p>`;
-    const rows = rec.checks.map((c) => `<tr><td>${esc(c.title || c.id)}</td><td>${c.before ? resultCell(c.before) : ''}</td><td>${c.after ? resultCell(c.after) : ''}</td></tr>`).join('');
+    const hasCurrent = rec.checks.some((c) => c.current);
+    const rows = rec.checks.map((c) => `<tr><td>${esc(c.title || c.id)}</td><td>${c.before ? resultCell(c.before) : ''}</td><td>${c.after ? resultCell(c.after) : ''}</td>${hasCurrent ? `<td>${c.current ? resultCell(c.current) : ''}</td>` : ''}</tr>`).join('');
     return `<h3>Automated checks</h3>
       <p class="note">Recorded at build time in ${esc(results.browser)} on ${esc(results.generated.slice(0, 10))}, on exactly these two builds. Each check should fail on Before (it can see the problem) and pass on After. These are narrow mechanical checks, not a WCAG conformance test.</p>
-      <table><caption class="note">Results for ${esc(v.label)}</caption><thead><tr><th scope="col">Check</th><th scope="col">Before</th><th scope="col">After</th></tr></thead><tbody>${rows}</tbody></table>`;
+      <table><caption class="note">Results for ${esc(v.label)}</caption><thead><tr><th scope="col">Check</th><th scope="col">Before</th><th scope="col">After</th>${hasCurrent ? `<th scope="col">Current upstream main (<code>${esc(data.upstream.sha)}</code>)</th>` : ''}</tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   function describe() {
@@ -203,7 +211,8 @@
     const steps = (v.steps || []).length ? `<h3>Steps to replicate</h3><ol>${v.steps.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>` : '';
     const expected = v.expectedBefore || v.expectedAfter
       ? `<p><strong>Expect on Before:</strong> ${esc(v.expectedBefore || '')}</p><p><strong>Expect on After:</strong> ${esc(v.expectedAfter || '')}</p>` : '';
-    $('info').innerHTML = `<h2 id="info-h">${esc(v.label)}</h2><p>${esc(v.description)}</p>
+    const prs = v.pr ? `<p>Offered to FOSDEM as <a href="${esc(v.pr)}">${esc(v.pr.replace('https://git.fosdem.org/', ''))}</a>${v.githubPr ? ` (mirrored on GitHub as <a href="${esc(v.githubPr)}">${esc(v.githubPr.replace('https://github.com/', ''))}</a>)` : ''}.</p>` : '';
+    $('info').innerHTML = `<h2 id="info-h">${esc(v.label)}</h2><p>${esc(v.description)}</p>${prs}
       ${v.problem ? `<h3>The problem</h3><p>${esc(v.problem)}</p>` : ''}${steps}${expected}${checksHtml(v)}
       <p><span class="badge">${v.files_changed} file${v.files_changed === 1 ? '' : 's'} differ in the built site</span></p>${deps}`;
     fetch(`diffs/${v.slug}.txt`, { cache: 'no-store' }).then((r) => r.text()).then((t) => { $('diff').textContent = t; });
@@ -217,7 +226,12 @@
     history.replaceState(null, '', hash());
   }
   pageSel.addEventListener('change', () => { currentPath = pageSel.value; load(); });
-  varSel.addEventListener('change', () => load());
+  varSel.addEventListener('change', () => {
+    fillPages();
+    if (!pagesFor(current()).some(([p]) => p === currentPath)) currentPath = current().startPage || '';
+    ensureOption(currentPath); pageSel.value = currentPath;
+    load();
+  });
   darkos.addEventListener('change', () => { for (const f of Object.values(frames)) f.contentWindow.location.reload(); history.replaceState(null, '', hash()); });
 
   // Links in the change list (and pasted deep links) change only the hash, so apply it here.
@@ -226,7 +240,9 @@
     const v = bySlug(p.get('variant') || '');
     if (!v) return;
     varSel.value = v.slug;
-    currentPath = p.get('page') || '';
+    fillPages();
+    currentPath = p.get('page');
+    if (currentPath === null) currentPath = v.startPage || '';
     ensureOption(currentPath); pageSel.value = currentPath;
     darkos.checked = p.get('os') === 'dark';
     load();

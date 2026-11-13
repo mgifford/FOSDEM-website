@@ -147,4 +147,24 @@ export const checks = {
       return done(failures, 'hover changes colour and underline; visited colour is 4.5:1 or better, light and dark');
     },
   },
+
+  // OS in dark mode, but the visitor chose Light with the site's own toggle (localStorage): the page must be light.
+  'light-choice': {
+    title: 'An explicit Light choice wins over a dark OS preference',
+    async run(browser, base) {
+      const failures = [];
+      for (const path of ['', 'news/']) {
+        const context = await browser.newContext({ colorScheme: 'dark', viewport: { width: 1280, height: 800 } });
+        await context.addInitScript(() => { try { localStorage.setItem('theme', 'light'); } catch {} });
+        const page = await context.newPage();
+        const response = await page.goto(base + path);
+        if (!response || !response.ok()) throw new Error(`${base + path} returned ${response && response.status()}`);
+        const bg = await pageBackground(page);
+        const text = await page.evaluate(() => getComputedStyle(document.body).color);
+        if (lum(parse(bg)) < 0.5) failures.push(`/${path}: background ${bg} and text ${text} are dark although Light was chosen`);
+        await context.close();
+      }
+      return done(failures, 'with a dark OS and Light chosen, the background is light');
+    },
+  },
 };

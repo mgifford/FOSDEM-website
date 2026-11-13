@@ -56,8 +56,16 @@ resolve() { git -C "$repo" rev-parse --verify -q "$1^{commit}" || git -C "$repo"
 
 build_site() { # srcdir base outdir
   mkdir -p "$1/data"; rm -rf "$1/data/pretalx"; cp -r "$work/pretalx" "$1/data/pretalx"
-  ( cd "$1" && hugo build -b "$2" -D -d "$3" --cleanDestinationDir >"$work/hugo.log" 2>&1 ) \
-    || { echo "hugo failed in $1:" >&2; tail -20 "$work/hugo.log" >&2; return 1; }
+  if [ -f "$1/hugo.landing.yaml" ]; then
+    # Commits from before upstream's restructure (2026-10-26) build the landing site from its own
+    # config and test schedule data. This is only for pull requests written against that code.
+    ( cd "$1" && go run . testdata/schedule.json >"$work/hugo.log" 2>&1 \
+        && hugo build --config hugo.landing.yaml -b "$2" -D -d "$3" --cleanDestinationDir >>"$work/hugo.log" 2>&1 ) \
+      || { echo "legacy build failed in $1:" >&2; tail -20 "$work/hugo.log" >&2; return 1; }
+  else
+    ( cd "$1" && hugo build -b "$2" -D -d "$3" --cleanDestinationDir >"$work/hugo.log" 2>&1 ) \
+      || { echo "hugo failed in $1:" >&2; tail -20 "$work/hugo.log" >&2; return 1; }
+  fi
 }
 
 # OUT is rebuilt from scratch: a leftover tree from an earlier run must never end up in a published site.
@@ -79,10 +87,11 @@ ensure_before() { # full sha -> builds before/<sha7> (and its neutral twin) once
 
 python3 - "$VARIANTS" > "$work/variants.tsv" <<'PY'
 import json,sys
-for v in json.load(open(sys.argv[1])): print(v["slug"], v.get("ref","-"), ",".join(v.get("merge",[])) or "-", sep="\t")
+for v in json.load(open(sys.argv[1])):
+    print(v["slug"], v.get("ref","-"), ",".join(v.get("merge",[])) or "-", v.get("forgePr","-"), "yes" if v.get("alsoOnCurrentUpstream") else "-", sep="\t")
 PY
 failures=""
-while IFS=$'\t' read -r slug ref merge; do
+while IFS=$'\t' read -r slug ref merge forge current; do
   src="$work/src-$slug"
   if [ "$merge" != "-" ]; then
     git -C "$repo" worktree add -q --detach "$src" "$up_full"
@@ -97,14 +106,20 @@ while IFS=$'\t' read -r slug ref merge; do
     [ "$ok" = 1 ] || { git -C "$src" merge --abort 2>/dev/null || true; git -C "$repo" worktree remove --force "$src"; failures="$failures $slug"; echo "failed" > "$work/stats/$slug"; continue; }
     sha="$(git -C "$src" rev-parse HEAD)"
   else
-    sha="$(resolve "$ref")"
+    if [ "$forge" != "-" ]; then
+      # The head commit of a pull request on the FOSDEM forge, tested as submitted.
+      ref="forge PR #$forge"
+      if git -C "$repo" fetch -q upstream "refs/pull/$forge/head" 2>/dev/null; then sha="$(git -C "$repo" rev-parse FETCH_HEAD)"; else sha=""; fi
+    else
+      sha="$(resolve "$ref")"
+    fi
     if [ -z "$sha" ]; then echo "FAIL $slug: ref $ref not found" >&2; failures="$failures $slug"; echo "failed" > "$work/stats/$slug"; continue; fi
     base="$(git -C "$repo" merge-base "$sha" "$up_full")"
     git -C "$repo" worktree add -q --detach "$src" "$sha"
     label="$ref"
   fi
   echo "after:  $slug = $label @ ${sha:0:7} (before ${base:0:7})"
-  if ensure_before "$base" && build_site "$src" "$PUBLIC_BASE/after/$slug/" "$OUT/after/$slug" \
+  if { [ "$current" != "yes" ] || ensure_before "$up_full"; } && ensure_before "$base" && build_site "$src" "$PUBLIC_BASE/after/$slug/" "$OUT/after/$slug" \
        && build_site "$src" "$NEUTRAL" "$work/neutral/$slug"; then
     b7="${base:0:7}"
     ( cd "$work/neutral"

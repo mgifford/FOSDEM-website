@@ -1,10 +1,12 @@
 [
   {
     "slug": "contrast-links",
-    "aliases": ["pr01-contrast-links"],
+    "aliases": [
+      "pr01-contrast-links"
+    ],
     "ref": "2027/01-contrast-and-link-fixes",
     "label": "Colour contrast and link distinction",
-    "description": "Darker light-theme link blue, a text-only accent colour that stays readable on the dark background, no opacity on the footer licence text, and underlined in-text links.",
+    "description": "Darker light-theme link blue, a text-only accent colour that stays readable on the dark background, no opacity on the footer licence text, and underlined in-text links. Branch 2027/01 is this pull request rebased onto the current main, because the original no longer merged.",
     "problem": "In the light theme links (#3479c4 on white) and the footer licence text are just under 4.5:1. In the dark theme the purple accent (#ac1d94 on #222) is about 2.5:1 for the active nav item, the date and the logo suffix, and in-text links are told apart from surrounding text by colour alone.",
     "steps": [
       "Open the home page in both frames (use the Home page in the Page menu).",
@@ -15,12 +17,18 @@
     ],
     "expectedBefore": "axe reports colour-contrast on every page in both themes and link-in-text-block in the dark theme.",
     "expectedAfter": "axe reports neither rule on any of the 7 pages checked, in light or dark.",
-    "checks": ["contrast-links"],
-    "depends": []
+    "checks": [
+      "contrast-links"
+    ],
+    "depends": [],
+    "pr": "https://git.fosdem.org/FOSDEM/website/pulls/12",
+    "githubPr": "https://github.com/mgifford/FOSDEM-website/pull/1"
   },
   {
     "slug": "focus-visible",
-    "aliases": ["pr03-focus-visible"],
+    "aliases": [
+      "pr03-focus-visible"
+    ],
     "ref": "2027/03-focus-visible",
     "label": "Visible keyboard focus",
     "description": "An explicit 3px focus ring in both themes (blue in light, yellow in dark) instead of the browser's default 1px ring.",
@@ -34,12 +42,16 @@
     ],
     "expectedBefore": "A thin default ring that is under 3:1 against the dark background.",
     "expectedAfter": "A 3px ring on every focusable element, at least 3:1 in both themes.",
-    "checks": ["focus-visible"],
+    "checks": [
+      "focus-visible"
+    ],
     "depends": []
   },
   {
     "slug": "skipto",
-    "aliases": ["pr04-skipto"],
+    "aliases": [
+      "pr04-skipto"
+    ],
     "ref": "2027/04-skipto",
     "label": "SkipTo skip-link menu",
     "description": "Vendored paypal/skipto 4.1.7. The first Tab stop on every page is a menu of the page's landmarks and headings.",
@@ -53,12 +65,16 @@
     ],
     "expectedBefore": "The first Tab stop is the logo link. No skip mechanism exists.",
     "expectedAfter": "The first Tab stop is a \"Skip To Content\" button; Enter opens a menu of at least 3 destinations; Escape closes it.",
-    "checks": ["skipto"],
+    "checks": [
+      "skipto"
+    ],
     "depends": []
   },
   {
     "slug": "link-states",
-    "aliases": ["pr09-link-states"],
+    "aliases": [
+      "pr09-link-states"
+    ],
     "ref": "2027/09-link-states",
     "label": "Link hover and visited colours",
     "description": "Visited and hover colours for text links (4.5:1 or better in both themes); hover also thickens the underline.",
@@ -71,7 +87,54 @@
     ],
     "expectedBefore": "No hover change on footer links and no visited colour is defined.",
     "expectedAfter": "Hover changes colour and uses a 2px underline; the visited colour is at least 4.5:1, in light and dark. (The automated check reads the defined visited colour, because browsers hide :visited from scripts.)",
-    "checks": ["link-states"],
+    "checks": [
+      "link-states"
+    ],
+    "depends": []
+  },
+  {
+    "slug": "light-choice",
+    "aliases": [
+      "pr02-light-choice"
+    ],
+    "ref": "-",
+    "forgePr": 11,
+    "pr": "https://git.fosdem.org/FOSDEM/website/pulls/11",
+    "githubPr": "https://github.com/mgifford/FOSDEM-website/pull/2",
+    "label": "Light choice overrides a dark OS (forge PR #11)",
+    "description": "A one-line CSS change so the dark-mode media query respects an explicit Light choice. This is the pull request exactly as submitted, built from its own head commit against the code it was written for, so Before and After use the old layout and pages. Upstream main already contains the same fix, shown in the third column of the results.",
+    "problem": "When the operating system is in dark mode and a visitor picks Light with the site's own toggle, the page stays dark: the prefers-color-scheme rule sets the dark colours on :root whatever the site's choice is.",
+    "steps": [
+      "Set your operating system to dark mode (or press Simulate a dark-mode OS above) and reload.",
+      "Press the Light theme button above. Both frames reload with the site's choice set to Light.",
+      "Before: the page stays dark, or is partly dark, even though Light was chosen. After: it is fully light.",
+      "To see that current upstream main already behaves like After, open the Home page of any other change in this viewer, with the same settings."
+    ],
+    "expectedBefore": "The page is dark although Light was chosen.",
+    "expectedAfter": "The page is light.",
+    "checks": [
+      "light-choice"
+    ],
+    "alsoOnCurrentUpstream": true,
+    "startPage": "",
+    "pages": [
+      [
+        "",
+        "Home"
+      ],
+      [
+        "news/",
+        "News"
+      ],
+      [
+        "news/call-for-stands/",
+        "Call for Stands"
+      ],
+      [
+        "practical/conduct/",
+        "Code of Conduct"
+      ]
+    ],
     "depends": []
   },
   {
@@ -92,7 +155,12 @@
     ],
     "expectedBefore": "Every problem described above is present.",
     "expectedAfter": "All four automated checks pass on the merged result.",
-    "checks": ["contrast-links", "focus-visible", "skipto", "link-states"],
+    "checks": [
+      "contrast-links",
+      "focus-visible",
+      "skipto",
+      "link-states"
+    ],
     "depends": []
   }
 ]

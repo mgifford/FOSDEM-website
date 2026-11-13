@@ -39,6 +39,16 @@ node tools/compare/serve.mjs           # http://127.0.0.1:8093/, caching off
 Pretalx slug (default `fosdem-2027`). For a hosted copy set `PUBLIC_BASE` to the URL prefix (no
 trailing slash).
 
+## Pull requests on the FOSDEM forge
+
+A variant can point at a pull request on `git.fosdem.org` with `"forgePr": N` instead of a branch. The
+build fetches `refs/pull/N/head` and tests that exact commit against its own fork point, so it shows the
+pull request as submitted. If that commit is from before upstream's restructure (2026-10-26) it is built
+with the old recipe (`go run . testdata/schedule.json`, then `hugo.landing.yaml`), which is why such a
+variant has its own `startPage` and `pages`. `pr` and `githubPr` link the forge pull request and its GitHub
+mirror in the viewer. `"alsoOnCurrentUpstream": true` runs the checks on current upstream main as well and
+shows it as a third column, which is how a pull request that upstream has already absorbed is shown.
+
 ## Automated checks
 
 Every change lists `checks` in `variants.json`; the check code is in `checks.mjs`. `test.mjs` runs
