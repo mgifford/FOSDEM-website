@@ -19,7 +19,7 @@ After we released a week ago the first batch of stands, we are now releasing the
 - BeWelcome: The Open-Source, Non-Profit Hospitality Network
 - Bor & Kiwi TCMS (Sunday)
 - CEPH
-- Checkmk - "You own it – Checkmk monitors it!"
+- Checkmk - "You own it - Checkmk monitors it!"
 - CISO Assistant & BunkerWeb
 - ClickHouse
 - Cloud Native Computing Foundation (CNCF)
