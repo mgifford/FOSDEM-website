@@ -1,5 +1,5 @@
 ---
-title: "Accepted Stands: complete list"
+title: "FOSDEM 2027 Accepted Stands: complete list"
 date: 2026-11-15
 slug: accepted-stands-complete
 outputs:
