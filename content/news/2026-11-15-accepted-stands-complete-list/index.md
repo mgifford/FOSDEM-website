@@ -6,7 +6,8 @@ outputs:
   - html
 ---
 
-This year, we've received 256 submissions, and the number of high-quality projects is steadily increasing.
+This year, we've received 256 submissions, taking a decision was not easy and harder then expected.
+
 After we released a week ago the first batch of stands, we are now releasing the complete list of stands. We have some additions and also some merges.
 
 - 0 A.D.
