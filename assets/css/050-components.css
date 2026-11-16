@@ -81,7 +81,7 @@
 .sponsor-text-link {
     font-family: "Signika", sans-serif;
     font-weight: bold;
-    color: var(--c-main);
+    color: var(--c-accent-text);
 }
 
 [data-theme='dark'] .sponsor-logo.has-dark,
@@ -145,7 +145,7 @@
 }
 
 .faq-item[open] summary h3 {
-    color: var(--c-main);
+    color: var(--c-accent-text);
 }
 
 .news,
@@ -202,7 +202,7 @@
 .sponsors h2 a:focus-visible,
 .location h2 a:hover,
 .location h2 a:focus-visible {
-    color: var(--c-main);
+    color: var(--c-accent-text);
     text-decoration: underline;
 }
 
@@ -235,7 +235,7 @@
     flex: none;
     width: 1.75rem;
     height: 1.75rem;
-    color: var(--c-main);
+    color: var(--c-accent-text);
 }
 
 .calendar-widget-text {
@@ -263,7 +263,7 @@
 }
 
 .calendar-widget-actions a {
-    color: var(--c-main);
+    color: var(--c-accent-text);
     text-decoration: none;
 }
 
@@ -313,7 +313,7 @@
     box-shadow: none;
     font-weight: bold;
     font-size: .75em;
-    color: var(--c-main);
+    color: var(--c-accent-text);
 }
 
 .leaflet-tooltip.map-label::before {
