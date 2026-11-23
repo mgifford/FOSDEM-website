@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ partial "title.html" . }} &mdash; {{ .Site.Title }}{{ end }}</title>
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ partial "title.html" . }} - {{ .Site.Title }}{{ end }}</title>
     <link rel="icon" href="{{ `logo.svg` | relURL }}" sizes="any" type="image/svg+xml">
     {{ $css := resources.Match "css/*.css" | resources.Concat "css/style.css" | minify | fingerprint -}}
     <link rel="stylesheet" href="{{ $css.RelPermalink }}">
