@@ -50,12 +50,12 @@
 
 .topnav a:hover,
 .topnav a:focus-visible {
-    color: var(--c-main);
+    color: var(--c-accent-text);
     text-decoration: underline;
 }
 
 .topnav a[aria-current='page'] {
-    color: var(--c-main);
+    color: var(--c-accent-text);
 }
 
 .hero {
@@ -89,7 +89,7 @@
 .hero-date {
     font-family: "Signika", sans-serif;
     font-weight: bold;
-    color: var(--c-main);
+    color: var(--c-accent-text);
     font-size: clamp(1.3rem, min(6.4vw, calc(4.3 * var(--vh))), 4.25rem);
     line-height: 1.15;
     margin: .35em 0 0;
@@ -132,7 +132,7 @@
 
 .footer-nav a:hover,
 .footer-nav a:focus-visible {
-    color: var(--c-main);
+    color: var(--c-accent-text);
     text-decoration: underline;
 }
 
@@ -143,7 +143,6 @@
     color: var(--c-footer);
     text-wrap: balance;
     margin: .5em 0 0;
-    opacity: .8;
 }
 
 .theme-toggle {
@@ -161,7 +160,7 @@
 }
 
 .theme-toggle:hover {
-    color: var(--c-main);
+    color: var(--c-accent-text);
 }
 
 .theme-toggle svg {

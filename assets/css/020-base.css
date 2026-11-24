@@ -79,6 +79,12 @@ a {
     color: var(--c-link);
 }
 
+footer a,
+article a,
+main :is(p, li) a:not(.button) {
+    text-decoration: underline;
+}
+
 a.button {
     padding: .4em 1em;
     border-radius: .2em;
@@ -118,7 +124,7 @@ td:last-of-type {
 }
 
 .logo-text span {
-    color: var(--c-main);
+    color: var(--c-accent-text);
     font-size: 0.6em;
     font-weight: bold;
 
