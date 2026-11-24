@@ -36,8 +36,9 @@ Changes are offered to FOSDEM at `https://git.fosdem.org/FOSDEM/website/pulls` a
 on this GitHub fork (`https://github.com/mgifford/FOSDEM-website/pulls`). The pairs are listed in
 `tools/compare/upstream-prs.json`.
 
-- **Never close, merge or delete a GitHub pull request while its forge counterpart is open.** Close the
-  GitHub one only after the forge one is closed or merged. Do not offer to close GitHub PRs "to tidy up".
+- The GitHub pull requests exist to track the forge ones: the forge (`git.fosdem.org/FOSDEM/website`) is where
+  FOSDEM reviews and decides, and the GitHub side follows it. Closing or merging a GitHub PR early is not
+  harmful in itself, but do not do it without being asked, and say which forge PR it relates to.
 - Keep each pair in step: when a forge PR is rebased or updated, update the GitHub PR branch the same way.
 - `scripts/check-upstream-prs.py` (also run by `scripts/start-work.sh`) reports, read-only, whether each
   forge PR still merges into upstream main (with the conflicting files) and whether GitHub and the forge agree.

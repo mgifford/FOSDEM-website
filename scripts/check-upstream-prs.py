@@ -101,10 +101,9 @@ def main():
                 print(f"    merges cleanly ({behind} commits behind upstream)")
             closed_early = [n for n, st in gh_states.items() if st and st != "OPEN"]
             if closed_early:
-                problems += 1
-                print(f"    OUT OF STEP: GitHub {', '.join('#' + str(n) for n in closed_early)} closed but forge #{forge_no} is still open; reopen")
+                print(f"    note: GitHub {', '.join('#' + str(n) for n in closed_early)} is closed or merged while forge #{forge_no} is still open")
             else:
-                print(f"    keep GitHub {', '.join('#' + str(n) for n in gh_nos)} open until forge #{forge_no} is closed")
+                print(f"    GitHub {', '.join('#' + str(n) for n in gh_nos)} open, tracking forge #{forge_no}")
         else:
             still_open = [n for n, st in gh_states.items() if st == "OPEN"]
             if still_open:

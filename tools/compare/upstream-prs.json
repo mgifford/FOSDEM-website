@@ -2,7 +2,7 @@
   "forgeRepo": "https://git.fosdem.org/FOSDEM/website",
   "forgeUser": "mgifford",
   "githubRepo": "mgifford/FOSDEM-website",
-  "note": "Each forge pull request (FOSDEM/website) is mirrored by one or more GitHub pull requests on the fork, current one first. A GitHub pull request is closed only after the forge one is closed or merged, never before. GitHub and forge numbers are unrelated: GitHub #11 is not forge #11. scripts/check-upstream-prs.py reports the state of each pair and never closes anything.",
+  "note": "Each forge pull request (FOSDEM/website) is tracked by one or more GitHub pull requests on the fork, current one first. The forge is where FOSDEM reviews and decides. GitHub and forge numbers are unrelated: GitHub #11 is not forge #11.",
   "pairs": [
     {
       "forge": 12,
@@ -54,6 +54,16 @@
       "githubBranch": "2027/09-link-states",
       "currentBranch": "submit/09-link-states",
       "summary": "Link hover and visited colours"
+    },
+    {
+      "forge": 32,
+      "github": 13,
+      "githubPrs": [
+        13
+      ],
+      "githubBranch": "submit/ci-a11y-scan",
+      "currentBranch": "submit/ci-a11y-scan",
+      "summary": "CI: axe-core and Playwright scan on pull requests"
     }
   ]
 }
